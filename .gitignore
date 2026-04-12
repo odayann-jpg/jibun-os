@@ -1,0 +1,31 @@
+# 環境変数・APIキー
+.env
+*.env.*
+
+# Google Calendar OAuth
+tasks/.gcal-oauth/token.json
+tasks/.gcal-oauth/credentials.json
+
+# MMSキャッシュデータ
+tasks/mms-data.json
+
+# Claude ローカル設定
+.claude/settings.local.json
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Node
+node_modules/
+
+# その他
+*.log
+*.tmp

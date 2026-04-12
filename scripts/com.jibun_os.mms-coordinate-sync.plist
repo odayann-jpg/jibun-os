@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  コーディネート予定をカレンダー→MMSへ毎朝8:00に同期
+
+  初回のみ（パスは環境に合わせて修正）:
+    cp scripts/com.jibun_os.mms-coordinate-sync.plist ~/Library/LaunchAgents/
+    launchctl load ~/Library/LaunchAgents/com.jibun_os.mms-coordinate-sync.plist
+
+  止める:
+    launchctl unload ~/Library/LaunchAgents/com.jibun_os.mms-coordinate-sync.plist
+
+  ログ:
+    tasks/.gcal-oauth/sync.log
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.jibun_os.mms-coordinate-sync</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>/Users/hirotaseiji/Desktop/自分OS/scripts/run-coordinate-sync.sh</string>
+  </array>
+
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Hour</key>
+    <integer>8</integer>
+    <key>Minute</key>
+    <integer>0</integer>
+  </dict>
+
+  <key>RunAtLoad</key>
+  <false/>
+
+  <key>StandardOutPath</key>
+  <string>/Users/hirotaseiji/Desktop/自分OS/tasks/.gcal-oauth/launchd-stdout.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/hirotaseiji/Desktop/自分OS/tasks/.gcal-oauth/launchd-stderr.log</string>
+</dict>
+</plist>

@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>西岡慎也 | 印象設計家</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black: #111111;
+      --dark: #1a1a1a;
+      --mid: #2d2d2d;
+      --gold: #b8973a;
+      --gold-light: #d4af5a;
+      --cream: #f5f0e8;
+      --white: #ffffff;
+      --gray: #888888;
+      --light-gray: #f0ede8;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Hiragino Mincho ProN', 'Yu Mincho', 'Georgia', serif;
+      font-size: 16px;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px 28px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(ellipse at 80% 20%, rgba(184,151,58,0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-label {
+      font-family: 'Helvetica Neue', 'Arial', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+
+    .hero h1 {
+      font-size: clamp(28px, 7vw, 52px);
+      font-weight: 400;
+      line-height: 1.5;
+      letter-spacing: 0.05em;
+      margin-bottom: 32px;
+    }
+
+    .hero h1 em {
+      display: block;
+      font-style: normal;
+      color: var(--gold-light);
+    }
+
+    .hero-sub {
+      font-size: 15px;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.9;
+      max-width: 400px;
+      margin-bottom: 48px;
+    }
+
+    .scroll-hint {
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .scroll-hint::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+
+    /* ─── SECTION BASE ─── */
+    section {
+      padding: 80px 28px;
+    }
+
+    .section-label {
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    /* ─── PAIN ─── */
+    .pain {
+      background: var(--dark);
+    }
+
+    .pain-intro {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 36px;
+      line-height: 2;
+    }
+
+    .pain-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .pain-list li {
+      padding: 20px 24px;
+      border-left: 2px solid var(--gold);
+      background: rgba(255,255,255,0.03);
+      font-size: 15px;
+      line-height: 1.75;
+      border-radius: 0 4px 4px 0;
+    }
+
+    /* ─── CORE MESSAGE ─── */
+    .core {
+      text-align: center;
+      padding: 100px 28px;
+      position: relative;
+    }
+
+    .core::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(184,151,58,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .core-quote {
+      font-size: clamp(22px, 6vw, 40px);
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      line-height: 1.6;
+      color: var(--gold-light);
+      position: relative;
+      z-index: 1;
+      margin-bottom: 24px;
+    }
+
+    .core-sub {
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.9;
+      max-width: 340px;
+      margin: 0 auto;
+    }
+
+    /* ─── WHO ─── */
+    .who {
+      background: var(--dark);
+    }
+
+    .who h2 {
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .who-body {
+      font-size: 15px;
+      color: rgba(255,255,255,0.75);
+      line-height: 2;
+      margin-bottom: 32px;
+    }
+
+    .stat-row {
+      display: flex;
+      gap: 32px;
+      margin-top: 36px;
+    }
+
+    .stat {
+      flex: 1;
+      text-align: center;
+      padding: 24px 12px;
+      border: 1px solid rgba(184,151,58,0.3);
+      border-radius: 4px;
+    }
+
+    .stat-num {
+      display: block;
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: 28px;
+      font-weight: 300;
+      color: var(--gold-light);
+      letter-spacing: 0.05em;
+    }
+
+    .stat-unit {
+      font-size: 12px;
+      color: var(--gold);
+    }
+
+    .stat-label {
+      display: block;
+      font-size: 11px;
+      color: rgba(255,255,255,0.45);
+      margin-top: 6px;
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── BEFORE/AFTER ─── */
+    .cases {
+      padding: 80px 28px;
+    }
+
+    .cases h2 {
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+
+    .cases-sub {
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 48px;
+      line-height: 1.8;
+    }
+
+    .case-card {
+      background: var(--dark);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .case-header {
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .case-tag {
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .case-title {
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .case-body {
+      padding: 24px;
+    }
+
+    .before-after {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .ba-box {
+      padding: 16px;
+      background: var(--dark);
+    }
+
+    .ba-label {
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .ba-box.before .ba-label { color: rgba(255,255,255,0.3); }
+    .ba-box.after .ba-label { color: var(--gold); }
+
+    .ba-text {
+      font-size: 13px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .ba-box.after .ba-text { color: var(--white); }
+
+    .case-voice {
+      font-size: 13px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.8;
+      font-style: italic;
+      padding-left: 14px;
+      border-left: 2px solid rgba(184,151,58,0.4);
+    }
+
+    /* ─── SERVICES ─── */
+    .services {
+      background: var(--dark);
+    }
+
+    .services h2 {
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+
+    .services-sub {
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 40px;
+      line-height: 1.8;
+    }
+
+    .service-card {
+      padding: 28px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .service-card:last-child {
+      border-bottom: none;
+    }
+
+    .service-num {
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: 11px;
+      color: var(--gold);
+      letter-spacing: 0.15em;
+      margin-bottom: 10px;
+    }
+
+    .service-name {
+      font-size: 18px;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      margin-bottom: 10px;
+    }
+
+    .service-desc {
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.8;
+    }
+
+    /* ─── FOR WHO ─── */
+    .forwho {
+      padding: 80px 28px;
+    }
+
+    .forwho h2 {
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 36px;
+    }
+
+    .forwho-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .forwho-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .forwho-list li::before {
+      content: '◆';
+      color: var(--gold);
+      font-size: 8px;
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+
+    /* ─── CTA ─── */
+    .cta {
+      background: var(--dark);
+      text-align: center;
+      padding: 80px 28px 100px;
+    }
+
+    .cta h2 {
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .cta-sub {
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.9;
+      margin-bottom: 48px;
+    }
+
+    .cta-btn {
+      display: block;
+      width: 100%;
+      max-width: 320px;
+      margin: 0 auto 16px;
+      padding: 18px 24px;
+      background: var(--gold);
+      color: var(--black);
+      text-decoration: none;
+      font-size: 15px;
+      letter-spacing: 0.1em;
+      border-radius: 4px;
+      font-family: 'Hiragino Mincho ProN', serif;
+    }
+
+    .cta-btn.secondary {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.7);
+      font-size: 14px;
+    }
+
+    /* ─── PROFILE ─── */
+    .profile {
+      padding: 80px 28px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .profile-inner {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      margin-bottom: 28px;
+    }
+
+    .profile-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--mid);
+      border: 1px solid rgba(184,151,58,0.3);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: var(--gold);
+    }
+
+    .profile-name {
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .profile-title {
+      font-size: 12px;
+      color: var(--gold);
+      letter-spacing: 0.15em;
+      margin-bottom: 8px;
+    }
+
+    .profile-body {
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      line-height: 2;
+    }
+
+    .history {
+      margin-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 28px;
+    }
+
+    .history-label {
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .history-item {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 14px;
+      font-size: 13px;
+    }
+
+    .history-year {
+      color: rgba(255,255,255,0.35);
+      font-family: 'Helvetica Neue', sans-serif;
+      flex-shrink: 0;
+      width: 36px;
+    }
+
+    .history-text {
+      color: rgba(255,255,255,0.65);
+      line-height: 1.7;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding: 32px 28px;
+      text-align: center;
+      font-size: 11px;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: 0.1em;
+    }
+
+    /* ─── DIVIDER ─── */
+    .gold-line {
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+      margin: 0 auto 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ① HERO -->
+  <section class="hero">
+    <p class="hero-label">Impression Designer</p>
+    <h1>
+      実力があるのに、<br>
+      <em>なぜか軽く見られる。</em><br>
+      その差は、<br>印象にある。
+    </h1>
+    <p class="hero-sub">
+      装いと立ち居振る舞いを整えることで、
+      あなたの本当の実力が正しく伝わる。
+      それが、印象設計です。
+    </p>
+    <span class="scroll-hint">Scroll</span>
+  </section>
+
+
+  <!-- ② PAIN -->
+  <section class="pain">
+    <p class="section-label">Does this sound familiar?</p>
+    <p class="pain-intro">
+      こんな感覚、覚えはありませんか。
+    </p>
+    <ul class="pain-list">
+      <li>実績は確かなのに、初対面でなぜか軽く扱われる気がする</li>
+      <li>話す内容は正しいはずなのに、信頼されるまでに時間がかかる</li>
+      <li>服はそれなりに揃えたのに、どこかちぐはぐな感じが拭えない</li>
+      <li>「雰囲気で損してるよ」と言われたことがある</li>
+      <li>仕事での自分と、プライベートの自分がバラバラな気がする</li>
+    </ul>
+  </section>
+
+
+  <!-- ③ CORE MESSAGE -->
+  <section class="core">
+    <div class="gold-line"></div>
+    <p class="core-quote">「印象は、資本である。」</p>
+    <p class="core-sub">
+      内側にある実力（impression）と、
+      外側への表現（expression）が一致したとき、
+      人はあなたを「信頼できる人物」として認識する。
+    </p>
+  </section>
+
+
+  <!-- ④ WHO IS NISHIOKA -->
+  <section class="who">
+    <p class="section-label">About</p>
+    <h2>西岡慎也<br><span style="font-size:16px;color:rgba(255,255,255,0.5)">印象設計家</span></h2>
+    <p class="who-body">
+      パーソナルスタイリストとして独立して25年。
+      経営者・役員・士業・医師など、
+      「人を動かす立場にある人」の印象を設計してきた。<br><br>
+      扱うのは服だけではない。
+      装い、立ち居振る舞い、言葉の選び方、空間の使い方——
+      その人が放つ「印象の総体」を設計する。
+    </p>
+    <div class="stat-row">
+      <div class="stat">
+        <span class="stat-num">25<span class="stat-unit">年</span></span>
+        <span class="stat-label">独立からの経験</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">4<span class="stat-unit">万人</span></span>
+        <span class="stat-label">コーディネート実績</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ⑤ BEFORE / AFTER -->
+  <section class="cases">
+    <p class="section-label">Case Study</p>
+    <h2>変化の事例</h2>
+    <p class="cases-sub">
+      ※ 実際のクライアントより（掲載許可済み）
+    </p>
+
+    <!-- CASE 1 -->
+    <div class="case-card">
+      <div class="case-header">
+        <p class="case-tag">Case 01</p>
+        <p class="case-title">50代・製造業経営者</p>
+      </div>
+      <div class="case-body">
+        <div class="before-after">
+          <div class="ba-box before">
+            <p class="ba-label">Before</p>
+            <p class="ba-text">【ビフォーアフターの内容を西岡さんに確認して入れてください】</p>
+          </div>
+          <div class="ba-box after">
+            <p class="ba-label">After</p>
+            <p class="ba-text">【ビフォーアフターの内容を西岡さんに確認して入れてください】</p>
+          </div>
+        </div>
+        <p class="case-voice">「【クライアントの声をここに】」</p>
+      </div>
+    </div>
+
+    <!-- CASE 2 -->
+    <div class="case-card">
+      <div class="case-header">
+        <p class="case-tag">Case 02</p>
+        <p class="case-title">40代・士業（弁護士）</p>
+      </div>
+      <div class="case-body">
+        <div class="before-after">
+          <div class="ba-box before">
+            <p class="ba-label">Before</p>
+            <p class="ba-text">【ビフォーアフターの内容を西岡さんに確認して入れてください】</p>
+          </div>
+          <div class="ba-box after">
+            <p class="ba-label">After</p>
+            <p class="ba-text">【ビフォーアフターの内容を西岡さんに確認して入れてください】</p>
+          </div>
+        </div>
+        <p class="case-voice">「【クライアントの声をここに】」</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ⑥ SERVICES -->
+  <section class="services">
+    <p class="section-label">Services</p>
+    <h2>できること</h2>
+    <p class="services-sub">
+      すべては「あなたの実力を正しく伝える」という一点に向かっている。
+    </p>
+
+    <div class="service-card">
+      <p class="service-num">01</p>
+      <p class="service-name">印象設計コンサルティング</p>
+      <p class="service-desc">
+        装いだけでなく、立ち居振る舞い・表現・空間まで含めた
+        「印象の全体設計」を行う経営者向けのプログラム。
+        実力と印象を一致させ、初対面からの信頼形成を加速させる。
+      </p>
+    </div>
+
+    <div class="service-card">
+      <p class="service-num">02</p>
+      <p class="service-name">装いセレクト＆クローゼット整理</p>
+      <p class="service-desc">
+        「立場に合った服」を一緒に選び、クローゼットを整える。
+        何を着るか迷う時間をなくし、毎朝の判断コストを下げる。
+      </p>
+    </div>
+
+    <div class="service-card">
+      <p class="service-num">03</p>
+      <p class="service-name">EI統合コンサルティング</p>
+      <p class="service-desc">
+        感情と論理のバランスを整え、仕事と家庭のズレを解消する。
+        外見だけでなく内面の一致が、長期的な印象の安定につながる。
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ⑦ FOR WHO -->
+  <section class="forwho">
+    <p class="section-label">For</p>
+    <h2>こんな方へ</h2>
+    <ul class="forwho-list">
+      <li>経営者・役員として、印象で信頼を先に作りたい方</li>
+      <li>実力はあるのに、見た目で損していると感じる方</li>
+      <li>初対面の商談・登壇・交渉での第一印象を変えたい方</li>
+      <li>「なんとなく整っていない」感覚を払拭したい方</li>
+      <li>外見だけでなく、内面と外見を統合したい方</li>
+    </ul>
+  </section>
+
+
+  <!-- ⑧ CTA -->
+  <section class="cta">
+    <div class="gold-line"></div>
+    <h2>まず、話を聞いてみる。<br>それだけでいい。</h2>
+    <p class="cta-sub">
+      初回は無料相談を受け付けています。<br>
+      「自分に必要かどうか」を判断するための場です。<br>
+      プレッシャーなく、お気軽にどうぞ。
+    </p>
+    <!-- ↓ LINEや予約URLに変更してください -->
+    <a href="https://lin.ee/XXXXXXX" class="cta-btn">LINE で相談する（無料）</a>
+    <a href="mailto:info@reframe-inc.jp" class="cta-btn secondary">メールで問い合わせる</a>
+  </section>
+
+
+  <!-- ⑨ PROFILE -->
+  <section class="profile">
+    <p class="section-label">Profile</p>
+    <div class="profile-inner">
+      <div class="profile-avatar">西</div>
+      <div>
+        <p class="profile-name">西岡 慎也</p>
+        <p class="profile-title">印象設計家 / 株式会社リフレイム 代表取締役</p>
+      </div>
+    </div>
+    <p class="profile-body">
+      1979年茨城県生まれ。21歳でセレクトショップを開業し、独立。
+      2007年に東京進出、「ライフブランディング」を設立し2年で年商2億円を達成。
+      2010年に白金台へ「ファッションスタイリストジャパン」を設立。
+      2019年に株式会社リフレイムへ改名。<br><br>
+      現在は経営者・役員の印象設計を軸に、
+      南青山の完全紹介制割烹「やまとこ」、
+      赤坂見附の経営者コミュニティ「GENTLE MIND CLUB」など
+      複数の事業を運営。
+    </p>
+    <div class="history">
+      <p class="history-label">Career</p>
+      <div class="history-item">
+        <span class="history-year">2001</span>
+        <span class="history-text">21歳で独立、茨城県にセレクトショップ開業</span>
+      </div>
+      <div class="history-item">
+        <span class="history-year">2007</span>
+        <span class="history-text">東京進出。2年で年商2億円達成</span>
+      </div>
+      <div class="history-item">
+        <span class="history-year">2010</span>
+        <span class="history-text">白金台に「ファッションスタイリストジャパン」設立</span>
+      </div>
+      <div class="history-item">
+        <span class="history-year">2019</span>
+        <span class="history-text">株式会社リフレイムに改名</span>
+      </div>
+      <div class="history-item">
+        <span class="history-year">2024</span>
+        <span class="history-text">南青山に完全紹介制割烹「やまとこ」オープン</span>
+      </div>
+      <div class="history-item">
+        <span class="history-year">2025</span>
+        <span class="history-text">赤坂見附に「GENTLE MIND CLUB」設立</span>
+      </div>
+    </div>
+  </section>
+
+
+  <footer>
+    © 株式会社リフレイム / Reframe Inc.
+  </footer>
+
+</body>
+</html>
