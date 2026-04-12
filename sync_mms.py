@@ -15,15 +15,18 @@ import uuid
 import requests
 from pathlib import Path
 from datetime import datetime, timedelta, timezone
+from dotenv import load_dotenv
 
 try:
     from zoneinfo import ZoneInfo
 except ImportError:  # Python < 3.9 では未使用想定
     ZoneInfo = None
 
+load_dotenv(Path(__file__).parent / '.env')
+
 # Firebase設定
-FB_PROJECT = 'task-78c9f'
-FB_KEY = 'AIzaSyDALc9hialR10cqtv7vNOOisk6yLO4-sXc'
+FB_PROJECT = os.environ['FIREBASE_PROJECT']
+FB_KEY = os.environ['FIREBASE_API_KEY']
 FB_URL = f'https://firestore.googleapis.com/v1/projects/{FB_PROJECT}/databases/(default)/documents/mms/main'
 
 BASE_DIR = Path(__file__).parent
