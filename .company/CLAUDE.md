@@ -13,11 +13,15 @@
 ```
 .company/
 ├── CLAUDE.md
-└── secretary/
+├── secretary/
+│   ├── CLAUDE.md
+│   ├── inbox/
+│   ├── todos/
+│   └── notes/
+└── marketing/
     ├── CLAUDE.md
-    ├── inbox/
-    ├── todos/
-    └── notes/
+    ├── content-plan/
+    └── campaigns/
 ```
 
 ## 他フォルダとの役割分担
@@ -35,6 +39,7 @@
 | 部署 | フォルダ | 役割 |
 |------|---------|------|
 | 秘書室 | secretary | 窓口・相談役。TODO管理、壁打ち、メモ。常設。 |
+| マーケティング | marketing | 集客施策・売上分析・コンテンツ企画・HP改善。スタクロ主軸。 |
 
 ## 部署への振り分け（`/company` 単体参照用・詳細は根 `CLAUDE.md`）
 

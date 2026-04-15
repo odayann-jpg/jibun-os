@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Stylist Closet — Pattern C: White Gallery</title>
+  <title>Stylist Closet — Brand Vintage & Buy-Back | 吉祥寺</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -16,17 +16,17 @@
     ============================================= */
     :root {
       --bg:       #FFFFFF;
-      --bg-warm:  #FAFAF9;   /* わずかにウォームな白 */
+      --bg-warm:  #FAFAF9;
       --ink:      #111111;
-      --accent:   #C2714F;   /* テラコッタ（彩度を抑えた橙） */
-      --muted:    #888888;
+      --accent:   #C2714F;
+      --muted:    #5C5C5C;
       --surface:  #F5F5F4;
       --rule:     #E5E5E4;
 
       --font-display: 'Cormorant Garamond', 'YuMincho', serif;
       --font-body:    'Noto Sans JP', sans-serif;
 
-      --radius: 0px;   /* このパターンは完全シャープ — ギャラリー的 */
+      --radius: 0px;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -35,8 +35,8 @@
       background: var(--bg);
       color: var(--ink);
       font-family: var(--font-body);
-      font-weight: 300;
-      line-height: 1.7;
+      font-weight: 400;
+      line-height: 1.8;
       -webkit-font-smoothing: antialiased;
     }
     img { display: block; width: 100%; object-fit: cover; }
@@ -44,27 +44,27 @@
 
     .t-label {
       font-family: var(--font-body);
-      font-size: 0.6875rem;
-      letter-spacing: 0.2em;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--muted);
     }
     .t-heading {
       font-family: var(--font-display);
       font-weight: 400;
-      font-size: clamp(1.75rem, 3.5vw, 2.75rem);
-      line-height: 1.2;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      line-height: 1.25;
     }
     .t-sub {
       font-family: var(--font-display);
       font-style: italic;
-      font-size: clamp(1rem, 1.8vw, 1.2rem);
+      font-size: clamp(1.0625rem, 1.8vw, 1.25rem);
       color: var(--muted);
     }
     .t-body {
-      font-size: 0.9375rem;
-      line-height: 1.85;
-      font-weight: 300;
+      font-size: 1rem;
+      line-height: 1.9;
+      font-weight: 400;
     }
 
     .container {
@@ -75,7 +75,7 @@
     hr.rule { width: 100%; height: 1px; background: var(--rule); border: none; }
 
     /* =============================================
-       NAV — 細い水平ライン構造
+       NAV
     ============================================= */
     .nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
@@ -131,6 +131,10 @@
       transition: color 0.2s, background 0.2s;
     }
     .nav__links a:hover { color: var(--ink); background: var(--surface); }
+    .nav__links a.nav__link--accent {
+      color: var(--accent);
+    }
+    .nav__links a.nav__link--accent:hover { color: var(--ink); }
     .nav__cta-wrap {
       display: flex;
       align-items: center;
@@ -140,18 +144,17 @@
     .nav__cta {
       display: inline-block;
       padding: 0.5rem 1.25rem;
-      background: var(--ink);
+      background: var(--accent);
       color: var(--bg);
       font-size: 0.625rem;
       letter-spacing: 0.16em;
       text-transform: uppercase;
       transition: opacity 0.2s;
     }
-    .nav__cta:hover { opacity: 0.75; }
+    .nav__cta:hover { opacity: 0.8; }
 
     /* =============================================
-       HERO — フルスクリーン分割 + 左大型テキスト
-       このパターンの個性: ノイズのない白 × テキストの強さ
+       HERO
     ============================================= */
     .hero {
       min-height: 100svh;
@@ -177,8 +180,7 @@
       margin-bottom: 2.5rem;
     }
     .hero__cat-dot {
-      width: 6px;
-      height: 6px;
+      width: 6px; height: 6px;
       border-radius: 50%;
       background: var(--accent);
       flex-shrink: 0;
@@ -225,6 +227,8 @@
       font-size: 0.9375rem;
       font-weight: 400;
     }
+    .hero__meta-cell--accent .hero__meta-key { color: var(--accent); }
+    .hero__meta-cell--accent .hero__meta-val { color: var(--accent); }
 
     .hero__right {
       display: flex;
@@ -241,14 +245,11 @@
     }
     .hero__image-main::before {
       content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        repeating-linear-gradient(
-          45deg,
-          transparent, transparent 60px,
-          rgba(194, 113, 79, 0.03) 60px, rgba(194, 113, 79, 0.03) 61px
-        );
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        45deg, transparent, transparent 60px,
+        rgba(194, 113, 79, 0.03) 60px, rgba(194, 113, 79, 0.03) 61px
+      );
     }
     .hero__image-sub {
       height: 160px;
@@ -277,6 +278,9 @@
       white-space: nowrap;
     }
     .btn-primary:hover { opacity: 0.75; }
+    .btn-primary--accent {
+      background: var(--accent);
+    }
     .btn-text {
       display: inline-flex;
       align-items: center;
@@ -291,8 +295,7 @@
     .btn-text::after {
       content: '';
       display: block;
-      width: 24px;
-      height: 1px;
+      width: 24px; height: 1px;
       background: currentColor;
       transition: width 0.3s;
     }
@@ -307,6 +310,10 @@
       padding: 0.3rem 0.65rem;
       border: 1px solid var(--rule);
       color: var(--muted);
+    }
+    .tag--accent {
+      border-color: var(--accent);
+      color: var(--accent);
     }
 
     .placeholder-label {
@@ -329,7 +336,6 @@
       gap: 6rem;
       align-items: start;
     }
-    .manifesto__left {}
     .manifesto__label-line {
       display: flex;
       align-items: center;
@@ -352,10 +358,9 @@
       line-height: 1.4;
     }
     .manifesto__heading em { font-style: italic; color: var(--accent); }
-    .manifesto__right {}
     .manifesto__body {
-      font-size: 0.9375rem;
-      line-height: 1.9;
+      font-size: 1rem;
+      line-height: 1.95;
       color: var(--muted);
       margin-bottom: 2rem;
     }
@@ -384,6 +389,287 @@
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--muted);
+    }
+
+    /* =============================================
+       買取フィーチャー（KAITORI FEATURE）
+    ============================================= */
+    .kaitori-feature {
+      background: var(--ink);
+      padding: 8rem 0;
+    }
+    .kaitori-feature__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .kaitori-feature__left {
+      background: var(--ink);
+      padding: clamp(2.5rem, 5vw, 5rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2rem;
+    }
+    .kaitori-feature__label {
+      font-size: 0.625rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .kaitori-feature__heading {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      line-height: 1.3;
+      color: #fff;
+    }
+    .kaitori-feature__heading em {
+      display: block;
+      font-style: italic;
+      color: var(--accent);
+    }
+    .kaitori-feature__body {
+      font-size: 0.9375rem;
+      line-height: 1.95;
+      color: rgba(255,255,255,0.6);
+      max-width: 38ch;
+    }
+    .kaitori-feature__badges {
+      display: flex;
+      gap: 0.625rem;
+      flex-wrap: wrap;
+    }
+    .kaitori-badge {
+      font-size: 0.5625rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.875rem;
+      border: 1px solid rgba(194,113,79,0.4);
+      color: rgba(194,113,79,0.8);
+    }
+    .kaitori-feature__cta {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.6875rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      transition: opacity 0.2s;
+      align-self: flex-start;
+    }
+    .kaitori-feature__cta:hover { opacity: 0.85; }
+    .kaitori-feature__right {
+      background: #1A1210;
+      padding: clamp(2.5rem, 5vw, 5rem);
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    .kaitori-feature__right-title {
+      font-size: 0.625rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+    }
+
+    /* 買取の流れ */
+    .kaitori-steps {
+      padding: 8rem 0;
+      background: var(--bg);
+    }
+    .kaitori-steps__header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 4rem;
+      gap: 2rem;
+    }
+    .kaitori-steps__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+    }
+    .step-card {
+      background: var(--bg);
+      padding: 3rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      position: relative;
+    }
+    .step-card::after {
+      content: '→';
+      position: absolute;
+      right: -0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.875rem;
+      color: var(--accent);
+      z-index: 1;
+    }
+    .step-card:last-child::after { display: none; }
+    .step-card__num {
+      font-family: var(--font-display);
+      font-size: 4rem;
+      font-weight: 300;
+      line-height: 1;
+      color: var(--rule);
+    }
+    .step-card__title {
+      font-family: var(--font-display);
+      font-size: 1.375rem;
+      font-weight: 400;
+    }
+    .step-card__en {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 0.8125rem;
+      color: var(--accent);
+    }
+    .step-card__body {
+      font-size: 0.9375rem;
+      line-height: 1.9;
+      color: var(--muted);
+      border-top: 1px solid var(--rule);
+      padding-top: 1rem;
+      margin-top: auto;
+    }
+    .step-card__badge {
+      display: inline-block;
+      font-size: 0.5625rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.75rem;
+      background: var(--surface);
+      color: var(--accent);
+      border: 1px solid var(--rule);
+      margin-top: 0.5rem;
+      align-self: flex-start;
+    }
+
+    /* 買取対象カテゴリ */
+    .kaitori-categories {
+      background: var(--bg-warm);
+      padding: 8rem 0;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+    }
+    .kaitori-categories__header { margin-bottom: 3rem; }
+    .kaitori-categories__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+    }
+    .cat-card {
+      background: var(--bg);
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      transition: background 0.2s;
+    }
+    .cat-card:hover { background: var(--bg-warm); }
+    .cat-card__icon {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .cat-card__title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 400;
+    }
+    .cat-card__en {
+      font-size: 0.5625rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .cat-card__items {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.375rem;
+      margin-top: 0.5rem;
+    }
+    .cat-card__items li {
+      font-size: 0.9rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .cat-card__items li::before {
+      content: '';
+      display: block;
+      width: 8px; height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    .kaitori-categories__note {
+      margin-top: 1.5rem;
+      font-size: 0.8125rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* =============================================
+       安心の理由（REASONS）
+    ============================================= */
+    .reasons {
+      padding: 8rem 0;
+      background: var(--bg);
+    }
+    .reasons__header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 4rem;
+      gap: 2rem;
+    }
+    .reasons__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+    }
+    .reason-card {
+      background: var(--bg);
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .reason-card__num {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 300;
+      color: var(--rule);
+      line-height: 1;
+    }
+    .reason-card__title {
+      font-family: var(--font-display);
+      font-size: 1.125rem;
+      font-weight: 400;
+      line-height: 1.4;
+    }
+    .reason-card__body {
+      font-size: 0.9375rem;
+      line-height: 1.9;
+      color: var(--muted);
+      border-top: 1px solid var(--rule);
+      padding-top: 0.875rem;
+      margin-top: 0.25rem;
     }
 
     /* =============================================
@@ -434,14 +720,13 @@
       display: flex;
       align-items: flex-start;
       gap: 0.75rem;
-      font-size: 0.875rem;
-      line-height: 1.6;
+      font-size: 0.9375rem;
+      line-height: 1.75;
     }
     .floor-card__list li::before {
       content: '';
       display: block;
-      width: 12px;
-      height: 1px;
+      width: 12px; height: 1px;
       background: var(--accent);
       margin-top: 0.6em;
       flex-shrink: 0;
@@ -483,6 +768,22 @@
       transition: background 0.2s;
     }
     .service-item:hover { background: var(--bg-warm); }
+    .service-item--featured {
+      background: var(--surface);
+      border: 2px solid var(--accent);
+      position: relative;
+    }
+    .service-item--featured::before {
+      content: '買取強化中';
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.5rem;
+      letter-spacing: 0.12em;
+      padding: 0.3rem 0.6rem;
+    }
     .service-item__num {
       font-family: var(--font-display);
       font-size: 0.8125rem;
@@ -502,16 +803,91 @@
       color: var(--muted);
     }
     .service-item__body {
-      font-size: 0.8125rem;
-      line-height: 1.85;
+      font-size: 0.9375rem;
+      line-height: 1.9;
       color: var(--muted);
       padding-top: 0.75rem;
       border-top: 1px solid var(--rule);
       margin-top: auto;
     }
+    .service-item__detail {
+      display: flex;
+      flex-direction: column;
+      gap: 0.375rem;
+      margin-top: 0.75rem;
+    }
+    .service-item__detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 0.75rem;
+      padding: 0.25rem 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .service-item__detail-key { color: var(--muted); font-size: 0.625rem; letter-spacing: 0.1em; }
+    .service-item__detail-val { font-family: var(--font-display); }
 
     /* =============================================
-       BRANDS — テラコッタで締めた暗めのセクション
+       買取強化ブランド（KAITORI BRANDS）
+    ============================================= */
+    .kaitori-brands {
+      background: var(--bg-warm);
+      padding: 6rem 0;
+      border-top: 1px solid var(--rule);
+    }
+    .kaitori-brands__header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 3rem;
+      gap: 2rem;
+    }
+    .kaitori-brands__inner {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    .brand-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .brand-row__label {
+      font-size: 0.5625rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    .brand-row__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .brand-tag {
+      font-family: var(--font-display);
+      font-size: 0.9375rem;
+      padding: 0.4rem 1rem;
+      border: 1px solid var(--rule);
+      color: var(--ink);
+      background: var(--bg);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .brand-tag:hover { border-color: var(--accent); color: var(--accent); }
+    .brand-tag--hot {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(194,113,79,0.04);
+    }
+    .kaitori-brands__note {
+      margin-top: 1.5rem;
+      font-size: 0.8125rem;
+      color: var(--muted);
+    }
+
+    /* =============================================
+       BRANDS（販売取扱）
     ============================================= */
     .brands {
       background: #1C1614;
@@ -549,6 +925,108 @@
     .brands__note { margin-top: 1.5rem; font-size: 0.8125rem; color: rgba(255,255,255,0.2); letter-spacing: 0.06em; }
 
     /* =============================================
+       FAQ
+    ============================================= */
+    .faq {
+      padding: 8rem 0;
+      background: var(--bg);
+      border-top: 1px solid var(--rule);
+    }
+    .faq__header { margin-bottom: 4rem; }
+    .faq__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+    }
+    .faq-item {
+      background: var(--bg);
+      padding: 2.5rem 2rem;
+    }
+    .faq-item__q {
+      font-family: var(--font-display);
+      font-size: 1.125rem;
+      font-weight: 400;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+      display: flex;
+      gap: 0.75rem;
+    }
+    .faq-item__q::before {
+      content: 'Q.';
+      color: var(--accent);
+      font-style: italic;
+      flex-shrink: 0;
+    }
+    .faq-item__a {
+      font-size: 0.9375rem;
+      line-height: 1.9;
+      color: var(--muted);
+      padding-left: 1.75rem;
+    }
+
+    /* =============================================
+       買取CTA（KAITORI CALL TO ACTION）
+    ============================================= */
+    .kaitori-cta {
+      background: var(--accent);
+      padding: 6rem 0;
+    }
+    .kaitori-cta__inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 4rem;
+    }
+    .kaitori-cta__heading {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      font-weight: 300;
+      line-height: 1.3;
+      color: #fff;
+    }
+    .kaitori-cta__heading em {
+      font-style: italic;
+    }
+    .kaitori-cta__sub {
+      font-size: 0.9375rem;
+      color: rgba(255,255,255,0.75);
+      margin-top: 0.75rem;
+      line-height: 1.85;
+    }
+    .kaitori-cta__buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      align-items: flex-start;
+    }
+    .btn-cta-white {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      background: #fff;
+      color: var(--accent);
+      font-size: 0.6875rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      transition: opacity 0.2s;
+      white-space: nowrap;
+    }
+    .btn-cta-white:hover { opacity: 0.9; }
+    .btn-cta-outline {
+      display: inline-block;
+      padding: 0.875rem 2.5rem;
+      border: 1px solid rgba(255,255,255,0.5);
+      color: rgba(255,255,255,0.8);
+      font-size: 0.6875rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      transition: border-color 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+    .btn-cta-outline:hover { border-color: #fff; color: #fff; }
+
+    /* =============================================
        COORDINATION
     ============================================= */
     .coordination { padding: 8rem 0; }
@@ -569,11 +1047,9 @@
     }
     .coordination__img::before {
       content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        repeating-linear-gradient(0deg, transparent, transparent 60px,
-          rgba(194, 113, 79, 0.04) 60px, rgba(194, 113, 79, 0.04) 61px);
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 60px,
+        rgba(194, 113, 79, 0.04) 60px, rgba(194, 113, 79, 0.04) 61px);
     }
     .coordination__content {
       background: var(--bg);
@@ -640,6 +1116,7 @@
     .news-item:hover { background: var(--surface); }
     .news-item__date { font-family: var(--font-display); font-size: 0.8125rem; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
     .news-item__tag { font-size: 0.5625rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 0.2rem 0.5rem; border: 1px solid var(--rule); color: var(--muted); white-space: nowrap; flex-shrink: 0; }
+    .news-item__tag--accent { border-color: var(--accent); color: var(--accent); }
     .news-item__title { font-size: 0.875rem; }
 
     /* =============================================
@@ -663,16 +1140,24 @@
     /* =============================================
        RESPONSIVE
     ============================================= */
-    @media (max-width: 960px) {
+      @media (max-width: 960px) {
       .hero__body { grid-template-columns: 1fr; }
       .hero__right { order: -1; }
       .hero__image-sub { height: auto; padding: 1.5rem; flex-wrap: wrap; }
       .manifesto__inner { grid-template-columns: 1fr; gap: 3rem; }
       .manifesto__number { display: none; }
+      .kaitori-feature__inner { grid-template-columns: 1fr; }
+      .kaitori-steps__grid { grid-template-columns: 1fr; }
+      .step-card::after { display: none; }
+      .kaitori-categories__grid { grid-template-columns: repeat(2, 1fr); }
+      .reasons__grid { grid-template-columns: repeat(2, 1fr); }
+      .brands__grid { grid-template-columns: repeat(2, 1fr); }
       .services__grid { grid-template-columns: 1fr; }
       .floors__grid { grid-template-columns: 1fr; }
       .coordination__inner { grid-template-columns: 1fr; }
       .brands__grid { grid-template-columns: repeat(2, 1fr); }
+      .faq__grid { grid-template-columns: 1fr; }
+      .kaitori-cta__inner { grid-template-columns: 1fr; }
       .access__inner { grid-template-columns: 1fr; }
       .footer__top { grid-template-columns: 1fr; }
     }
@@ -681,6 +1166,8 @@
       .nav__cta-wrap { display: none; }
       .manifesto__stat-row { grid-template-columns: 1fr; }
       .services__header { flex-direction: column; align-items: flex-start; }
+      .kaitori-categories__grid { grid-template-columns: repeat(2, 1fr); }
+      .reasons__grid { grid-template-columns: 1fr; }
       .footer__bottom { flex-direction: column; align-items: flex-start; gap: 1rem; }
     }
 
@@ -701,6 +1188,7 @@
           <span class="nav__logo-ja">スタイリストクローゼット · 吉祥寺</span>
         </div>
         <ul class="nav__links">
+          <li><a href="#kaitori" class="nav__link--accent">買取</a></li>
           <li><a href="#services">Services</a></li>
           <li><a href="#floors">Floor</a></li>
           <li><a href="#brands">Brands</a></li>
@@ -708,19 +1196,20 @@
           <li><a href="#access">Access</a></li>
         </ul>
         <div class="nav__cta-wrap">
-          <a href="#coordination" class="nav__cta">買取・予約</a>
+          <a href="#kaitori" class="nav__cta">無料査定・持込</a>
         </div>
       </div>
     </nav>
   </header>
 
 
+  <!-- HERO -->
   <section class="hero">
     <div class="hero__body">
       <div class="hero__left">
         <div class="hero__category">
           <span class="hero__cat-dot"></span>
-          <span class="hero__cat-text">吉祥寺 — Brand Vintage Shop</span>
+          <span class="hero__cat-text">吉祥寺 — Men's &amp; Ladies Brand Vintage &amp; Buy-Back</span>
         </div>
         <h1 class="hero__title">
           Wear<br />
@@ -728,13 +1217,13 @@
           <span class="hero__title-accent">Matters.</span>
         </h1>
         <div class="hero__meta">
-          <div class="hero__meta-cell">
-            <div class="hero__meta-key">1F</div>
-            <div class="hero__meta-val">買取 · Ladies · Kids</div>
+          <div class="hero__meta-cell hero__meta-cell--accent">
+            <div class="hero__meta-key">買取</div>
+            <div class="hero__meta-val">予約不要 · 当日OK</div>
           </div>
           <div class="hero__meta-cell">
-            <div class="hero__meta-key">2F</div>
-            <div class="hero__meta-val">Studio · Coordinate</div>
+            <div class="hero__meta-key">対象</div>
+            <div class="hero__meta-val">メンズ · レディース · キッズ</div>
           </div>
           <div class="hero__meta-cell">
             <div class="hero__meta-key">Hours</div>
@@ -749,19 +1238,15 @@
 
       <div class="hero__right">
         <div class="hero__image-main">
-          <!--
-            ★ 推奨写真: 明るい自然光が差し込む店内。
-            白壁 × 上質な素材の服。ギャラリーのような空気感。
-          -->
           <span class="placeholder-label">Photo<br />Store Interior</span>
         </div>
         <div class="hero__image-sub">
           <div class="hero__cta-row">
-            <a href="#floors" class="btn-primary">Floor Guide</a>
+            <a href="#kaitori" class="btn-primary btn-primary--accent">ブランド品を売る</a>
             <a href="#coordination" class="btn-text">コーディネート</a>
           </div>
           <div class="hero__tags">
-            <span class="tag">Buy &amp; Sell</span>
+            <span class="tag tag--accent">買取強化中</span>
             <span class="tag">Vintage</span>
             <span class="tag">Styling</span>
           </div>
@@ -771,6 +1256,7 @@
   </section>
 
 
+  <!-- MANIFESTO -->
   <section class="manifesto" id="about">
     <div class="container">
       <div class="manifesto__inner reveal">
@@ -814,6 +1300,233 @@
 
   <hr class="rule" />
 
+
+  <!-- 買取フィーチャー -->
+  <section class="kaitori-feature" id="kaitori">
+    <div class="container">
+      <div class="kaitori-feature__inner reveal">
+        <div class="kaitori-feature__left">
+          <p class="kaitori-feature__label">Brand Buy-Back</p>
+          <h2 class="kaitori-feature__heading">
+            クローゼットに眠る<br />ブランド品を、<br />
+            <em>スタイリストが<br />正直に査定します。</em>
+          </h2>
+          <p class="kaitori-feature__body">
+            私たちはブランド品の価値をわかる目を持っています。だから、相場に誠実な金額を出せる。メンズ・レディース・キッズ問わず、スタイリストが1点1点丁寧に査定します。納得いただけなければ買取不要です。
+          </p>
+          <div class="kaitori-feature__badges">
+            <span class="kaitori-badge">予約不要</span>
+            <span class="kaitori-badge">当日お支払い</span>
+            <span class="kaitori-badge">査定料無料</span>
+            <span class="kaitori-badge">キャンセルOK</span>
+            <span class="kaitori-badge">メンズ歓迎</span>
+          </div>
+          <a href="#kaitori-steps" class="kaitori-feature__cta">買取の流れを見る</a>
+        </div>
+        <div class="kaitori-feature__right">
+          <p class="kaitori-feature__right-title">Buy-Back Counter · 1F</p>
+          <!-- 買取実績サンプル -->
+          <div style="display:flex;flex-direction:column;gap:1px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.06);">
+            <div style="background:#1F1614;padding:1.25rem 1.5rem;display:flex;justify-content:space-between;align-items:baseline;">
+              <span style="font-family:var(--font-display);color:rgba(255,255,255,0.7);font-size:0.9375rem;">HERMÈS スカーフ</span>
+              <span style="font-family:var(--font-display);color:var(--accent);font-size:1.125rem;">¥28,000</span>
+            </div>
+            <div style="background:#1F1614;padding:1.25rem 1.5rem;display:flex;justify-content:space-between;align-items:baseline;">
+              <span style="font-family:var(--font-display);color:rgba(255,255,255,0.7);font-size:0.9375rem;">CHANEL ジャケット</span>
+              <span style="font-family:var(--font-display);color:var(--accent);font-size:1.125rem;">¥85,000</span>
+            </div>
+            <div style="background:#1F1614;padding:1.25rem 1.5rem;display:flex;justify-content:space-between;align-items:baseline;">
+              <span style="font-family:var(--font-display);color:rgba(255,255,255,0.7);font-size:0.9375rem;">Maison Margiela ブーツ</span>
+              <span style="font-family:var(--font-display);color:var(--accent);font-size:1.125rem;">¥32,000</span>
+            </div>
+            <div style="background:#1F1614;padding:1.25rem 1.5rem;display:flex;justify-content:space-between;align-items:baseline;">
+              <span style="font-family:var(--font-display);color:rgba(255,255,255,0.7);font-size:0.9375rem;">LOEWE バッグ</span>
+              <span style="font-family:var(--font-display);color:var(--accent);font-size:1.125rem;">¥62,000</span>
+            </div>
+            <div style="background:#1F1614;padding:1.25rem 1.5rem;display:flex;justify-content:space-between;align-items:baseline;">
+              <span style="font-family:var(--font-display);color:rgba(255,255,255,0.7);font-size:0.9375rem;">Yohji Yamamoto コート</span>
+              <span style="font-family:var(--font-display);color:var(--accent);font-size:1.125rem;">¥41,000</span>
+            </div>
+          </div>
+          <p style="font-size:0.625rem;letter-spacing:0.1em;color:rgba(255,255,255,0.18);margin-top:0.75rem;">※ 掲載金額は参考実績です。状態・相場により変動します。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 買取の流れ -->
+  <section class="kaitori-steps" id="kaitori-steps">
+    <div class="container">
+      <div class="kaitori-steps__header reveal">
+        <div>
+          <p class="t-label" style="margin-bottom:0.5rem;">How It Works</p>
+          <h2 class="t-heading">買取の流れ</h2>
+        </div>
+        <p class="t-sub">たった3ステップ。その日に完了します。</p>
+      </div>
+      <div class="kaitori-steps__grid reveal">
+        <div class="step-card">
+          <div class="step-card__num">01</div>
+          <h3 class="step-card__title">ご来店 · 持ち込み</h3>
+          <span class="step-card__en">Walk-In</span>
+          <p class="step-card__body">お売りになりたいアイテムをそのままお持ちください。事前予約は不要。袋に入ったままでも大丈夫です。</p>
+          <span class="step-card__badge">予約不要 · 当日OK</span>
+        </div>
+        <div class="step-card">
+          <div class="step-card__num">02</div>
+          <h3 class="step-card__title">スタイリスト査定</h3>
+          <span class="step-card__en">Expert Appraisal</span>
+          <p class="step-card__body">ブランドの知識を持つスタイリストが1点1点を丁寧に確認。金額の根拠を必ずご説明します。査定のみでもOK。</p>
+          <span class="step-card__badge">査定料 · 無料</span>
+        </div>
+        <div class="step-card">
+          <div class="step-card__num">03</div>
+          <h3 class="step-card__title">その場でお支払い</h3>
+          <span class="step-card__en">Same-Day Payment</span>
+          <p class="step-card__body">金額にご納得いただけたら、その場で現金またはお振込にてお支払い。納得いただけなければ買取不要です。</p>
+          <span class="step-card__badge">当日現金 or 振込</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 買取対象カテゴリ -->
+  <section class="kaitori-categories">
+    <div class="container">
+      <div class="kaitori-categories__header reveal">
+        <p class="t-label" style="margin-bottom:0.5rem;">What We Buy</p>
+        <h2 class="t-heading">買取対象</h2>
+      </div>
+      <div class="kaitori-categories__grid reveal">
+        <div class="cat-card">
+          <div class="cat-card__icon">◈</div>
+          <h3 class="cat-card__title">メンズウェア</h3>
+          <p class="cat-card__en">Men's Clothing</p>
+          <ul class="cat-card__items">
+            <li>ジャケット · スーツ · コート</li>
+            <li>ニット · カットソー</li>
+            <li>パンツ · デニム</li>
+            <li>シャツ · ブルゾン</li>
+            <li>スウェット · Tシャツ</li>
+          </ul>
+        </div>
+        <div class="cat-card">
+          <div class="cat-card__icon">◈</div>
+          <h3 class="cat-card__title">レディースウェア</h3>
+          <p class="cat-card__en">Ladies Clothing</p>
+          <ul class="cat-card__items">
+            <li>ジャケット · コート</li>
+            <li>ワンピース · スカート</li>
+            <li>ニット · カーディガン</li>
+            <li>パンツ · デニム</li>
+            <li>ブラウス · シャツ</li>
+          </ul>
+        </div>
+        <div class="cat-card">
+          <div class="cat-card__icon">◈</div>
+          <h3 class="cat-card__title">バッグ · 財布</h3>
+          <p class="cat-card__en">Bags &amp; Wallets</p>
+          <ul class="cat-card__items">
+            <li>ハンドバッグ · トート</li>
+            <li>ショルダーバッグ</li>
+            <li>クラッチ · ポーチ</li>
+            <li>長財布 · コンパクト財布</li>
+            <li>カードケース · 小物</li>
+          </ul>
+        </div>
+        <div class="cat-card">
+          <div class="cat-card__icon">◈</div>
+          <h3 class="cat-card__title">アクセサリー</h3>
+          <p class="cat-card__en">Accessories &amp; Jewellery</p>
+          <ul class="cat-card__items">
+            <li>ネックレス · ブレスレット</li>
+            <li>ピアス · イヤリング</li>
+            <li>スカーフ · ストール</li>
+            <li>ベルト · 帽子</li>
+            <li>サングラス · 時計</li>
+          </ul>
+        </div>
+        <div class="cat-card">
+          <div class="cat-card__icon">◈</div>
+          <h3 class="cat-card__title">シューズ</h3>
+          <p class="cat-card__en">Shoes</p>
+          <ul class="cat-card__items">
+            <li>パンプス · ヒール</li>
+            <li>ブーツ · ショートブーツ</li>
+            <li>スニーカー</li>
+            <li>ローファー · フラット</li>
+            <li>サンダル</li>
+          </ul>
+        </div>
+        <div class="cat-card">
+          <div class="cat-card__icon">◈</div>
+          <h3 class="cat-card__title">キッズウェア</h3>
+          <p class="cat-card__en">Kids Clothing</p>
+          <ul class="cat-card__items">
+            <li>トップス · ボトムス</li>
+            <li>アウター · コート</li>
+            <li>ワンピース · セットアップ</li>
+            <li>ブランドキッズ全般</li>
+          </ul>
+        </div>
+        <div class="cat-card">
+          <div class="cat-card__icon">◈</div>
+          <h3 class="cat-card__title">その他</h3>
+          <p class="cat-card__en">Others</p>
+          <ul class="cat-card__items">
+            <li>ストール · マフラー</li>
+            <li>グローブ · 手袋</li>
+            <li>帽子 · ハット</li>
+            <li>まずはご相談ください</li>
+          </ul>
+        </div>
+      </div>
+      <p class="kaitori-categories__note reveal">※ ノーブランド・ファストファッション（ZARA / H&amp;M など）はお取り扱いしておりません。ご不明な場合はお気軽にご相談ください。</p>
+    </div>
+  </section>
+
+
+  <!-- 安心の理由 -->
+  <section class="reasons">
+    <div class="container">
+      <div class="reasons__header reveal">
+        <div>
+          <p class="t-label" style="margin-bottom:0.5rem;">Why Choose Us</p>
+          <h2 class="t-heading">スタクロの査定が選ばれる理由</h2>
+        </div>
+        <p class="t-sub">スタイリスト目線だから、わかる価値がある。</p>
+      </div>
+      <div class="reasons__grid reveal">
+        <div class="reason-card">
+          <div class="reason-card__num">01</div>
+          <h3 class="reason-card__title">スタイリストが<br />1点1点査定</h3>
+          <p class="reason-card__body">バイヤーではなく、ブランド・素材・コンディションを熟知したスタイリストが査定します。服の価値を本当にわかる目で見極めます。</p>
+        </div>
+        <div class="reason-card">
+          <div class="reason-card__num">02</div>
+          <h3 class="reason-card__title">予約不要·<br />当日査定OK</h3>
+          <p class="reason-card__body">思い立ったらそのままご来店いただけます。1Fの買取カウンターにお声がけください。混雑時は少しお待ちいただく場合があります。</p>
+        </div>
+        <div class="reason-card">
+          <div class="reason-card__num">03</div>
+          <h3 class="reason-card__title">価格の根拠を<br />必ずご説明</h3>
+          <p class="reason-card__body">「なぜこの金額か」を正直にお伝えします。相場・状態・ブランド需要を踏まえた、誠実な価格提示を徹底しています。</p>
+        </div>
+        <div class="reason-card">
+          <div class="reason-card__num">04</div>
+          <h3 class="reason-card__title">買取後も<br />スタイル相談OK</h3>
+          <p class="reason-card__body">売った後の「次の着こなし」もご相談いただけます。クローゼットの整理から新しいスタイルの提案まで、ワンストップで対応します。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+
+  <!-- FLOORS -->
   <section class="floors" id="floors">
     <div class="container">
       <div class="floors__header reveal">
@@ -823,15 +1536,16 @@
       <div class="floors__grid reveal">
         <div class="floor-card">
           <div class="floor-card__floor">1F</div>
-          <h3 class="floor-card__title">Shop Floor</h3>
-          <p class="floor-card__sub">Buy &amp; Sell · Ladies · Kids</p>
+          <h3 class="floor-card__title">Shop &amp; Buy-Back Floor</h3>
+          <p class="floor-card__sub">Buy-Back Counter · Men's · Ladies · Kids</p>
           <ul class="floor-card__list">
+            <li>買取カウンター（予約不要・当日査定）</li>
+            <li>ブランド古着 メンズ</li>
             <li>ブランド古着 レディース</li>
             <li>ブランド古着 キッズ</li>
-            <li>買取カウンター（予約不要）</li>
             <li>セレクトアクセサリー</li>
           </ul>
-          <div class="floor-card__img"><span class="placeholder-label">Photo · 1F Shop</span></div>
+          <div class="floor-card__img"><span class="placeholder-label">Photo · 1F Shop &amp; Buy-Back</span></div>
         </div>
         <div class="floor-card">
           <div class="floor-card__floor">2F</div>
@@ -849,6 +1563,8 @@
     </div>
   </section>
 
+
+  <!-- SERVICES -->
   <section class="services" id="services">
     <div class="container">
       <div class="services__header reveal">
@@ -865,22 +1581,104 @@
           <span class="service-item__en">Brand Vintage Sales</span>
           <p class="service-item__body">厳選されたミドル〜ハイブランドのヴィンテージ・ユーズドウェアを常時展開。レディースを中心に、キッズラインも充実。</p>
         </div>
-        <div class="service-item">
+        <div class="service-item service-item--featured">
           <span class="service-item__num">02</span>
           <h3 class="service-item__title">ブランド品<br />買取</h3>
           <span class="service-item__en">Brand Buy-Back</span>
-          <p class="service-item__body">大切にしてきたブランド品を、適切な査定と誠実な価格で。予約不要・当日査定対応。</p>
+          <p class="service-item__body">スタイリストの目で、あなたのブランド品を適正価格で買取します。メンズ・レディース・キッズ対応。予約不要・当日査定・当日お支払い。</p>
+          <div class="service-item__detail">
+            <div class="service-item__detail-row">
+              <span class="service-item__detail-key">予約</span>
+              <span class="service-item__detail-val">不要</span>
+            </div>
+            <div class="service-item__detail-row">
+              <span class="service-item__detail-key">査定料</span>
+              <span class="service-item__detail-val">無料</span>
+            </div>
+            <div class="service-item__detail-row">
+              <span class="service-item__detail-key">お支払い</span>
+              <span class="service-item__detail-val">当日 · 現金 / 振込</span>
+            </div>
+          </div>
         </div>
         <div class="service-item">
           <span class="service-item__num">03</span>
           <h3 class="service-item__title">スタイリング<br />コーディネート</h3>
           <span class="service-item__en">Personal Styling</span>
-          <p class="service-item__body">プロのスタイリストがあなたに合った着こなしを提案。古着の楽しさを最大化します。</p>
+          <p class="service-item__body">プロのスタイリストがあなたに合った着こなしを提案。古着の楽しさを最大化します。2F要予約。</p>
         </div>
       </div>
     </div>
   </section>
 
+
+  <!-- 買取強化ブランド -->
+  <section class="kaitori-brands">
+    <div class="container">
+      <div class="kaitori-brands__header reveal">
+        <div>
+          <p class="t-label" style="margin-bottom:0.5rem;">Currently Boosting</p>
+          <h2 class="t-heading">買取強化中ブランド</h2>
+        </div>
+        <p class="t-sub">今特に積極的に買取しています。</p>
+      </div>
+      <div class="kaitori-brands__inner reveal">
+        <div class="brand-row">
+          <p class="brand-row__label">Luxury &amp; Maison</p>
+          <div class="brand-row__tags">
+            <span class="brand-tag brand-tag--hot">HERMÈS</span>
+            <span class="brand-tag brand-tag--hot">CHANEL</span>
+            <span class="brand-tag brand-tag--hot">Louis Vuitton</span>
+            <span class="brand-tag">LOEWE</span>
+            <span class="brand-tag">CELINE</span>
+            <span class="brand-tag">BALENCIAGA</span>
+            <span class="brand-tag">BOTTEGA VENETA</span>
+          </div>
+        </div>
+        <div class="brand-row">
+          <p class="brand-row__label">Japanese Designer</p>
+          <div class="brand-row__tags">
+            <span class="brand-tag brand-tag--hot">COMME des GARÇONS</span>
+            <span class="brand-tag brand-tag--hot">Yohji Yamamoto</span>
+            <span class="brand-tag">ISSEY MIYAKE</span>
+            <span class="brand-tag">Sacai</span>
+            <span class="brand-tag">UNDERCOVER</span>
+            <span class="brand-tag">N.HOOLYWOOD</span>
+            <span class="brand-tag">COMOLI</span>
+            <span class="brand-tag">AURALEE</span>
+          </div>
+        </div>
+        <div class="brand-row">
+          <p class="brand-row__label">International Designer</p>
+          <div class="brand-row__tags">
+            <span class="brand-tag brand-tag--hot">Maison Margiela</span>
+            <span class="brand-tag">MARNI</span>
+            <span class="brand-tag">Acne Studios</span>
+            <span class="brand-tag">Isabel Marant</span>
+            <span class="brand-tag">THE ROW</span>
+            <span class="brand-tag">Totême</span>
+          </div>
+        </div>
+        <div class="brand-row">
+          <p class="brand-row__label">Men's Streetwear &amp; Others</p>
+          <div class="brand-row__tags">
+            <span class="brand-tag brand-tag--hot">Supreme</span>
+            <span class="brand-tag brand-tag--hot">STONE ISLAND</span>
+            <span class="brand-tag">RALPH LAUREN</span>
+            <span class="brand-tag">THE NORTH FACE</span>
+            <span class="brand-tag">WTAPS</span>
+            <span class="brand-tag">visvim</span>
+            <span class="brand-tag">Vivienne Westwood</span>
+            <span class="brand-tag">and more...</span>
+          </div>
+        </div>
+      </div>
+      <p class="kaitori-brands__note reveal">※ 掲載外のブランドもお気軽にご相談ください。取扱可否をその場でご確認します。</p>
+    </div>
+  </section>
+
+
+  <!-- 取扱ブランド（販売） -->
   <section class="brands" id="brands">
     <div class="container">
       <div class="brands__header reveal">
@@ -913,6 +1711,68 @@
     </div>
   </section>
 
+
+  <!-- FAQ -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="faq__header reveal">
+        <p class="t-label" style="margin-bottom:0.5rem;">FAQ</p>
+        <h2 class="t-heading">よくある質問</h2>
+      </div>
+      <div class="faq__grid reveal">
+        <div class="faq-item">
+          <p class="faq-item__q">予約は必要ですか？</p>
+          <p class="faq-item__a">不要です。営業時間内（11:00〜19:00）にそのままお越しください。アイテムをお持ちいただき、1Fの買取カウンターにお声がけください。混雑時は少しお待ちいただく場合があります。</p>
+        </div>
+        <div class="faq-item">
+          <p class="faq-item__q">査定だけでも来店できますか？</p>
+          <p class="faq-item__a">もちろんです。「売るかどうか迷っている」という段階でも歓迎します。査定金額をお伝えしたうえで、売るかどうかはお客様にご判断いただけます。キャンセル料もかかりません。</p>
+        </div>
+        <div class="faq-item">
+          <p class="faq-item__q">状態が悪いものでも買取できますか？</p>
+          <p class="faq-item__a">状態によりますが、汚れ・傷・使用感があるものでも査定いたします。状態に応じた価格をご提示しますので、まずはお持ちください。判断はスタイリストが丁寧に行います。</p>
+        </div>
+        <div class="faq-item">
+          <p class="faq-item__q">査定金額はその場でわかりますか？</p>
+          <p class="faq-item__a">はい、基本的にその場でお伝えします。ブランドの希少性や相場状況によってお時間をいただく場合もありますが、原則当日中にご回答いたします。</p>
+        </div>
+        <div class="faq-item">
+          <p class="faq-item__q">お支払いはいつですか？</p>
+          <p class="faq-item__a">査定金額にご納得いただいた当日にお支払いいたします。現金またはお振込（銀行振込）からお選びいただけます。</p>
+        </div>
+        <div class="faq-item">
+          <p class="faq-item__q">ノーブランドや古着全般も買取できますか？</p>
+          <p class="faq-item__a">申し訳ありませんが、ノーブランドやZARA・H&amp;Mなどのファストファッションはお取り扱いしておりません。ブランド品・ブランド古着を専門としています。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 買取CTA -->
+  <section class="kaitori-cta">
+    <div class="container">
+      <div class="kaitori-cta__inner reveal">
+        <div>
+          <h2 class="kaitori-cta__heading">
+            まず、持ってきてみてください。<br />
+            <em>査定は無料、予約も不要です。</em>
+          </h2>
+          <p class="kaitori-cta__sub">
+            クローゼットの整理でも、1点だけでも、大歓迎です。<br />
+            スタイリストが誠実に向き合います。
+          </p>
+        </div>
+        <div class="kaitori-cta__buttons">
+          <a href="#access" class="btn-cta-white">アクセス · 営業時間</a>
+          <a href="#faq" class="btn-cta-outline">よくある質問</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- COORDINATION -->
   <section class="coordination" id="coordination">
     <div class="container">
       <div class="coordination__inner reveal">
@@ -933,11 +1793,14 @@
     </div>
   </section>
 
+
+  <!-- NEWS -->
   <section class="news-strip">
     <div class="container">
       <div class="news-strip__inner reveal">
         <div class="news-strip__label">News</div>
         <ul class="news-strip__list">
+          <li class="news-item"><time class="news-item__date">2026.04.07</time><span class="news-item__tag news-item__tag--accent">買取強化</span><span class="news-item__title">ハイブランド・ジャパニーズデザイナー買取強化中 — 査定料無料・当日OK</span></li>
           <li class="news-item"><time class="news-item__date">2026.04.01</time><span class="news-item__tag">New Arrival</span><span class="news-item__title">春夏コレクション入荷 — Acne Studios, Isabel Marant ほか</span></li>
           <li class="news-item"><time class="news-item__date">2026.03.15</time><span class="news-item__tag">Event</span><span class="news-item__title">パーソナルスタイリング体験イベントを開催しました</span></li>
           <li class="news-item"><time class="news-item__date">2026.03.01</time><span class="news-item__tag">Info</span><span class="news-item__title">フォトスタジオのレンタル受付を開始しました</span></li>
@@ -946,6 +1809,8 @@
     </div>
   </section>
 
+
+  <!-- ACCESS -->
   <section class="access" id="access">
     <div class="container">
       <div class="reveal">
@@ -954,7 +1819,7 @@
       </div>
       <div class="access__inner reveal">
         <div class="access__map">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3240.4876767786527!2d139.57898!3d35.703057!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018eea7b53b5a3b%3A0x1!2z5ZCJ5a6H5bqX44Km44Kz44O844K654K5!5e0!3m2!1sja!2sjp!4v1234567890" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="地図"></iframe>
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3240.4876767786527!2d139.57898!3d35.703057!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018eea7b53b5a3b%3A0x1!2z5ZCJ5a6H5bqX44Wb44Kz44O844K654K5!5e0!3m2!1sja!2sjp!4v1234567890" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="地図"></iframe>
         </div>
         <div class="access__info">
           <div class="info-block"><p class="info-block__label t-label">Address</p><p class="info-block__text">〒180-0004 東京都武蔵野市吉祥寺本町 ●-●-●</p></div>
@@ -967,24 +1832,28 @@
               <tr><td>土・日・祝</td><td>11:00 – 19:00</td></tr>
             </table>
           </div>
+          <div class="info-block"><p class="info-block__label t-label">Buy-Back</p><p class="info-block__text">予約不要 · 当日査定 · 1F買取カウンターへ</p></div>
           <div class="info-block"><p class="info-block__label t-label">Contact</p><p class="info-block__text">Tel: 0●●-●●●●-●●●●<br />Instagram: @stylistcloset_kichijoji</p></div>
         </div>
       </div>
     </div>
   </section>
 
+
+  <!-- FOOTER -->
   <footer class="footer">
     <div class="container">
       <div class="footer__top">
         <div>
           <div class="footer__logo-en">Stylist Closet</div>
           <div class="footer__logo-ja">スタイリストクローゼット</div>
-          <p class="footer__tagline">吉祥寺のブランド古着専門店。<br />売る・買う・纏う——すべてをここで。</p>
+          <p class="footer__tagline">吉祥寺のブランド古着専門店。<br />メンズ・レディース・キッズ。<br />売る・買う・纏う——すべてをここで。</p>
         </div>
         <div>
           <p class="footer__nav-title">Menu</p>
           <ul class="footer__nav-list">
             <li><a href="#about">About</a></li>
+            <li><a href="#kaitori">買取</a></li>
             <li><a href="#services">Services</a></li>
             <li><a href="#floors">Floor Guide</a></li>
             <li><a href="#brands">Brands</a></li>
@@ -994,8 +1863,9 @@
         <div>
           <p class="footer__nav-title">Info</p>
           <ul class="footer__nav-list">
-            <li><a href="#access">Access</a></li>
-            <li><a href="#">買取ガイド</a></li>
+            <li><a href="#access">Access &amp; Hours</a></li>
+            <li><a href="#kaitori">買取ガイド</a></li>
+            <li><a href="#faq">よくある質問</a></li>
             <li><a href="#">Photo Studio</a></li>
             <li><a href="#">Instagram</a></li>
             <li><a href="#">Privacy Policy</a></li>

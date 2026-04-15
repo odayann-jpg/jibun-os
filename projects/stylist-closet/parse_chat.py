@@ -108,7 +108,7 @@ def parse_report_block(text, year='2026'):
         buy_text = buy_section.group()
         if 'なし' not in buy_text:
             items_match = re.search(r'(\d+)点', buy_text)
-            groups_match = re.search(r'(\d+)組', buy_text)
+            groups_match = re.search(r'(\d+)[組客]', buy_text)
             amount_match = re.search(r'¥([\d,]+)', buy_text)
             if items_match:
                 buy_items = int(items_match.group(1))

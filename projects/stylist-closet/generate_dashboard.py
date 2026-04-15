@@ -37,6 +37,17 @@ def calc_month_summary(month_key, month_data, fixed_costs_base):
     total_net_items = sum(d.get('net_items', 0) for d in days.values())
     total_store_items = sum(d.get('store_items', 0) for d in days.values())
     total_items = total_net_items + total_store_items
+
+    # 月末サマリーのみの月（日次合計=0）は monthly_cumulative から補完
+    last_day_key = max(days.keys(), key=lambda x: int(x)) if days else None
+    if last_day_key:
+        cum = days[last_day_key].get('monthly_cumulative', {})
+        if cum.get('total_sales', 0) > total_sales:
+            total_sales = cum['total_sales']
+            total_net_sales = cum.get('net_sales', total_net_sales)
+            total_store_sales = cum.get('store_sales', total_store_sales)
+            total_net_items = cum.get('net_items', total_net_items)
+            total_items = total_net_items + total_store_items
     total_buy_count = sum(d.get('buy_count', 0) for d in days.values())
     total_buy_items = sum(d.get('buy_items', 0) for d in days.values())
     total_purchase_amount = sum(d.get('purchase_amount', 0) for d in days.values())
@@ -239,6 +250,7 @@ def generate_html(data):
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{store_name} 経営ダッシュボード</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
 :root {{
   --bg: #f4f6f9;
@@ -276,7 +288,7 @@ a {{ color: var(--accent); text-decoration: none; }}
 .tab-nav button:hover:not(.active) {{ color: var(--text); }}
 
 /* Main */
-.main {{ padding: 24px; max-width: 1400px; margin: 0 auto; }}
+.main {{ padding: 16px 20px; max-width: 1400px; margin: 0 auto; }}
 
 /* Cards */
 .cards {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 24px; }}
@@ -294,17 +306,17 @@ a {{ color: var(--accent); text-decoration: none; }}
 .progress-bar .fill.over {{ background: var(--green); }}
 
 /* Grid layouts */
-.grid-2 {{ display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }}
-.grid-3 {{ display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 24px; }}
+.grid-2 {{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }}
+.grid-3 {{ display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }}
 @media (max-width: 900px) {{
   .grid-2, .grid-3 {{ grid-template-columns: 1fr; }}
   .cards {{ grid-template-columns: repeat(2, 1fr); }}
 }}
 
 /* Chart panels */
-.panel {{ background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }}
-.panel h3 {{ font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 16px; letter-spacing: 0.08em; text-transform: uppercase; border-bottom: 1px solid var(--border); padding-bottom: 10px; }}
-.chart-wrap {{ position: relative; }}
+.panel {{ background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }}
+.panel h3 {{ font-size: 11px; font-weight: 600; color: var(--text2); margin-bottom: 10px; letter-spacing: 0.08em; text-transform: uppercase; border-bottom: 1px solid var(--border); padding-bottom: 8px; }}
+.chart-wrap {{ position: relative; max-height: 180px; }}
 
 /* Table */
 table {{ width: 100%; border-collapse: collapse; }}
@@ -383,7 +395,7 @@ tbody tr:hover {{ background: #fafafa; }}
   <div class="grid-2">
     <div class="panel">
       <h3>日次売上推移</h3>
-      <div class="chart-wrap"><canvas id="chart-daily-sales" height="220"></canvas></div>
+      <div class="chart-wrap"><canvas id="chart-daily-sales" height="160"></canvas></div>
     </div>
     <div class="panel">
       <h3>週次サマリー</h3>
@@ -393,7 +405,7 @@ tbody tr:hover {{ background: #fafafa; }}
   <div class="grid-2">
     <div class="panel">
       <h3>売上チャネル内訳</h3>
-      <div class="chart-wrap"><canvas id="chart-channel" height="200"></canvas></div>
+      <div class="chart-wrap"><canvas id="chart-channel" height="150"></canvas></div>
     </div>
     <div class="panel">
       <h3>KPI サマリー</h3>
@@ -426,7 +438,7 @@ tbody tr:hover {{ background: #fafafa; }}
 <div id="tab-comparison" class="tab-content">
   <div class="panel" style="margin-bottom:16px">
     <h3>月次売上推移</h3>
-    <div class="chart-wrap"><canvas id="chart-monthly-sales" height="200"></canvas></div>
+    <div class="chart-wrap"><canvas id="chart-monthly-sales" height="150"></canvas></div>
   </div>
   <div class="panel" style="margin-bottom:16px">
     <h3>月次比較テーブル</h3>
@@ -435,11 +447,11 @@ tbody tr:hover {{ background: #fafafa; }}
   <div class="grid-2">
     <div class="panel">
       <h3>粗利率推移</h3>
-      <div class="chart-wrap"><canvas id="chart-margin" height="200"></canvas></div>
+      <div class="chart-wrap"><canvas id="chart-margin" height="150"></canvas></div>
     </div>
     <div class="panel">
       <h3>1点単価・日販平均</h3>
-      <div class="chart-wrap"><canvas id="chart-unit-price" height="200"></canvas></div>
+      <div class="chart-wrap"><canvas id="chart-unit-price" height="150"></canvas></div>
     </div>
   </div>
 </div>
@@ -449,11 +461,11 @@ tbody tr:hover {{ background: #fafafa; }}
   <div id="purchase-cards" class="cards" style="margin-bottom:24px"></div>
   <div class="panel" style="margin-bottom:16px">
     <h3>日次 買取件数 ＆ 買取金額</h3>
-    <div class="chart-wrap"><canvas id="chart-buy-combined" height="220"></canvas></div>
+    <div class="chart-wrap"><canvas id="chart-buy-combined" height="160"></canvas></div>
   </div>
   <div class="panel">
     <h3>月次 買取推移</h3>
-    <div class="chart-wrap"><canvas id="chart-monthly-purchase" height="200"></canvas></div>
+    <div class="chart-wrap"><canvas id="chart-monthly-purchase" height="150"></canvas></div>
   </div>
 </div>
 
@@ -463,11 +475,11 @@ tbody tr:hover {{ background: #fafafa; }}
   <div class="grid-2">
     <div class="panel">
       <h3>スタッフ別 月間出品数累計</h3>
-      <div class="chart-wrap"><canvas id="chart-staff-monthly" height="220"></canvas></div>
+      <div class="chart-wrap"><canvas id="chart-staff-monthly" height="160"></canvas></div>
     </div>
     <div class="panel">
       <h3>日次 出品数</h3>
-      <div class="chart-wrap"><canvas id="chart-staff-daily" height="220"></canvas></div>
+      <div class="chart-wrap"><canvas id="chart-staff-daily" height="160"></canvas></div>
     </div>
   </div>
 </div>
@@ -482,6 +494,8 @@ const SC_STAFF_COLORS = ['#1e3a5f', '#2563a8', '#1a6b45', '#5b4fcf', '#c0392b'];
 // ============ STATE ============
 let currentMonthIdx = SC_MONTHS.length - 1;
 let charts = {{}};
+Chart.register(ChartDataLabels);
+Chart.defaults.set('plugins.datalabels', {{ display: false }});
 
 // ============ INIT ============
 function init() {{
@@ -603,18 +617,29 @@ function renderSummary(m, idx) {{
   const labels = sortedDays.map(d => m.days[d].weekday ? `${{d}}(${{m.days[d].weekday}})` : d);
   const netData = sortedDays.map(d => m.days[d].net_sales || 0);
   const storeData = sortedDays.map(d => m.days[d].store_sales || 0);
+  const totalData = sortedDays.map((d, i) => (netData[i] || 0) + (storeData[i] || 0));
   charts['daily-sales'] = new Chart(document.getElementById('chart-daily-sales'), {{
     type: 'bar',
     data: {{
       labels,
       datasets: [
-        {{ label: 'ネット', data: netData, backgroundColor: 'rgba(30,58,95,0.8)', stack: 'a' }},
-        {{ label: '店頭', data: storeData, backgroundColor: 'rgba(37,99,168,0.55)', stack: 'a' }},
+        {{ label: 'ネット', data: netData, backgroundColor: 'rgba(30,58,95,0.8)', stack: 'a',
+           datalabels: {{ display: false }} }},
+        {{ label: '店頭', data: storeData, backgroundColor: 'rgba(37,99,168,0.55)', stack: 'a',
+           datalabels: {{
+             display: ctx => totalData[ctx.dataIndex] > 0,
+             anchor: 'end', align: 'end',
+             formatter: (v, ctx) => totalData[ctx.dataIndex] > 0 ? '¥' + Math.round(totalData[ctx.dataIndex]/10000*10)/10 + '万' : '',
+             color: '#444', font: {{ size: 10, weight: '600' }}
+           }} }},
       ]
     }},
     options: {{
       responsive: true,
-      plugins: {{ legend: {{ labels: {{ color: '#999', font: {{ size: 11 }} }} }} }},
+      plugins: {{
+        legend: {{ labels: {{ color: '#999', font: {{ size: 11 }} }} }},
+        datalabels: {{ display: false }}
+      }},
       scales: {{
         x: {{ stacked: true, ticks: {{ color: '#888', font: {{ size: 10 }} }}, grid: {{ color: '#ebebeb' }} }},
         y: {{ stacked: true, ticks: {{ color: '#666', font: {{ size: 10 }}, callback: v => '¥' + (v/10000).toFixed(0) + '万' }}, grid: {{ color: '#ebebeb' }} }}
@@ -848,13 +873,19 @@ function renderComparison() {{
     data: {{
       labels,
       datasets: [
-        {{ label: '売上', data: salesData, backgroundColor: 'rgba(30,58,95,0.8)', yAxisID: 'y' }},
-        {{ label: '粗利', data: grossData, backgroundColor: 'rgba(26,107,69,0.65)', yAxisID: 'y' }},
+        {{ label: '売上', data: salesData, backgroundColor: 'rgba(30,58,95,0.8)', yAxisID: 'y',
+           datalabels: {{ anchor: 'end', align: 'end', formatter: v => v > 0 ? '¥' + Math.round(v/10000*10)/10 + '万' : '', color: '#1e3a5f', font: {{ size: 11, weight: '700' }} }} }},
+        {{ label: '粗利', data: grossData, backgroundColor: 'rgba(26,107,69,0.65)', yAxisID: 'y',
+           datalabels: {{ display: false }} }},
       ]
     }},
     options: {{
       responsive: true,
-      plugins: {{ legend: {{ labels: {{ color: '#555' }} }} }},
+      layout: {{ padding: {{ top: 24 }} }},
+      plugins: {{
+        legend: {{ labels: {{ color: '#555' }} }},
+        datalabels: {{ display: true }}
+      }},
       scales: {{
         x: {{ ticks: {{ color: '#888' }}, grid: {{ color: '#ebebeb' }} }},
         y: {{ ticks: {{ color: '#666', callback: v => '¥' + (v/10000).toFixed(0) + '万' }}, grid: {{ color: '#ebebeb' }} }}

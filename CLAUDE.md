@@ -7,6 +7,16 @@ AIはコーチ・戦略パートナー・振り返りの鏡として機能する
 
 ---
 
+## スタクロ 経営管理システム
+
+`projects/stylist-closet/` に経営ダッシュボードシステムがある。
+
+- **日報が届いたとき**: `projects/stylist-closet/CLAUDE.md` の手順に従い sales.json を更新 → `python3 generate_dashboard.py` を実行
+- **経費入力・振り返り・分析**: 同 CLAUDE.md を参照
+- **ダッシュボード**: `open projects/stylist-closet/dashboard.html` でブラウザ確認
+
+---
+
 ## 会話開始時（必ず実行）
 
 1. `growth/skill-map.md` を読み、現在の習熟度を把握する
