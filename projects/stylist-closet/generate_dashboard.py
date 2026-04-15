@@ -1091,27 +1091,48 @@ function renderPL(m) {{
     }}
   }});
 
-  // ── 月次 P/L 詳細（当月） ──
+  // ── 月次 P/L 詳細（当月）A〜E構造 ──
   const el = document.getElementById('pl-table-wrap');
+  const planOpex = mp.opex || {{}};
+  const catLabels = {{
+    'A_人件費': 'A. 人件費',
+    'B_家賃・施設費': 'B. 家賃・施設費',
+    'C_通信・システム費': 'C. 通信・システム費',
+    'D_販売促進費': 'D. 販売促進費',
+    'E_一般管理費': 'E. 一般管理費'
+  }};
+  const opexRows = Object.entries(catLabels).map(([key, label]) => {{
+    const cat = planOpex[key] || {{}};
+    const items = cat.items || {{}};
+    const catTotal = cat.total || 0;
+    const itemRows = Object.entries(items)
+      .filter(([,v]) => v > 0)
+      .map(([k,v]) => `<tr><td class="indent" style="padding-left:32px;color:var(--text2)">${{k}}</td><td>${{yen(v)}}</td><td>—</td><td></td></tr>`)
+      .join('');
+    return `
+      <tr style="background:#f5f7fa"><td class="indent" style="font-weight:600;color:#1e3a5f">${{label}}</td><td>${{yen(catTotal)}}</td><td>—</td><td style="color:var(--text2)">${{pct(actualSales>0?catTotal/actualSales*100:0)}}</td></tr>
+      ${{itemRows}}`;
+  }}).join('');
+  const planOpexTotal = Object.values(planOpex).reduce((s,c)=>s+(c.total||0),0);
   el.innerHTML = `
     <table style="font-size:12px">
-      <thead><tr><th style="text-align:left">項目</th><th>実績</th><th>計画</th><th>比率</th></tr></thead>
+      <thead><tr><th style="text-align:left">項目</th><th>計画</th><th>実績</th><th>比率</th></tr></thead>
       <tbody>
         <tr class="section-header"><td colspan="4">I. 売上高</td></tr>
-        <tr><td class="indent">ネット売上</td><td>${{yen(actualNet)}}</td><td>${{yen(mp.net_sales||0)}}</td><td>${{pct(actualSales>0?actualNet/actualSales*100:0)}}</td></tr>
-        <tr><td class="indent">店頭売上</td><td>${{yen(actualStore)}}</td><td>${{yen(mp.store_sales||0)}}</td><td>${{pct(actualSales>0?actualStore/actualSales*100:0)}}</td></tr>
-        <tr class="total-row"><td>売上合計</td><td>${{yen(actualSales)}}</td><td>${{yen(planSales)}}</td><td>100%</td></tr>
+        <tr><td class="indent">ネット売上</td><td>${{yen(mp.net_sales||0)}}</td><td>${{yen(actualNet)}}</td><td>${{pct(actualSales>0?actualNet/actualSales*100:0)}}</td></tr>
+        <tr><td class="indent">店頭売上</td><td>${{yen(mp.store_sales||0)}}</td><td>${{yen(actualStore)}}</td><td>${{pct(actualSales>0?actualStore/actualSales*100:0)}}</td></tr>
+        <tr class="total-row"><td>純売上高</td><td>${{yen(planSales)}}</td><td>${{yen(actualSales)}}</td><td>100%</td></tr>
         <tr class="section-header"><td colspan="4">II. 売上原価</td></tr>
-        <tr><td class="indent">買取金額</td><td>${{yen(actualCogs)}}</td><td>${{yen(mp.cogs||0)}}</td><td>${{pct(actualSales>0?actualCogs/actualSales*100:0)}}</td></tr>
-        <tr class="total-row"><td>粗利益</td><td style="color:var(--green)">${{yen(actualGross)}}</td><td style="color:var(--green)">${{yen(planGross)}}</td><td style="color:var(--green)">${{pct(actualGrossRate)}}</td></tr>
-        <tr class="section-header"><td colspan="4">III. 販管費</td></tr>
-        ${{Object.entries(fixedCosts).map(([k,v])=>`<tr><td class="indent">${{k}}</td><td>${{yen(v)}}</td><td>—</td><td style="color:var(--text2)">${{pct(actualSales>0?v/actualSales*100:0)}}</td></tr>`).join('')}}
-        ${{varExpenses>0?`<tr><td class="indent">変動費</td><td>${{yen(varExpenses)}}</td><td>—</td><td></td></tr>`:''}}
-        <tr class="total-row"><td>販管費合計</td><td>${{yen(fixedTotal+varExpenses)}}</td><td>${{yen(mp.opex_total||0)}}</td><td>${{pct(actualSales>0?(fixedTotal+varExpenses)/actualSales*100:0)}}</td></tr>
-        <tr class="total-row" style="font-size:14px">
-          <td>営業利益</td>
-          <td style="color:${{actualOpProfit>=0?'var(--green)':'var(--red)'}}">${{yen(actualOpProfit)}}</td>
+        <tr><td class="indent">当月買取仕入高</td><td>${{yen(mp.cogs||0)}}</td><td>${{yen(actualCogs)}}</td><td>${{pct(actualSales>0?actualCogs/actualSales*100:0)}}</td></tr>
+        <tr class="total-row"><td>★ 売上総利益（粗利）</td><td style="color:var(--green)">${{yen(planGross)}}</td><td style="color:var(--green)">${{yen(actualGross)}}</td><td style="color:var(--green)">${{pct(actualGrossRate)}}</td></tr>
+        <tr class="section-header"><td colspan="4">III. 販管費（A〜E）</td></tr>
+        ${{opexRows}}
+        ${{varExpenses>0?`<tr><td class="indent" style="font-weight:600">その他経費（実績）</td><td>—</td><td>${{yen(varExpenses)}}</td><td></td></tr>`:''}}
+        <tr class="total-row"><td>★ 販管費合計</td><td>${{yen(planOpexTotal||mp.opex_total||0)}}</td><td>${{yen(fixedTotal+varExpenses)}}</td><td>${{pct(actualSales>0?(fixedTotal+varExpenses)/actualSales*100:0)}}</td></tr>
+        <tr class="total-row" style="font-size:14px;border-top:3px solid var(--accent)">
+          <td>★ 営業利益</td>
           <td style="color:${{planOpProfit>=0?'var(--green)':'var(--red)'}}">${{yen(planOpProfit)}}</td>
+          <td style="color:${{actualOpProfit>=0?'var(--green)':'var(--red)'}}">${{yen(actualOpProfit)}}</td>
           <td style="color:${{actualOpProfit>=0?'var(--green)':'var(--red)'}}">${{pct(actualOpMargin)}}</td>
         </tr>
       </tbody>
