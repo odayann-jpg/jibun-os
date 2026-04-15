@@ -59,13 +59,19 @@ def sync_visits(target_month=None, dry_run=False):
             if date not in by_date:
                 by_date[date] = {
                     'total': 0, 'success': 0, 'fail': 0,
-                    'no_result': 0, 'buy_amount': 0
+                    'no_result': 0, 'buy_amount': 0,
+                    'new_count': 0, 'repeat_count': 0
                 }
             by_date[date]['total'] += 1
             result = v.get('result', '')
+            success_reasons = v.get('successReasons', []) or []
             if result == '成立':
                 by_date[date]['success'] += 1
                 by_date[date]['buy_amount'] += v.get('buyAmount', 0) or 0
+                if '新規' in success_reasons:
+                    by_date[date]['new_count'] += 1
+                if 'リピート' in success_reasons:
+                    by_date[date]['repeat_count'] += 1
             elif result == '不成立':
                 by_date[date]['fail'] += 1
             else:
@@ -97,10 +103,14 @@ def sync_visits(target_month=None, dry_run=False):
         day['buy_count'] = stats['success']
         day['buy_fail_count'] = stats['fail']
         day['buy_visitors'] = stats['total']
+        day['buy_new_count'] = stats['new_count']
+        day['buy_repeat_count'] = stats['repeat_count']
         if stats['buy_amount'] > 0:
             day['purchase_amount'] = stats['buy_amount']
 
-        print(f"  ✓ {date_str}: 来客{stats['total']} 成約{stats['success']} 失注{stats['fail']} ¥{stats['buy_amount']:,}")
+        nr = f" 新規{stats['new_count']}" if stats['new_count'] else ""
+        rp = f" リピート{stats['repeat_count']}" if stats['repeat_count'] else ""
+        print(f"  ✓ {date_str}: 来客{stats['total']} 成約{stats['success']} 失注{stats['fail']}{nr}{rp} ¥{stats['buy_amount']:,}")
         updated += 1
 
     if dry_run:

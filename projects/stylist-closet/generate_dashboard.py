@@ -50,6 +50,8 @@ def calc_month_summary(month_key, month_data, fixed_costs_base):
             total_items = total_net_items + total_store_items
     total_buy_count = sum(d.get('buy_count', 0) for d in days.values())
     total_buy_items = sum(d.get('buy_items', 0) for d in days.values())
+    total_buy_fail = sum(d.get('buy_fail_count', 0) for d in days.values())
+    total_buy_visitors = sum(d.get('buy_visitors', 0) for d in days.values())
     total_purchase_amount = sum(d.get('purchase_amount', 0) for d in days.values())
     total_shiire_amount = sum(d.get('shiire_amount', 0) for d in days.values())
     total_shiire_items = sum(d.get('shiire_items', 0) for d in days.values())
@@ -81,6 +83,12 @@ def calc_month_summary(month_key, month_data, fixed_costs_base):
     cogs = total_purchase_amount
     gross_profit = total_sales - cogs
     gross_profit_rate = gross_profit / total_sales * 100 if total_sales > 0 else 0
+    # 仕入率 = 買取金額 ÷ 売上
+    shiire_rate = total_purchase_amount / total_sales * 100 if total_sales > 0 else 0
+
+    # 新規・リピート集計
+    total_new_count = sum(d.get('buy_new_count', 0) for d in days.values())
+    total_repeat_count = sum(d.get('buy_repeat_count', 0) for d in days.values())
     operating_expenses = variable_expenses + fixed_total
     operating_profit = gross_profit - operating_expenses
     operating_margin = operating_profit / total_sales * 100 if total_sales > 0 else 0
@@ -96,6 +104,21 @@ def calc_month_summary(month_key, month_data, fixed_costs_base):
         if cum.get('staff_listings'):
             staff_listings = cum['staff_listings']
             break
+
+    # 月間出品数合計（累計から取得、なければ日次合計）
+    total_listings = sum(staff_listings.values()) if staff_listings else sum(
+        (d.get('staff', {}).get('菊池', {}).get('listings', 0) or 0) +
+        (d.get('staff', {}).get('島野', {}).get('listings', 0) or 0)
+        for d in days.values()
+    )
+
+    # 出品数月末予測（進行中の月のみ）
+    listings_forecast = 0
+    listings_target = 600  # 月目標出品数
+    if is_current_month and today.day > 0 and total_listings > 0:
+        listing_daily_avg = total_listings / today.day
+        listings_forecast = round(total_listings + listing_daily_avg * remaining)
+    listings_rate = round(listings_forecast / listings_target * 100, 1) if listings_target > 0 and listings_forecast > 0 else 0
 
     # 週次集計
     year, month = month_key.split('-')
@@ -124,6 +147,8 @@ def calc_month_summary(month_key, month_data, fixed_costs_base):
         'total_items': total_items,
         'total_buy_count': total_buy_count,
         'total_buy_items': total_buy_items,
+        'total_buy_fail': total_buy_fail,
+        'total_buy_visitors': total_buy_visitors,
         'total_purchase_amount': total_purchase_amount,
         'total_shiire_amount': total_shiire_amount,
         'total_shiire_items': total_shiire_items,
@@ -138,6 +163,9 @@ def calc_month_summary(month_key, month_data, fixed_costs_base):
         'cogs': cogs,
         'gross_profit': gross_profit,
         'gross_profit_rate': round(gross_profit_rate, 1),
+        'shiire_rate': round(shiire_rate, 1),
+        'total_new_count': total_new_count,
+        'total_repeat_count': total_repeat_count,
         'fixed_total': fixed_total,
         'variable_expenses': variable_expenses,
         'operating_expenses': operating_expenses,
@@ -148,6 +176,10 @@ def calc_month_summary(month_key, month_data, fixed_costs_base):
         'fixed_costs_detail': fixed,
         'variable_expenses_detail': expenses,
         'staff_listings': staff_listings,
+        'total_listings': total_listings,
+        'listings_forecast': listings_forecast,
+        'listings_target': listings_target,
+        'listings_rate': listings_rate,
         'weekly_totals': weekly_totals,
         'days': days
     }
@@ -187,12 +219,17 @@ def generate_html(data):
             'total_items': s['total_items'],
             'buy_count': s['total_buy_count'],
             'buy_items': s['total_buy_items'],
+            'buy_fail': s['total_buy_fail'],
+            'buy_visitors': s['total_buy_visitors'],
             'purchase_amount': s['total_purchase_amount'],
             'shiire_amount': s['total_shiire_amount'],
             'forecast': s['forecast'],
             'days_in_month': s['days_in_month'],
             'gross_profit': s['gross_profit'],
             'gross_profit_rate': s['gross_profit_rate'],
+            'shiire_rate': s['shiire_rate'],
+            'new_count': s['total_new_count'],
+            'repeat_count': s['total_repeat_count'],
             'operating_profit': s['operating_profit'],
             'operating_margin': s['operating_margin'],
             'avg_item_price': s['avg_item_price'],
@@ -200,6 +237,10 @@ def generate_html(data):
             'target_sales': s['target_sales'],
             'achievement_rate': s['achievement_rate'],
             'staff_listings': s['staff_listings'],
+            'total_listings': s['total_listings'],
+            'listings_forecast': s['listings_forecast'],
+            'listings_target': s['listings_target'],
+            'listings_rate': s['listings_rate'],
             'weekly_totals': s['weekly_totals'],
             'days': {
                 k: {
@@ -209,6 +250,10 @@ def generate_html(data):
                     'net_items': v.get('net_items', 0),
                     'buy_count': v.get('buy_count', 0),
                     'buy_items': v.get('buy_items', 0),
+                    'buy_fail_count': v.get('buy_fail_count', 0),
+                    'buy_visitors': v.get('buy_visitors', 0),
+                    'buy_new_count': v.get('buy_new_count', 0),
+                    'buy_repeat_count': v.get('buy_repeat_count', 0),
                     'purchase_amount': v.get('purchase_amount', 0),
                     'shiire_amount': v.get('shiire_amount', 0),
                     'shiire_items': v.get('shiire_items', 0),
@@ -242,6 +287,14 @@ def generate_html(data):
     year, month = latest_month_key.split('-') if latest_month_key else ('2026', '04')
     latest_label = f'{int(year)}年{int(month)}月'
     last_updated = data['meta']['last_updated']
+
+    # 在庫データ読み込み
+    inventory_file = os.path.join(SCRIPT_DIR, 'data', 'inventory.json')
+    inventory_js = 'null'
+    if os.path.exists(inventory_file):
+        with open(inventory_file, 'r', encoding='utf-8') as f:
+            inv = json.load(f)
+        inventory_js = json.dumps(inv, ensure_ascii=False)
 
     html = f"""<!DOCTYPE html>
 <html lang="ja">
@@ -379,6 +432,7 @@ tbody tr:hover {{ background: #fafafa; }}
   <button onclick="showTab('comparison')">📈 月比較</button>
   <button onclick="showTab('purchase')">🛍 買取分析</button>
   <button onclick="showTab('staff')">👥 スタッフ</button>
+  <button onclick="showTab('inventory')">📦 在庫</button>
 </div>
 
 <div class="main">
@@ -484,11 +538,36 @@ tbody tr:hover {{ background: #fafafa; }}
   </div>
 </div>
 
+<!-- ========== 在庫 ========== -->
+<div id="tab-inventory" class="tab-content">
+  <div id="inventory-updated" style="font-size:13px;color:var(--text2);margin-bottom:8px"></div>
+  <div id="inventory-cards" class="cards" style="margin-bottom:24px"></div>
+  <div class="grid-2">
+    <div class="panel">
+      <h3>価格帯別 在庫分布</h3>
+      <div class="chart-wrap"><canvas id="chart-inv-price" height="160"></canvas></div>
+    </div>
+    <div class="panel">
+      <h3>ブランド別 在庫金額 TOP10</h3>
+      <div class="chart-wrap"><canvas id="chart-inv-brand" height="160"></canvas></div>
+    </div>
+  </div>
+  <div class="panel" style="margin-top:16px">
+    <h3>低単価在庫（¥2,000以下）— 業者まとめ売り候補</h3>
+    <div id="low-price-note" style="color:var(--text2);font-size:13px;margin-bottom:12px"></div>
+    <table class="data-table" id="low-price-table">
+      <thead><tr><th>商品名</th><th>ブランド</th><th>販売価格</th><th>原価</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
 </div><!-- /main -->
 
 <script>
 // ============ DATA ============
 const SC_MONTHS = {months_js};
+const SC_INVENTORY = {inventory_js};
 const SC_STAFF_COLORS = ['#1e3a5f', '#2563a8', '#1a6b45', '#5b4fcf', '#c0392b'];
 
 // ============ STATE ============
@@ -559,11 +638,16 @@ function renderSummary(m, idx) {{
 
   // サマリーカード
   const totalSales = Object.values(m.days).reduce((s, d) => s + (d.total_sales || 0), 0);
+  const netSales = Object.values(m.days).reduce((s, d) => s + (d.net_sales || 0), 0);
+  const storeSales = Object.values(m.days).reduce((s, d) => s + (d.store_sales || 0), 0);
   const netItems = Object.values(m.days).reduce((s, d) => s + (d.net_items || 0), 0);
   const storeItems = Object.values(m.days).reduce((s, d) => s + (d.store_items || 0), 0);
   const totalItems = netItems + storeItems;
   const buyCount = Object.values(m.days).reduce((s, d) => s + (d.buy_count || 0), 0);
   const buyItems = Object.values(m.days).reduce((s, d) => s + (d.buy_items || 0), 0);
+  const buyFail = Object.values(m.days).reduce((s, d) => s + (d.buy_fail_count || 0), 0);
+  const buyVisitors = Object.values(m.days).reduce((s, d) => s + (d.buy_visitors || 0), 0);
+  const buyRate = buyVisitors > 0 ? Math.round(buyCount / buyVisitors * 100) : 0;
   const purchaseAmt = Object.values(m.days).reduce((s, d) => s + (d.purchase_amount || 0), 0);
   const shiireAmt = Object.values(m.days).reduce((s, d) => s + (d.shiire_amount || 0), 0);
   const activeDays = Object.values(m.days).filter(d => d.total_sales > 0).length;
@@ -572,18 +656,39 @@ function renderSummary(m, idx) {{
   const cogs = purchaseAmt + shiireAmt;
   const gross = totalSales - cogs;
   const grossRate = totalSales > 0 ? gross / totalSales * 100 : 0;
+  const shiireRate = totalSales > 0 ? purchaseAmt / totalSales * 100 : 0;
+  const newCount = m.new_count || 0;
+  const repeatCount = m.repeat_count || 0;
 
   const prevTotal = prev ? Object.values(prev.days).reduce((s, d) => s + (d.total_sales || 0), 0) : null;
   const forecast = m.forecast || 0;
   const daysInMonth = m.days_in_month || 30;
 
+  const totalListings = m.total_listings || 0;
+  const listingsForecast = m.listings_forecast || 0;
+  const listingsTarget = m.listings_target || 600;
+  const listingsRate = m.listings_rate || 0;
+  const staffL = m.staff_listings || {{}};
+  const kikuchiL = staffL['菊池'] || 0;
+  const shimanoL = staffL['島野'] || 0;
+  const staffSub = (kikuchiL > 0 || shimanoL > 0) ? `菊池${{kikuchiL}} / 島野${{shimanoL}}` : '—';
+
+  const prevNetSales = prev ? Object.values(prev.days).reduce((s, d) => s + (d.net_sales || 0), 0) : null;
+  const prevStoreSales = prev ? Object.values(prev.days).reduce((s, d) => s + (d.store_sales || 0), 0) : null;
+
   const cardsData = [
     {{ label: '月間売上', value: yen(totalSales), sub: prevTotal != null ? `前月比 ${{diff(totalSales, prevTotal).replace(/<[^>]+>/g, '')}}` : '—', cls: '' }},
-    forecast > 0 ? {{ label: '月末予測', value: yen(forecast), sub: `日販 ${{yen(Math.round(avgDaily))}}ペース`, cls: 'blue' }} : null,
-    {{ label: '粗利率', value: pct(grossRate), sub: `粗利 ${{yen(gross)}}`, cls: grossRate >= 60 ? 'green' : grossRate >= 40 ? '' : 'red' }},
+    {{ label: 'EC売上', value: yen(netSales), sub: prevNetSales != null ? `前月比 ${{diff(netSales, prevNetSales).replace(/<[^>]+>/g, '')}} / ${{netItems}}点` : `${{netItems}}点`, cls: 'blue' }},
+    {{ label: '店頭売上', value: yen(storeSales), sub: prevStoreSales != null ? `前月比 ${{diff(storeSales, prevStoreSales).replace(/<[^>]+>/g, '')}} / ${{storeItems}}点` : `${{storeItems}}点`, cls: '' }},
+    forecast > 0 ? {{ label: '月末予測(売上)', value: yen(forecast), sub: `日販 ${{yen(Math.round(avgDaily))}}ペース`, cls: 'blue' }} : null,
+    {{ label: '今月の出品数', value: totalListings + '点', sub: staffSub, cls: totalListings >= listingsTarget ? 'green' : '' }},
+    listingsForecast > 0 ? {{ label: '月末出品予測', value: listingsForecast + '点', sub: `目標${{listingsTarget}}点 (${{listingsRate}}%)`, cls: listingsForecast >= listingsTarget ? 'green' : listingsForecast >= listingsTarget * 0.8 ? 'blue' : 'red' }} : null,
+    {{ label: '仕入率', value: pct(shiireRate), sub: `買取 ${{yen(purchaseAmt)}}`, cls: shiireRate <= 30 ? 'green' : shiireRate <= 50 ? '' : 'red' }},
+    (newCount + repeatCount) > 0 ? {{ label: '新規 / リピート', value: `${{newCount}} / ${{repeatCount}}`, sub: repeatCount > 0 ? `リピート率 ${{Math.round(repeatCount/(newCount+repeatCount)*100)}}%` : '—', cls: '' }} : null,
     {{ label: '日販平均', value: yen(avgDaily), sub: `稼働 ${{activeDays}}日`, cls: 'blue' }},
     {{ label: '1点単価', value: yen(avgItem), sub: `${{totalItems}}点販売`, cls: '' }},
-    {{ label: '買取', value: buyItems + '着 / ' + buyCount + '組', sub: yen(purchaseAmt), cls: '' }},
+    {{ label: '買取', value: buyCount + '成約 / ' + buyFail + '失注', sub: buyVisitors > 0 ? `来客${{buyVisitors}}組 成約率${{buyRate}}%` : yen(purchaseAmt), cls: '' }},
+    buyVisitors > 0 ? {{ label: '買取金額', value: yen(purchaseAmt), sub: buyItems > 0 ? buyItems + '着' : '—', cls: '' }} : null,
     shiireAmt > 0 ? {{ label: '仕入れ', value: yen(shiireAmt), sub: '買取以外', cls: '' }} : null,
   ].filter(Boolean);
 
@@ -727,7 +832,7 @@ function renderDaily(m) {{
           <th>ネット売上</th><th>点</th>
           <th>店頭売上</th><th>点</th>
           <th>合計</th>
-          <th>買取(着)</th><th>買取(組)</th><th>買取金額</th>
+          <th>買取(着)</th><th>成約</th><th>失注</th><th>来客</th><th>新規</th><th>リピート</th><th>買取金額</th>
           <th>仕入れ</th>
           ${{staffNames.map(n => `<th>${{n}}出品</th>`).join('')}}
           <th>特記</th>
@@ -751,7 +856,11 @@ function renderDaily(m) {{
             <td>${{v.store_items || 0}}</td>
             <td style="font-weight:600">${{yen(v.total_sales)}}</td>
             <td>${{v.buy_items > 0 ? v.buy_items + '着' : ''}}</td>
-            <td>${{v.buy_count > 0 ? v.buy_count + '組' : ''}}</td>
+            <td>${{v.buy_count > 0 ? `<span style="color:var(--green);font-weight:600">${{v.buy_count}}</span>` : ''}}</td>
+            <td>${{v.buy_fail_count > 0 ? `<span style="color:var(--red)">${{v.buy_fail_count}}</span>` : ''}}</td>
+            <td>${{v.buy_visitors > 0 ? v.buy_visitors : ''}}</td>
+            <td>${{v.buy_new_count > 0 ? `<span style="color:var(--blue)">${{v.buy_new_count}}</span>` : ''}}</td>
+            <td>${{v.buy_repeat_count > 0 ? `<span style="color:var(--purple)">${{v.buy_repeat_count}}</span>` : ''}}</td>
             <td>${{v.purchase_amount > 0 ? yen(v.purchase_amount) : ''}}</td>
             <td>${{v.shiire_amount > 0 ? yen(v.shiire_amount) : ''}}</td>
             ${{staffCells}}
@@ -766,7 +875,11 @@ function renderDaily(m) {{
           <td>${{days.reduce((s, d) => s + (m.days[d].store_items || 0), 0)}}</td>
           <td>${{yen(days.reduce((s, d) => s + (m.days[d].total_sales || 0), 0))}}</td>
           <td>${{days.reduce((s, d) => s + (m.days[d].buy_items || 0), 0)}}着</td>
-          <td>${{days.reduce((s, d) => s + (m.days[d].buy_count || 0), 0)}}組</td>
+          <td>${{days.reduce((s, d) => s + (m.days[d].buy_count || 0), 0)}}成約</td>
+          <td>${{days.reduce((s, d) => s + (m.days[d].buy_fail_count || 0), 0)}}失注</td>
+          <td>${{days.reduce((s, d) => s + (m.days[d].buy_visitors || 0), 0)}}組</td>
+          <td>${{days.reduce((s, d) => s + (m.days[d].buy_new_count || 0), 0)}}件</td>
+          <td>${{days.reduce((s, d) => s + (m.days[d].buy_repeat_count || 0), 0)}}件</td>
           <td>${{yen(days.reduce((s, d) => s + (m.days[d].purchase_amount || 0), 0))}}</td>
           <td>${{yen(days.reduce((s, d) => s + (m.days[d].shiire_amount || 0), 0))}}</td>
           ${{staffNames.map(n => `<td>${{days.reduce((s, d) => s + ((m.days[d].staff || {{}})[n]?.listings || 0), 0)}}点</td>`).join('')}}
@@ -1098,12 +1211,95 @@ function renderStaff(m, monthIdx) {{
   }});
 }}
 
+// ============ INVENTORY ============
+function renderInventory() {{
+  if (!SC_INVENTORY) {{
+    document.getElementById('inventory-cards').innerHTML = '<p style="color:var(--text2)">在庫データなし。import_inventory.py を実行してください。</p>';
+    return;
+  }}
+  const inv = SC_INVENTORY;
+  const s = inv.summary;
+  const lowItems = (inv.items || []).filter(i => i.price <= 2000);
+
+  // 更新日表示
+  const updatedEl = document.getElementById('inventory-updated');
+  if (updatedEl && inv.meta && inv.meta.last_updated) {{
+    updatedEl.textContent = `📅 在庫データ更新日: ${{inv.meta.last_updated}}（ベクタープレミアム CSV）`;
+  }}
+
+  // カード
+  const cards = [
+    {{ label: '在庫数', value: s.total_items + '件', sub: '出品中', cls: '' }},
+    {{ label: '在庫金額', value: yen(s.total_price), sub: '販売価格ベース', cls: 'blue' }},
+    {{ label: '原価合計', value: yen(s.total_cost), sub: `平均原価 ${{yen(s.avg_cost)}}`, cls: '' }},
+    {{ label: '含み粗利', value: yen(s.gross_profit), sub: pct(s.total_price > 0 ? s.gross_profit/s.total_price*100 : 0), cls: 'green' }},
+    {{ label: '平均販売価格', value: yen(s.avg_price), sub: '全在庫平均', cls: '' }},
+    {{ label: '低単価在庫', value: lowItems.length + '件', sub: `全体の ${{Math.round(lowItems.length/s.total_items*100)}}%（¥2,000以下）`, cls: lowItems.length > 100 ? 'red' : '' }},
+  ];
+  document.getElementById('inventory-cards').innerHTML = cards.map(c => `
+    <div class="card ${{c.cls}}">
+      <div class="label">${{c.label}}</div>
+      <div class="value">${{c.value}}</div>
+      <div class="sub">${{c.sub}}</div>
+    </div>`).join('');
+
+  // 価格帯グラフ
+  destroyChart('inv-price');
+  const dist = inv.price_distribution;
+  const distLabels = Object.keys(dist);
+  const distData   = Object.values(dist);
+  charts['inv-price'] = new Chart(document.getElementById('chart-inv-price'), {{
+    type: 'bar',
+    data: {{
+      labels: distLabels,
+      datasets: [{{ label: '件数', data: distData,
+        backgroundColor: distData.map((_,i) => i===0 ? 'rgba(192,57,43,0.7)' : i===1 ? 'rgba(230,126,34,0.7)' : 'rgba(37,99,168,0.7)') }}]
+    }},
+    options: {{
+      plugins: {{ legend: {{ display: false }}, datalabels: {{ display: true, anchor: 'end', align: 'top', formatter: v => v+'件', font: {{ size: 11 }} }} }},
+      scales: {{ y: {{ beginAtZero: true }} }}
+    }}
+  }});
+
+  // ブランドTOP10グラフ
+  destroyChart('inv-brand');
+  const brands = (inv.top_brands || []).slice(0,10);
+  charts['inv-brand'] = new Chart(document.getElementById('chart-inv-brand'), {{
+    type: 'bar',
+    data: {{
+      labels: brands.map(b => b.name.length > 12 ? b.name.substring(0,12)+'…' : b.name),
+      datasets: [{{ label: '在庫金額', data: brands.map(b => b.price), backgroundColor: 'rgba(37,99,168,0.7)' }}]
+    }},
+    options: {{
+      indexAxis: 'y',
+      plugins: {{ legend: {{ display: false }}, datalabels: {{ display: false }} }},
+      scales: {{ x: {{ ticks: {{ callback: v => '¥'+(v/10000).toFixed(0)+'万' }} }} }}
+    }}
+  }});
+
+  // 低単価一覧
+  document.getElementById('low-price-note').textContent =
+    `¥2,000以下の在庫が ${{lowItems.length}}件（¥${{lowItems.reduce((s,i)=>s+i.price,0).toLocaleString()}}）あります。業者まとめ売りを検討してください。`;
+  const tbody = document.querySelector('#low-price-table tbody');
+  tbody.innerHTML = lowItems.slice(0,50).map(i => `
+    <tr>
+      <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${{i.name}}</td>
+      <td>${{i.brand}}</td>
+      <td>¥${{i.price.toLocaleString()}}</td>
+      <td style="color:var(--text2)">¥${{i.cost.toLocaleString()}}</td>
+    </tr>`).join('');
+  if (lowItems.length > 50) {{
+    tbody.innerHTML += `<tr><td colspan="4" style="text-align:center;color:var(--text2)">…他 ${{lowItems.length-50}}件</td></tr>`;
+  }}
+}}
+
 // ============ TABS ============
 function showTab(name) {{
   document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.tab-nav button').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
   event.target.classList.add('active');
+  if (name === 'inventory') renderInventory();
 }}
 
 // ============ START ============

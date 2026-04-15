@@ -52,7 +52,8 @@ def build_inventory(items):
     total_cost  = sum(i['cost']  for i in items)
 
     def price_range(p):
-        if p <= 5000:  return '〜5千'
+        if p <= 2000:  return '〜2千'
+        if p <= 5000:  return '2千〜5千'
         if p <= 10000: return '5千〜1万'
         if p <= 30000: return '1万〜3万'
         if p <= 50000: return '3万〜5万'
@@ -87,7 +88,8 @@ def build_inventory(items):
             'avg_cost':     round(total_cost  / total) if total else 0,
         },
         'price_distribution': {
-            '〜5千':    dist.get('〜5千', 0),
+            '〜2千':    dist.get('〜2千', 0),
+            '2千〜5千': dist.get('2千〜5千', 0),
             '5千〜1万': dist.get('5千〜1万', 0),
             '1万〜3万': dist.get('1万〜3万', 0),
             '3万〜5万': dist.get('3万〜5万', 0),
@@ -123,13 +125,13 @@ def main():
     with open(DATA_FILE, 'w', encoding='utf-8') as f:
         json.dump(inv, f, ensure_ascii=False, indent=2)
 
-    low = len([i for i in items if i['price'] <= 5000])
+    low = len([i for i in items if i["price"] <= 2000])
     print(f"✅ inventory.json 更新完了")
     print(f"   在庫数:     {s['total_items']}件")
     print(f"   在庫金額:   ¥{s['total_price']:,}")
     print(f"   原価合計:   ¥{s['total_cost']:,}")
     print(f"   含み粗利:   ¥{s['gross_profit']:,}")
-    print(f"   低単価(〜¥5千): {low}件 ({round(low/s['total_items']*100)}%)")
+    print(f"   低単価(〜¥2千): {low}件 ({round(low/s['total_items']*100)}%)")
 
 if __name__ == '__main__':
     main()
