@@ -12,7 +12,10 @@ ICLOUD_BACKUP_DIR="$HOME/Library/Mobile Documents/com~apple~CloudDocs/スタク�
 
 echo "🔄 ダッシュボード更新中..."
 
-# 1. generate_dashboard.py を実行
+# 1. closet-archive から買取データを同期
+python3 sync_archive.py
+
+# 2. generate_dashboard.py を実行
 python3 generate_dashboard.py
 
 # 2. iCloud に sales.json をバックアップ

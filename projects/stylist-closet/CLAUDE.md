@@ -50,8 +50,9 @@ projects/stylist-closet/
 | 日報全文 | `raw_report` |
 
 2. **sales.json を更新**
-3. **generate_dashboard.py を実行** してダッシュボードを再生成
-4. **集計結果を報告**:
+3. **`python3 sync_archive.py` を実行** して closet-archive の買取成約・失注・来客数を同期
+4. **`bash update.sh` を実行** してダッシュボード再生成・iCloudバックアップ・GitHub push を一括処理
+5. **集計結果を報告**:
    - 今日の売上・買取サマリー
    - 月累計売上
    - 月次目標達成率（目標が設定されている場合）
