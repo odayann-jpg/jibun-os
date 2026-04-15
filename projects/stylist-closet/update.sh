@@ -35,10 +35,13 @@ cp data/sales.json "$ICLOUD_BACKUP_DIR/sales_$(date +%Y-%m-%d).json"
 cp data/sales.json "$ICLOUD_BACKUP_DIR/sales_latest.json"
 echo "💾 iCloudにバックアップ: sales_$(date +%Y-%m-%d).json"
 
-# 3. git add & commit & push
+# 3. git add & commit & push（dashboard.html + スクリプト + データ全部）
 git add dashboard.html
+git add generate_dashboard.py parse_chat.py import_csv.py sync_archive.py import_inventory.py update.sh CLAUDE.md
+git add data/inventory.json 2>/dev/null || true
+
 if git diff --cached --quiet; then
-    echo "ℹ️  dashboard.html に変更なし。スキップ。"
+    echo "ℹ️  変更なし。スキップ。"
 else
     MSG="${1:-ダッシュボード更新: $(date +%Y-%m-%d)}"
     git commit -m "$MSG"
