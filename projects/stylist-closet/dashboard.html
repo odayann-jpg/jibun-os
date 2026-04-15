@@ -242,6 +242,7 @@ tbody tr:hover { background: #fafafa; }
 
 <!-- ========== 在庫 ========== -->
 <div id="tab-inventory" class="tab-content">
+  <div id="inventory-updated" style="font-size:13px;color:var(--text2);margin-bottom:8px"></div>
   <div id="inventory-cards" class="cards" style="margin-bottom:24px"></div>
   <div class="grid-2">
     <div class="panel">
@@ -3520,6 +3521,12 @@ function renderInventory() {
   const inv = SC_INVENTORY;
   const s = inv.summary;
   const lowItems = (inv.items || []).filter(i => i.price <= 2000);
+
+  // 更新日表示
+  const updatedEl = document.getElementById('inventory-updated');
+  if (updatedEl && inv.meta && inv.meta.last_updated) {
+    updatedEl.textContent = `📅 在庫データ更新日: ${inv.meta.last_updated}（ベクタープレミアム CSV）`;
+  }
 
   // カード
   const cards = [
