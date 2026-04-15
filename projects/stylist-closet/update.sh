@@ -15,7 +15,17 @@ echo "🔄 ダッシュボード更新中..."
 # 1. closet-archive から買取データを同期
 python3 sync_archive.py
 
-# 2. generate_dashboard.py を実行
+# 2. Downloadsに新しい在庫CSVがあればインポート（item_data*.csv）
+LATEST_CSV=$(ls -t ~/Downloads/item_data*.csv 2>/dev/null | head -1)
+if [ -n "$LATEST_CSV" ]; then
+  # inventory.jsonより新しければインポート
+  if [ ! -f "data/inventory.json" ] || [ "$LATEST_CSV" -nt "data/inventory.json" ]; then
+    echo "📦 新しい在庫CSV検出: $(basename $LATEST_CSV)"
+    python3 import_inventory.py "$LATEST_CSV"
+  fi
+fi
+
+# 3. generate_dashboard.py を実行
 python3 generate_dashboard.py
 
 # 2. iCloud に sales.json をバックアップ
