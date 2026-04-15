@@ -337,7 +337,7 @@ a {{ color: var(--accent); text-decoration: none; }}
 .header .meta {{ font-size: 12px; color: rgba(255,255,255,0.65); }}
 
 /* Month Nav */
-.month-nav {{ background: var(--bg2); padding: 10px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; overflow-x: auto; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }}
+.month-nav {{ background: var(--bg2); padding: 10px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; overflow-x: auto; box-shadow: 0 1px 4px rgba(0,0,0,0.04); position: sticky; top: 49px; z-index: 90; }}
 .month-nav button {{ background: var(--bg3); border: 1px solid var(--border); color: var(--text2); padding: 6px 16px; border-radius: 20px; cursor: pointer; font-size: 13px; white-space: nowrap; transition: all 0.2s; }}
 .month-nav button.active {{ background: #1e3a5f; color: #fff; border-color: #1e3a5f; font-weight: 600; }}
 .month-nav button:hover:not(.active) {{ border-color: var(--accent); color: var(--accent); }}
