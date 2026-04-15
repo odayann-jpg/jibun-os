@@ -1173,6 +1173,16 @@ function renderComparison() {{
     return total - cogs;
   }});
   const grossRateData = SC_MONTHS.map((m, i) => salesData[i] > 0 ? (grossData[i] / salesData[i] * 100) : 0);
+  const netSalesData  = SC_MONTHS.map(m => Object.values(m.days).reduce((s,d)=>s+(d.net_sales||0),0));
+  const storeSalesData= SC_MONTHS.map(m => Object.values(m.days).reduce((s,d)=>s+(d.store_sales||0),0));
+  const netItemsData  = SC_MONTHS.map(m => Object.values(m.days).reduce((s,d)=>s+(d.net_items||0),0));
+  const avgNetPriceData=SC_MONTHS.map((m,i)=>netItemsData[i]>0?Math.round(netSalesData[i]/netItemsData[i]):0);
+  const listingsData  = SC_MONTHS.map(m => m.total_listings || 0);
+  const purchaseAmtData=SC_MONTHS.map(m=>Object.values(m.days).reduce((s,d)=>s+(d.purchase_amount||0),0));
+  const buyCountData  = SC_MONTHS.map(m=>Object.values(m.days).reduce((s,d)=>s+(d.buy_count||0),0));
+  const buyVisitorsData=SC_MONTHS.map(m=>Object.values(m.days).reduce((s,d)=>s+(d.buy_visitors||0),0));
+  const buyItemsData  = SC_MONTHS.map(m=>Object.values(m.days).reduce((s,d)=>s+(d.buy_items||0),0));
+  const avgBuyPerPersonData=SC_MONTHS.map((m,i)=>buyVisitorsData[i]>0?Math.round(purchaseAmtData[i]/buyVisitorsData[i]):0);
   const avgItemData = SC_MONTHS.map(m => {{
     const items = Object.values(m.days).reduce((s, d) => s + (d.net_items || 0) + (d.store_items || 0), 0);
     const total = Object.values(m.days).reduce((s, d) => s + (d.total_sales || 0), 0);
@@ -1252,22 +1262,32 @@ function renderComparison() {{
 
   // 月比較テーブル
   const compEl = document.getElementById('comparison-table-wrap');
+  const fmt = (v, fn) => v > 0 ? fn(v) : '<span style="color:#ccc">—</span>';
+  const rows = [
+    {{ label: '売上合計',           data: salesData,        fn: v => yen(v) }},
+    {{ label: '　EC売上',           data: netSalesData,     fn: v => yen(v) }},
+    {{ label: '　店頭売上',         data: storeSalesData,   fn: v => yen(v) }},
+    {{ label: '出品数',             data: listingsData,     fn: v => v + '点' }},
+    {{ label: 'EC販売点数',         data: netItemsData,     fn: v => v + '点' }},
+    {{ label: 'EC平均単価',         data: avgNetPriceData,  fn: v => yen(v) }},
+    {{ label: '買取金額',           data: purchaseAmtData,  fn: v => yen(v) }},
+    {{ label: '買取件数',           data: buyCountData,     fn: v => v + '件' }},
+    {{ label: '客数（来店）',       data: buyVisitorsData,  fn: v => v + '組' }},
+    {{ label: '買取点数',           data: buyItemsData,     fn: v => v + '点' }},
+    {{ label: '1人あたり買取単価',  data: avgBuyPerPersonData, fn: v => yen(v) }},
+  ];
   compEl.innerHTML = `
+    <div style="overflow-x:auto">
     <table>
-      <thead>
-        <tr>
-          <th style="text-align:left">指標</th>
-          ${{SC_MONTHS.map(m => `<th>${{m.label}}</th>`).join('')}}
-        </tr>
-      </thead>
+      <thead><tr>
+        <th style="text-align:left;white-space:nowrap">指標</th>
+        ${{SC_MONTHS.map(m => `<th style="white-space:nowrap">${{m.label}}</th>`).join('')}}
+      </tr></thead>
       <tbody>
-        <tr><td>月間売上</td>${{SC_MONTHS.map((m, i) => `<td>${{yen(salesData[i])}}</td>`).join('')}}</tr>
-        <tr><td>買取比率</td>${{SC_MONTHS.map((m, i) => `<td>${{pct(grossRateData[i])}}</td>`).join('')}}</tr>
-        <tr><td>1点単価</td>${{SC_MONTHS.map((m, i) => `<td>${{yen(avgItemData[i])}}</td>`).join('')}}</tr>
-        <tr><td>日販平均</td>${{SC_MONTHS.map((m, i) => `<td>${{yen(avgDailyData[i])}}</td>`).join('')}}</tr>
-        <tr><td>前月比</td>${{SC_MONTHS.map((m, i) => `<td>${{i > 0 ? diff(salesData[i], salesData[i-1]) : '—'}}</td>`).join('')}}</tr>
+        ${{rows.map(r => `<tr><td style="white-space:nowrap">${{r.label}}</td>${{r.data.map(v => `<td>${{fmt(v, r.fn)}}</td>`).join('')}}</tr>`).join('')}}
       </tbody>
-    </table>`;
+    </table>
+    </div>`;
 }}
 
 // ============ PURCHASE ============
