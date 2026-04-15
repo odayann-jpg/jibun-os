@@ -523,7 +523,7 @@ tbody tr:hover {{ background: #fafafa; }}
   </div>
   <div class="grid-2">
     <div class="panel">
-      <h3>粗利率推移</h3>
+      <h3>買取比率推移</h3>
       <div class="chart-wrap"><canvas id="chart-margin" height="150"></canvas></div>
     </div>
     <div class="panel">
@@ -833,8 +833,8 @@ function renderSummary(m, idx) {{
         <tr><td>日販平均</td><td>${{yen(avgDaily)}}</td></tr>
         <tr><td>買取件数</td><td>${{buyCount}} 件</td></tr>
         <tr><td>買取金額合計</td><td>${{yen(purchaseAmt)}}</td></tr>
-        <tr><td>粗利益</td><td style="color:var(--green)">${{yen(gross)}}</td></tr>
-        <tr><td>粗利率</td><td style="color:var(--green)">${{pct(grossRate)}}</td></tr>
+        <tr><td>売上−買取（差益）</td><td style="color:var(--green)">${{yen(gross)}}</td></tr>
+        <tr><td>買取比率（仕入率）</td><td style="color:var(--green)">${{pct(grossRate)}}</td></tr>
       </tbody>
     </table>`;
 }}
@@ -960,7 +960,7 @@ function renderPL(m) {{
   document.getElementById('pl-plan-cards').innerHTML = [
     {{ label: '計画売上',    value: yen(planSales),    sub: '月次目標' }},
     {{ label: '実績売上',    value: yen(actualSales),  sub: salesDiff >= 0 ? `計画比 +${{yen(salesDiff)}}` : `計画比 ${{yen(salesDiff)}}`, cls: salesDiff >= 0 ? 'green' : 'red' }},
-    {{ label: '計画営業利益', value: yen(planOpProfit), sub: `計画粗利率 ${{pct(mp.gross_profit_rate || 70)}}`, cls: planOpProfit >= 0 ? '' : 'red' }},
+    {{ label: '計画営業利益', value: yen(planOpProfit), sub: `計画買取比率 ${{pct(mp.gross_profit_rate || 70)}}`, cls: planOpProfit >= 0 ? '' : 'red' }},
     {{ label: '実績営業利益', value: yen(actualOpProfit), sub: opDiff >= 0 ? `計画比 +${{yen(opDiff)}}` : `計画比 ${{yen(opDiff)}}`, cls: actualOpProfit >= 0 ? 'green' : 'red' }},
     {{ label: '計画累計損益', value: yen(planCumul),   sub: '計画ベース', cls: planCumul >= 0 ? 'green' : 'red' }},
     {{ label: '実績累計損益', value: yen(actualCumul), sub: actualCumul >= 0 ? '✅ 黒字転換！' : `あと ${{yen(-actualCumul)}}`, cls: actualCumul >= 0 ? 'green' : 'red' }},
@@ -1208,7 +1208,7 @@ function renderComparison() {{
     type: 'line',
     data: {{
       labels,
-      datasets: [{{ label: '粗利率(%)', data: grossRateData, borderColor: '#1a6b45', backgroundColor: 'rgba(26,107,69,0.08)', tension: 0.3, fill: true }}]
+      datasets: [{{ label: '買取比率(%)', data: grossRateData, borderColor: '#1a6b45', backgroundColor: 'rgba(26,107,69,0.08)', tension: 0.3, fill: true }}]
     }},
     options: {{
       responsive: true,
@@ -1253,7 +1253,7 @@ function renderComparison() {{
       </thead>
       <tbody>
         <tr><td>月間売上</td>${{SC_MONTHS.map((m, i) => `<td>${{yen(salesData[i])}}</td>`).join('')}}</tr>
-        <tr><td>粗利率</td>${{SC_MONTHS.map((m, i) => `<td>${{pct(grossRateData[i])}}</td>`).join('')}}</tr>
+        <tr><td>買取比率</td>${{SC_MONTHS.map((m, i) => `<td>${{pct(grossRateData[i])}}</td>`).join('')}}</tr>
         <tr><td>1点単価</td>${{SC_MONTHS.map((m, i) => `<td>${{yen(avgItemData[i])}}</td>`).join('')}}</tr>
         <tr><td>日販平均</td>${{SC_MONTHS.map((m, i) => `<td>${{yen(avgDailyData[i])}}</td>`).join('')}}</tr>
         <tr><td>前月比</td>${{SC_MONTHS.map((m, i) => `<td>${{i > 0 ? diff(salesData[i], salesData[i-1]) : '—'}}</td>`).join('')}}</tr>
