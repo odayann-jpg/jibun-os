@@ -296,6 +296,14 @@ def generate_html(data):
             inv = json.load(f)
         inventory_js = json.dumps(inv, ensure_ascii=False)
 
+    # 収支計画データ読み込み
+    pl_plan_file = os.path.join(SCRIPT_DIR, 'data', 'pl_plan.json')
+    pl_plan_js = 'null'
+    if os.path.exists(pl_plan_file):
+        with open(pl_plan_file, 'r', encoding='utf-8') as f:
+            pl_plan = json.load(f)
+        pl_plan_js = json.dumps(pl_plan, ensure_ascii=False)
+
     html = f"""<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -428,7 +436,7 @@ tbody tr:hover {{ background: #fafafa; }}
 <div class="tab-nav">
   <button class="active" onclick="showTab('summary')">📊 今月サマリー</button>
   <button onclick="showTab('daily')">📅 日次データ</button>
-  <button onclick="showTab('pl')">💰 PL表</button>
+  <button onclick="showTab('pl')">📊 収支計画</button>
   <button onclick="showTab('comparison')">📈 月比較</button>
   <button onclick="showTab('purchase')">🛍 買取分析</button>
   <button onclick="showTab('staff')">👥 スタッフ</button>
@@ -476,13 +484,28 @@ tbody tr:hover {{ background: #fafafa; }}
   </div>
 </div>
 
-<!-- ========== PL表 ========== -->
+<!-- ========== 収支計画 ========== -->
 <div id="tab-pl" class="tab-content">
-  <div class="panel">
-    <h3>月次 P/L 表</h3>
-    <div id="pl-table-wrap"></div>
+  <div id="pl-plan-cards" class="cards" style="margin-bottom:24px"></div>
+  <div class="panel" style="margin-bottom:16px">
+    <h3>累計損益推移（計画 vs 実績）</h3>
+    <div class="chart-wrap" style="max-height:200px"><canvas id="chart-cumulative" height="180"></canvas></div>
   </div>
-  <div style="margin-top:16px" class="panel">
+  <div class="panel" style="margin-bottom:16px">
+    <h3>月次 計画 vs 実績</h3>
+    <div id="pl-comparison-table-wrap" style="overflow-x:auto"></div>
+  </div>
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="panel">
+      <h3>月次営業利益 計画 vs 実績</h3>
+      <div class="chart-wrap"><canvas id="chart-op-profit" height="160"></canvas></div>
+    </div>
+    <div class="panel">
+      <h3>月次 P/L 詳細（当月）</h3>
+      <div id="pl-table-wrap"></div>
+    </div>
+  </div>
+  <div class="panel">
     <h3>経費内訳</h3>
     <div id="expenses-table-wrap"></div>
   </div>
@@ -568,6 +591,7 @@ tbody tr:hover {{ background: #fafafa; }}
 // ============ DATA ============
 const SC_MONTHS = {months_js};
 const SC_INVENTORY = {inventory_js};
+const SC_PL_PLAN = {pl_plan_js};
 const SC_STAFF_COLORS = ['#1e3a5f', '#2563a8', '#1a6b45', '#5b4fcf', '#c0392b'];
 
 // ============ STATE ============
@@ -892,64 +916,215 @@ function renderDaily(m) {{
 
 // ============ PL ============
 function renderPL(m) {{
+  const plan = SC_PL_PLAN ? SC_PL_PLAN.months : {{}};
+
+  // ── 実績計算 ──
   const days = Object.values(m.days);
-  const totalSales = days.reduce((s, d) => s + (d.total_sales || 0), 0);
-  const netSales = days.reduce((s, d) => s + (d.net_sales || 0), 0);
-  const storeSales = days.reduce((s, d) => s + (d.store_sales || 0), 0);
-  const purchaseAmt = days.reduce((s, d) => s + (d.purchase_amount || 0), 0);
-  const gross = totalSales - purchaseAmt;
-  const grossRate = totalSales > 0 ? gross / totalSales * 100 : 0;
+  const actualSales    = days.reduce((s, d) => s + (d.total_sales || 0), 0);
+  const actualNet      = days.reduce((s, d) => s + (d.net_sales || 0), 0);
+  const actualStore    = days.reduce((s, d) => s + (d.store_sales || 0), 0);
+  const actualCogs     = days.reduce((s, d) => s + (d.purchase_amount || 0), 0);
+  const actualGross    = actualSales - actualCogs;
+  const actualGrossRate = actualSales > 0 ? actualGross / actualSales * 100 : 0;
+  const fixedCosts     = m.pl ? m.pl.fixed_costs_detail : {{}};
+  const fixedTotal     = Object.values(fixedCosts).reduce((s, v) => s + v, 0);
+  const varExpenses    = m.pl ? m.pl.variable_expenses : 0;
+  const varDetail      = m.pl ? (m.pl.variable_expenses_detail || []) : [];
+  const actualOpProfit = actualGross - fixedTotal - varExpenses;
+  const actualOpMargin = actualSales > 0 ? actualOpProfit / actualSales * 100 : 0;
 
-  const fixedCosts = m.pl ? m.pl.fixed_costs_detail : {{}};
-  const fixedTotal = Object.values(fixedCosts).reduce((s, v) => s + v, 0);
-  const varExpenses = m.pl ? m.pl.variable_expenses : 0;
-  const varDetail = m.pl ? (m.pl.variable_expenses_detail || []) : [];
-  const opProfit = gross - fixedTotal - varExpenses;
-  const opMargin = totalSales > 0 ? opProfit / totalSales * 100 : 0;
+  // ── 計画値（当月） ──
+  const mp = plan[m.key] || {{}};
+  const planSales    = mp.total_sales || 0;
+  const planGross    = mp.gross_profit || 0;
+  const planOpProfit = mp.op_profit || 0;
+  const planCumul    = mp.cumulative || 0;
 
+  // ── 実績累計（月データから積算） ──
+  let actualCumul = 0;
+  for (const sm of SC_MONTHS) {{
+    const smDays = Object.values(sm.days);
+    const smSales = smDays.reduce((s, d) => s + (d.total_sales || 0), 0);
+    const smCogs  = smDays.reduce((s, d) => s + (d.purchase_amount || 0), 0);
+    const smGross = smSales - smCogs;
+    const smFixed = sm.pl ? Object.values(sm.pl.fixed_costs_detail || {{}}).reduce((s,v)=>s+v,0) : 0;
+    const smVar   = sm.pl ? (sm.pl.variable_expenses || 0) : 0;
+    const smOp    = smGross - smFixed - smVar;
+    if (smSales > 0) actualCumul += smOp;
+    if (sm.key === m.key) break;
+  }}
+
+  // ── サマリーカード ──
+  const salesDiff = actualSales - planSales;
+  const opDiff    = actualOpProfit - planOpProfit;
+  document.getElementById('pl-plan-cards').innerHTML = [
+    {{ label: '計画売上',    value: yen(planSales),    sub: '月次目標' }},
+    {{ label: '実績売上',    value: yen(actualSales),  sub: salesDiff >= 0 ? `計画比 +${{yen(salesDiff)}}` : `計画比 ${{yen(salesDiff)}}`, cls: salesDiff >= 0 ? 'green' : 'red' }},
+    {{ label: '計画営業利益', value: yen(planOpProfit), sub: `計画粗利率 ${{pct(mp.gross_profit_rate || 70)}}`, cls: planOpProfit >= 0 ? '' : 'red' }},
+    {{ label: '実績営業利益', value: yen(actualOpProfit), sub: opDiff >= 0 ? `計画比 +${{yen(opDiff)}}` : `計画比 ${{yen(opDiff)}}`, cls: actualOpProfit >= 0 ? 'green' : 'red' }},
+    {{ label: '計画累計損益', value: yen(planCumul),   sub: '計画ベース', cls: planCumul >= 0 ? 'green' : 'red' }},
+    {{ label: '実績累計損益', value: yen(actualCumul), sub: actualCumul >= 0 ? '✅ 黒字転換！' : `あと ${{yen(-actualCumul)}}`, cls: actualCumul >= 0 ? 'green' : 'red' }},
+  ].map(c => `<div class="card ${{c.cls||''}}"><div class="label">${{c.label}}</div><div class="value">${{c.value}}</div><div class="sub">${{c.sub||''}}</div></div>`).join('');
+
+  // ── 累計損益チャート（計画 vs 実績） ──
+  destroyChart('cumulative');
+  const allMonthKeys = SC_MONTHS.map(mm => mm.key).filter(k => plan[k]);
+  const planKeys = Object.keys(plan).sort();
+  const chartKeys = [...new Set([...planKeys, ...allMonthKeys])].sort();
+  const planCumulData = chartKeys.map(k => plan[k] ? plan[k].cumulative : null);
+  let runningActual = 0;
+  const actualCumulData = chartKeys.map(k => {{
+    const sm = SC_MONTHS.find(mm => mm.key === k);
+    if (!sm) return null;
+    const smDays = Object.values(sm.days);
+    const smSales = smDays.reduce((s, d) => s + (d.total_sales || 0), 0);
+    if (smSales === 0) return null;
+    const smCogs  = smDays.reduce((s, d) => s + (d.purchase_amount || 0), 0);
+    const smGross = smSales - smCogs;
+    const smFixed = sm.pl ? Object.values(sm.pl.fixed_costs_detail || {{}}).reduce((s,v)=>s+v,0) : 0;
+    const smVar   = sm.pl ? (sm.pl.variable_expenses || 0) : 0;
+    runningActual += smGross - smFixed - smVar;
+    return runningActual;
+  }});
+  const chartLabels = chartKeys.map(k => {{
+    const [y, mo] = k.split('-');
+    return `${{parseInt(y)%100}}/${{parseInt(mo)}}`;
+  }});
+  charts['cumulative'] = new Chart(document.getElementById('chart-cumulative'), {{
+    type: 'line',
+    data: {{
+      labels: chartLabels,
+      datasets: [
+        {{ label: '計画累計',  data: planCumulData,   borderColor: '#2563a8', backgroundColor: 'rgba(37,99,168,0.08)', fill: true, tension: 0.3, borderDash: [5,3], pointRadius: 3, datalabels: {{display:false}} }},
+        {{ label: '実績累計',  data: actualCumulData, borderColor: '#1a6b45', backgroundColor: 'rgba(26,107,69,0.1)',  fill: true, tension: 0.2, borderWidth: 2.5, pointRadius: 5, datalabels: {{display:false}} }},
+      ]
+    }},
+    options: {{
+      responsive: true,
+      plugins: {{
+        legend: {{ labels: {{ color: '#666', font: {{ size: 11 }} }} }},
+        annotation: {{ annotations: {{ zeroLine: {{ type: 'line', yMin: 0, yMax: 0, borderColor: '#e74c3c', borderWidth: 1.5, borderDash: [4,4] }} }} }}
+      }},
+      scales: {{
+        x: {{ ticks: {{ color: '#888', font: {{ size: 10 }} }}, grid: {{ color: '#ebebeb' }} }},
+        y: {{ ticks: {{ color: '#666', font: {{ size: 10 }}, callback: v => (v>=0?'+':'')+Math.round(v/10000)+'万' }}, grid: {{ color: '#ebebeb' }},
+              afterDataLimits: axis => {{ axis.min = Math.min(axis.min, -5000000); }} }}
+      }}
+    }}
+  }});
+
+  // ── 月次 計画vs実績 テーブル ──
+  let runningOp = 0;
+  const tableRows = chartKeys.map(k => {{
+    const p = plan[k] || {{}};
+    const sm = SC_MONTHS.find(mm => mm.key === k);
+    const [y, mo] = k.split('-');
+    const label = `${{parseInt(y)%100}}/${{parseInt(mo)}}`;
+    let actSales = 0, actOp = null;
+    if (sm) {{
+      const smDays = Object.values(sm.days);
+      actSales = smDays.reduce((s, d) => s + (d.total_sales || 0), 0);
+      if (actSales > 0) {{
+        const smCogs  = smDays.reduce((s, d) => s + (d.purchase_amount || 0), 0);
+        const smGross = actSales - smCogs;
+        const smFixed = sm.pl ? Object.values(sm.pl.fixed_costs_detail || {{}}).reduce((s,v)=>s+v,0) : 0;
+        const smVar   = sm.pl ? (sm.pl.variable_expenses || 0) : 0;
+        actOp = smGross - smFixed - smVar;
+        runningOp += actOp;
+      }}
+    }}
+    const sDiff = actSales > 0 ? actSales - (p.total_sales||0) : null;
+    const oDiff = actOp !== null ? actOp - (p.op_profit||0) : null;
+    const cumul = actOp !== null ? runningOp : null;
+    const isCurrent = sm && sm.key === m.key;
+    return `<tr style="${{isCurrent ? 'background:#eef2f8;font-weight:600' : ''}}">
+      <td>${{label}}</td>
+      <td>${{p.total_sales ? yen(p.total_sales) : '—'}}</td>
+      <td>${{actSales > 0 ? yen(actSales) : '—'}}</td>
+      <td style="color:${{sDiff === null ? '#999' : sDiff >= 0 ? 'var(--green)' : 'var(--red)'}}">${{sDiff === null ? '—' : (sDiff >= 0 ? '+' : '') + yen(sDiff)}}</td>
+      <td style="color:${{(p.op_profit||0) >= 0 ? 'var(--green)' : 'var(--red)'}}">${{p.op_profit !== undefined ? yen(p.op_profit) : '—'}}</td>
+      <td style="color:${{actOp === null ? '#999' : actOp >= 0 ? 'var(--green)' : 'var(--red)'}}">${{actOp !== null ? yen(actOp) : '—'}}</td>
+      <td style="color:${{cumul === null ? '#999' : cumul >= 0 ? 'var(--green)' : 'var(--red)'}}">${{cumul !== null ? yen(cumul) : '—'}}</td>
+    </tr>`;
+  }}).join('');
+  document.getElementById('pl-comparison-table-wrap').innerHTML = `
+    <table style="font-size:12px">
+      <thead><tr>
+        <th style="text-align:left">月</th>
+        <th>計画売上</th><th>実績売上</th><th>差額</th>
+        <th>計画営業利益</th><th>実績営業利益</th><th>実績累計</th>
+      </tr></thead>
+      <tbody>${{tableRows}}</tbody>
+    </table>`;
+
+  // ── 月次営業利益グラフ ──
+  destroyChart('op-profit');
+  const opPlanData   = chartKeys.map(k => plan[k] ? plan[k].op_profit : null);
+  let runActOp2 = 0;
+  const opActualData = chartKeys.map(k => {{
+    const sm = SC_MONTHS.find(mm => mm.key === k);
+    if (!sm) return null;
+    const smDays = Object.values(sm.days);
+    const smSales = smDays.reduce((s, d) => s + (d.total_sales || 0), 0);
+    if (smSales === 0) return null;
+    const smCogs  = smDays.reduce((s, d) => s + (d.purchase_amount || 0), 0);
+    const smFixed = sm.pl ? Object.values(sm.pl.fixed_costs_detail || {{}}).reduce((s,v)=>s+v,0) : 0;
+    const smVar   = sm.pl ? (sm.pl.variable_expenses || 0) : 0;
+    return smSales - smCogs - smFixed - smVar;
+  }});
+  charts['op-profit'] = new Chart(document.getElementById('chart-op-profit'), {{
+    type: 'bar',
+    data: {{
+      labels: chartLabels,
+      datasets: [
+        {{ label: '計画', data: opPlanData, backgroundColor: 'rgba(37,99,168,0.45)', datalabels: {{display:false}} }},
+        {{ label: '実績', data: opActualData, backgroundColor: opActualData.map(v => v === null ? 'transparent' : v >= 0 ? 'rgba(26,107,69,0.75)' : 'rgba(192,57,43,0.7)'), datalabels: {{display:false}} }},
+      ]
+    }},
+    options: {{
+      responsive: true,
+      plugins: {{ legend: {{ labels: {{ color: '#666', font: {{ size: 11 }} }} }} }},
+      scales: {{
+        x: {{ ticks: {{ color: '#888', font: {{ size: 10 }} }} }},
+        y: {{ ticks: {{ color: '#666', font: {{ size: 10 }}, callback: v => (v>=0?'+':'')+Math.round(v/10000)+'万' }}, grid: {{ color: '#ebebeb' }} }}
+      }}
+    }}
+  }});
+
+  // ── 月次 P/L 詳細（当月） ──
   const el = document.getElementById('pl-table-wrap');
   el.innerHTML = `
-    <table>
-      <thead><tr><th>項目</th><th>金額</th><th>比率</th></tr></thead>
+    <table style="font-size:12px">
+      <thead><tr><th style="text-align:left">項目</th><th>実績</th><th>計画</th><th>比率</th></tr></thead>
       <tbody>
-        <tr class="section-header"><td colspan="3">I. 売上高</td></tr>
-        <tr><td class="indent">ネット売上</td><td>${{yen(netSales)}}</td><td>${{pct(totalSales > 0 ? netSales/totalSales*100 : 0)}}</td></tr>
-        <tr><td class="indent">店頭売上</td><td>${{yen(storeSales)}}</td><td>${{pct(totalSales > 0 ? storeSales/totalSales*100 : 0)}}</td></tr>
-        <tr class="total-row"><td>売上合計</td><td>${{yen(totalSales)}}</td><td>100%</td></tr>
-
-        <tr class="section-header"><td colspan="3">II. 売上原価（買取金額）</td></tr>
-        <tr><td class="indent">買取金額</td><td>${{yen(purchaseAmt)}}</td><td>${{pct(totalSales > 0 ? purchaseAmt/totalSales*100 : 0)}}</td></tr>
-
-        <tr class="total-row"><td>粗利益</td><td style="color:var(--green)">${{yen(gross)}}</td><td style="color:var(--green)">${{pct(grossRate)}}</td></tr>
-
-        <tr class="section-header"><td colspan="3">III. 固定費</td></tr>
-        ${{Object.entries(fixedCosts).map(([k, v]) => `
-          <tr><td class="indent">${{k}}</td><td>${{yen(v)}}</td><td style="color:var(--text2)">${{pct(totalSales > 0 ? v/totalSales*100 : 0)}}</td></tr>
-        `).join('')}}
-        <tr class="total-row"><td>固定費合計</td><td>${{yen(fixedTotal)}}</td><td>${{pct(totalSales > 0 ? fixedTotal/totalSales*100 : 0)}}</td></tr>
-
-        <tr class="section-header"><td colspan="3">IV. 変動費（経費）</td></tr>
-        ${{varDetail.length ? varDetail.map(e => `
-          <tr><td class="indent">${{e.date || ''}} ${{e.category || ''}} <span class="cat-badge">${{e.memo || ''}}</span></td><td>${{yen(e.amount)}}</td><td></td></tr>
-        `).join('') : '<tr><td class="indent" colspan="3" style="color:var(--text2)">経費の記録なし</td></tr>'}}
-        <tr class="total-row"><td>変動費合計</td><td>${{yen(varExpenses)}}</td><td>${{pct(totalSales > 0 ? varExpenses/totalSales*100 : 0)}}</td></tr>
-
-        <tr class="total-row" style="font-size:15px">
+        <tr class="section-header"><td colspan="4">I. 売上高</td></tr>
+        <tr><td class="indent">ネット売上</td><td>${{yen(actualNet)}}</td><td>${{yen(mp.net_sales||0)}}</td><td>${{pct(actualSales>0?actualNet/actualSales*100:0)}}</td></tr>
+        <tr><td class="indent">店頭売上</td><td>${{yen(actualStore)}}</td><td>${{yen(mp.store_sales||0)}}</td><td>${{pct(actualSales>0?actualStore/actualSales*100:0)}}</td></tr>
+        <tr class="total-row"><td>売上合計</td><td>${{yen(actualSales)}}</td><td>${{yen(planSales)}}</td><td>100%</td></tr>
+        <tr class="section-header"><td colspan="4">II. 売上原価</td></tr>
+        <tr><td class="indent">買取金額</td><td>${{yen(actualCogs)}}</td><td>${{yen(mp.cogs||0)}}</td><td>${{pct(actualSales>0?actualCogs/actualSales*100:0)}}</td></tr>
+        <tr class="total-row"><td>粗利益</td><td style="color:var(--green)">${{yen(actualGross)}}</td><td style="color:var(--green)">${{yen(planGross)}}</td><td style="color:var(--green)">${{pct(actualGrossRate)}}</td></tr>
+        <tr class="section-header"><td colspan="4">III. 販管費</td></tr>
+        ${{Object.entries(fixedCosts).map(([k,v])=>`<tr><td class="indent">${{k}}</td><td>${{yen(v)}}</td><td>—</td><td style="color:var(--text2)">${{pct(actualSales>0?v/actualSales*100:0)}}</td></tr>`).join('')}}
+        ${{varExpenses>0?`<tr><td class="indent">変動費</td><td>${{yen(varExpenses)}}</td><td>—</td><td></td></tr>`:''}}
+        <tr class="total-row"><td>販管費合計</td><td>${{yen(fixedTotal+varExpenses)}}</td><td>${{yen(mp.opex_total||0)}}</td><td>${{pct(actualSales>0?(fixedTotal+varExpenses)/actualSales*100:0)}}</td></tr>
+        <tr class="total-row" style="font-size:14px">
           <td>営業利益</td>
-          <td style="color:${{opProfit >= 0 ? 'var(--green)' : 'var(--red)'}}">${{yen(opProfit)}}</td>
-          <td style="color:${{opProfit >= 0 ? 'var(--green)' : 'var(--red)'}}">${{pct(opMargin)}}</td>
+          <td style="color:${{actualOpProfit>=0?'var(--green)':'var(--red)'}}">${{yen(actualOpProfit)}}</td>
+          <td style="color:${{planOpProfit>=0?'var(--green)':'var(--red)'}}">${{yen(planOpProfit)}}</td>
+          <td style="color:${{actualOpProfit>=0?'var(--green)':'var(--red)'}}">${{pct(actualOpMargin)}}</td>
         </tr>
       </tbody>
     </table>`;
 
-  // 経費テーブル
+  // ── 経費内訳 ──
   const expEl = document.getElementById('expenses-table-wrap');
   if (varDetail.length) {{
     expEl.innerHTML = `
       <table>
         <thead><tr><th style="text-align:left">日付</th><th style="text-align:left">カテゴリ</th><th>金額</th><th style="text-align:left">メモ</th></tr></thead>
         <tbody>
-          ${{varDetail.map(e => `<tr><td>${{e.date || ''}}</td><td>${{e.category || ''}}</td><td>${{yen(e.amount)}}</td><td style="color:var(--text2)">${{e.memo || ''}}</td></tr>`).join('')}}
+          ${{varDetail.map(e=>`<tr><td>${{e.date||''}}</td><td>${{e.category||''}}</td><td>${{yen(e.amount)}}</td><td style="color:var(--text2)">${{e.memo||''}}</td></tr>`).join('')}}
         </tbody>
       </table>`;
   }} else {{
