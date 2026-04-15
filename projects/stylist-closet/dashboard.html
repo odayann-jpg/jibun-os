@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>スタイリストクローゼット 経営ダッシュボード</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #f4f6f9;
+  --bg2: #ffffff;
+  --bg3: #eef1f6;
+  --border: #dde2eb;
+  --text: #1a202c;
+  --text2: #64748b;
+  --accent: #1e3a5f;
+  --accent2: #2c5282;
+  --green: #1a6b45;
+  --red: #c0392b;
+  --blue: #2563a8;
+  --purple: #5b4fcf;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif; font-size: 14px; }
+a { color: var(--accent); text-decoration: none; }
+
+/* Header */
+.header { background: #1e3a5f; border-bottom: none; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(30,58,95,0.2); }
+.header h1 { font-size: 16px; font-weight: 700; letter-spacing: 0.05em; color: #ffffff; }
+.header .meta { font-size: 12px; color: rgba(255,255,255,0.65); }
+
+/* Month Nav */
+.month-nav { background: var(--bg2); padding: 10px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; overflow-x: auto; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+.month-nav button { background: var(--bg3); border: 1px solid var(--border); color: var(--text2); padding: 6px 16px; border-radius: 20px; cursor: pointer; font-size: 13px; white-space: nowrap; transition: all 0.2s; }
+.month-nav button.active { background: #1e3a5f; color: #fff; border-color: #1e3a5f; font-weight: 600; }
+.month-nav button:hover:not(.active) { border-color: var(--accent); color: var(--accent); }
+
+/* Tab Nav */
+.tab-nav { display: flex; gap: 0; border-bottom: 1px solid var(--border); background: var(--bg2); padding: 0 24px; }
+.tab-nav button { background: none; border: none; color: var(--text2); padding: 12px 18px; cursor: pointer; font-size: 13px; font-weight: 500; border-bottom: 2px solid transparent; transition: all 0.2s; }
+.tab-nav button.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+.tab-nav button:hover:not(.active) { color: var(--text); }
+
+/* Main */
+.main { padding: 24px; max-width: 1400px; margin: 0 auto; }
+
+/* Cards */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 18px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+.card .label { font-size: 11px; color: var(--text2); margin-bottom: 6px; letter-spacing: 0.05em; font-weight: 500; }
+.card .value { font-size: 22px; font-weight: 700; color: var(--accent); }
+.card .sub { font-size: 11px; color: var(--text2); margin-top: 4px; }
+.card.green .value { color: var(--green); }
+.card.red .value { color: var(--red); }
+.card.blue .value { color: var(--blue); }
+
+/* Progress bar */
+.progress-bar { background: var(--bg3); border-radius: 4px; height: 8px; margin-top: 8px; overflow: hidden; }
+.progress-bar .fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.5s; }
+.progress-bar .fill.over { background: var(--green); }
+
+/* Grid layouts */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+@media (max-width: 900px) {
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .cards { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Chart panels */
+.panel { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+.panel h3 { font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 16px; letter-spacing: 0.08em; text-transform: uppercase; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+.chart-wrap { position: relative; }
+
+/* Table */
+table { width: 100%; border-collapse: collapse; }
+thead th { background: #f8f8f8; color: var(--text2); font-size: 11px; font-weight: 600; padding: 10px 12px; text-align: right; letter-spacing: 0.04em; border-bottom: 2px solid var(--border); }
+thead th:first-child { text-align: left; }
+tbody td { padding: 10px 12px; text-align: right; border-bottom: 1px solid #f0f0f0; font-size: 13px; color: var(--text); }
+tbody td:first-child { text-align: left; color: var(--text2); }
+tbody tr:hover { background: #fafafa; }
+.positive { color: var(--green); }
+.negative { color: var(--red); }
+.total-row td { font-weight: 700; color: var(--text); border-top: 2px solid var(--border); background: #fafafa; }
+.section-header td { background: #eef2f8; color: #1e3a5f; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.indent { padding-left: 24px !important; color: var(--text) !important; }
+
+/* Daily table */
+.daily-table { font-size: 12px; }
+.daily-table th, .daily-table td { padding: 7px 10px; }
+.highlights { font-size: 11px; color: var(--text2); max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Badge */
+.badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+.badge-sat { background: rgba(37,99,168,0.1); color: var(--blue); }
+.badge-sun { background: rgba(192,57,43,0.1); color: var(--red); }
+
+/* Tab content */
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* Diff column */
+.diff-positive { color: var(--green); font-weight: 600; }
+.diff-negative { color: var(--red); font-weight: 600; }
+
+/* Week summary */
+.week-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.week-card { background: var(--bg3); border-radius: 6px; padding: 12px; text-align: center; }
+.week-card .wk-label { font-size: 11px; color: var(--text2); margin-bottom: 6px; }
+.week-card .wk-value { font-size: 16px; font-weight: 700; color: var(--accent); }
+
+/* Staff table */
+.staff-bar { background: var(--bg3); border-radius: 3px; height: 12px; margin-top: 4px; overflow: hidden; display: flex; }
+.staff-bar .bar-fill { height: 100%; border-radius: 3px; transition: width 0.5s; }
+
+/* Category badges for expenses */
+.cat-badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 10px; background: #f0f0f0; color: var(--text2); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📊 スタイリストクローゼット 経営ダッシュボード</h1>
+  <div class="meta">最終更新: 2026-04-15 | <span id="current-month-label">2026年4月</span></div>
+</div>
+
+<div class="month-nav" id="month-nav"></div>
+
+<div class="tab-nav">
+  <button class="active" onclick="showTab('summary')">📊 今月サマリー</button>
+  <button onclick="showTab('daily')">📅 日次データ</button>
+  <button onclick="showTab('pl')">💰 PL表</button>
+  <button onclick="showTab('comparison')">📈 月比較</button>
+  <button onclick="showTab('purchase')">🛍 買取分析</button>
+  <button onclick="showTab('staff')">👥 スタッフ</button>
+</div>
+
+<div class="main">
+
+<!-- ========== サマリー ========== -->
+<div id="tab-summary" class="tab-content active">
+  <div id="summary-cards" class="cards"></div>
+  <div id="achievement-bar" style="margin-bottom:24px;display:none">
+    <div class="panel">
+      <h3>月次目標達成率</h3>
+      <div id="achievement-content"></div>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="panel">
+      <h3>日次売上推移</h3>
+      <div class="chart-wrap"><canvas id="chart-daily-sales" height="220"></canvas></div>
+    </div>
+    <div class="panel">
+      <h3>週次サマリー</h3>
+      <div id="weekly-summary"></div>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="panel">
+      <h3>売上チャネル内訳</h3>
+      <div class="chart-wrap"><canvas id="chart-channel" height="200"></canvas></div>
+    </div>
+    <div class="panel">
+      <h3>KPI サマリー</h3>
+      <div id="kpi-table"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 日次データ ========== -->
+<div id="tab-daily" class="tab-content">
+  <div class="panel">
+    <h3>日次データ一覧</h3>
+    <div id="daily-table-wrap"></div>
+  </div>
+</div>
+
+<!-- ========== PL表 ========== -->
+<div id="tab-pl" class="tab-content">
+  <div class="panel">
+    <h3>月次 P/L 表</h3>
+    <div id="pl-table-wrap"></div>
+  </div>
+  <div style="margin-top:16px" class="panel">
+    <h3>経費内訳</h3>
+    <div id="expenses-table-wrap"></div>
+  </div>
+</div>
+
+<!-- ========== 月比較 ========== -->
+<div id="tab-comparison" class="tab-content">
+  <div class="panel" style="margin-bottom:16px">
+    <h3>月次売上推移</h3>
+    <div class="chart-wrap"><canvas id="chart-monthly-sales" height="200"></canvas></div>
+  </div>
+  <div class="panel" style="margin-bottom:16px">
+    <h3>月次比較テーブル</h3>
+    <div id="comparison-table-wrap"></div>
+  </div>
+  <div class="grid-2">
+    <div class="panel">
+      <h3>粗利率推移</h3>
+      <div class="chart-wrap"><canvas id="chart-margin" height="200"></canvas></div>
+    </div>
+    <div class="panel">
+      <h3>1点単価・日販平均</h3>
+      <div class="chart-wrap"><canvas id="chart-unit-price" height="200"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 買取分析 ========== -->
+<div id="tab-purchase" class="tab-content">
+  <div id="purchase-cards" class="cards" style="margin-bottom:24px"></div>
+  <div class="panel" style="margin-bottom:16px">
+    <h3>日次 買取件数 ＆ 買取金額</h3>
+    <div class="chart-wrap"><canvas id="chart-buy-combined" height="220"></canvas></div>
+  </div>
+  <div class="panel">
+    <h3>月次 買取推移</h3>
+    <div class="chart-wrap"><canvas id="chart-monthly-purchase" height="200"></canvas></div>
+  </div>
+</div>
+
+<!-- ========== スタッフ ========== -->
+<div id="tab-staff" class="tab-content">
+  <div id="staff-cards" class="cards" style="margin-bottom:24px"></div>
+  <div class="grid-2">
+    <div class="panel">
+      <h3>スタッフ別 月間出品数累計</h3>
+      <div class="chart-wrap"><canvas id="chart-staff-monthly" height="220"></canvas></div>
+    </div>
+    <div class="panel">
+      <h3>日次 出品数</h3>
+      <div class="chart-wrap"><canvas id="chart-staff-daily" height="220"></canvas></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+// ============ DATA ============
+const SC_MONTHS = [
+  {
+    "key": "2026-01",
+    "label": "2026年1月",
+    "total_sales": 0,
+    "net_sales": 0,
+    "store_sales": 0,
+    "total_items": 0,
+    "buy_count": 0,
+    "buy_items": 0,
+    "purchase_amount": 0,
+    "shiire_amount": 0,
+    "forecast": 0,
+    "days_in_month": 31,
+    "gross_profit": 0,
+    "gross_profit_rate": 0,
+    "operating_profit": -655000,
+    "operating_margin": 0,
+    "avg_item_price": 0,
+    "avg_daily_sales": 0,
+    "target_sales": 0,
+    "achievement_rate": 0,
+    "staff_listings": {},
+    "weekly_totals": {
+      "5": {
+        "total_sales": 0,
+        "buy_count": 0,
+        "net_items": 0,
+        "days": 1
+      }
+    },
+    "days": {
+      "31": {
+        "net_sales": 0,
+        "store_sales": 0,
+        "total_sales": 0,
+        "net_items": 0,
+        "buy_count": 0,
+        "buy_items": 0,
+        "purchase_amount": 0,
+        "shiire_amount": 0,
+        "shiire_items": 0,
+        "purchase_people": 0,
+        "weekday": "土",
+        "highlights": "1月月次集計（月末サマリーより）",
+        "staff": {}
+      }
+    },
+    "pl": {
+      "gross_profit": 0,
+      "gross_profit_rate": 0,
+      "fixed_total": 655000,
+      "variable_expenses": 0,
+      "operating_profit": -655000,
+      "operating_margin": 0,
+      "fixed_costs_detail": {
+        "家賃": 550000,
+        "システム費": 30000,
+        "ベクトル加盟金": 55000,
+        "電気ガス水道": 20000,
+        "ネット回線": 0
+      },
+      "variable_expenses_detail": []
+    }
+  },
+  {
+    "key": "2026-02",
+    "label": "2026年2月",
+    "total_sales": 0,
+    "net_sales": 0,
+    "store_sales": 0,
+    "total_items": 0,
+    "buy_count": 0,
+    "buy_items": 0,
+    "purchase_amount": 0,
+    "shiire_amount": 0,
+    "forecast": 0,
+    "days_in_month": 28,
+    "gross_profit": 0,
+    "gross_profit_rate": 0,
+    "operating_profit": -655000,
+    "operating_margin": 0,
+    "avg_item_price": 0,
+    "avg_daily_sales": 0,
+    "target_sales": 0,
+    "achievement_rate": 0,
+    "staff_listings": {},
+    "weekly_totals": {
+      "4": {
+        "total_sales": 0,
+        "buy_count": 0,
+        "net_items": 0,
+        "days": 1
+      }
+    },
+    "days": {
+      "28": {
+        "net_sales": 0,
+        "store_sales": 0,
+        "total_sales": 0,
+        "net_items": 0,
+        "buy_count": 0,
+        "buy_items": 0,
+        "purchase_amount": 0,
+        "shiire_amount": 0,
+        "shiire_items": 0,
+        "purchase_people": 0,
+        "weekday": "土",
+        "highlights": "2月月次集計（月末サマリーより）",
+        "staff": {}
+      }
+    },
+    "pl": {
+      "gross_profit": 0,
+      "gross_profit_rate": 0,
+      "fixed_total": 655000,
+      "variable_expenses": 0,
+      "operating_profit": -655000,
+      "operating_margin": 0,
+      "fixed_costs_detail": {
+        "家賃": 550000,
+        "システム費": 30000,
+        "ベクトル加盟金": 55000,
+        "電気ガス水道": 20000,
+        "ネット回線": 0
+      },
+      "variable_expenses_detail": []
+    }
+  },
+  {
+    "key": "2026-03",
+    "label": "2026年3月",
+    "total_sales": 261100,
+    "net_sales": 118600,
+    "store_sales": 142500,
+    "total_items": 14,
+    "buy_count": 0,
+    "buy_items": 0,
+    "purchase_amount": 0,
+    "shiire_amount": 0,
+    "forecast": 0,
+    "days_in_month": 31,
+    "gross_profit": 261100,
+    "gross_profit_rate": 100.0,
+    "operating_profit": -393900,
+    "operating_margin": -150.9,
+    "avg_item_price": 18650,
+    "avg_daily_sales": 65275,
+    "target_sales": 0,
+    "achievement_rate": 0,
+    "staff_listings": {
+      "菊池": 105,
+      "島野": 208
+    },
+    "weekly_totals": {
+      "4": {
+        "total_sales": 156500,
+        "buy_count": 0,
+        "net_items": 2,
+        "days": 2
+      },
+      "5": {
+        "total_sales": 104600,
+        "buy_count": 0,
+        "net_items": 4,
+        "days": 3
+      }
+    },
+    "days": {
+      "27": {
+        "net_sales": 0,
+        "store_sales": 0,
+        "total_sales": 0,
+        "net_items": 0,
+        "buy_count": 0,
+        "buy_items": 0,
+        "purchase_amount": 0,
+        "shiire_amount": 0,
+        "shiire_items": 0,
+        "purchase_people": 0,
+        "weekday": "金",
+        "highlights": "",
+        "staff": {
+          "菊池": {
+            "listings": 5,
+            "status": "",
+            "cumulative": 0
+          },
+          "島野": {
+            "listings": 0,
+            "status": "白金台",
+            "cumulative": 0
+          }
+        }
+      },
+      "28": {
+        "net_sales": 91500,
+        "store_sales": 65000,
+        "total_sales": 156500,
+        "net_items": 2,
+        "buy_count": 0,
+        "buy_items": 0,
+        "purchase_amount": 0,
+        "shiire_amount": 0,
+        "shiire_items": 0,
+        "purchase_people": 0,
+        "weekday": "土",
+        "highlights": "",
+        "staff": {
+          "菊池": {
+            "listings": 3,
+            "status": "",
+            "cumulative": 0
+          },
+          "島野": {
+            "listings": 3,
+            "status": "",
+            "cumulative": 0
+          }
+        }
+      },
+      "29": {
+        "net_sales": 20800,
+        "store_sales": 0,
+        "total_sales": 20800,
+        "net_items": 2,
+        "buy_count": 0,
+        "buy_items": 0,
+        "purchase_amount": 0,
+        "shiire_amount": 0,
+        "shiire_items": 0,
+        "purchase_people": 0,
+        "weekday": "日",
+        "highlights": "",
+        "staff": {
+          "菊池": {
+            "listings": 0,
+            "status": "休み",
+            "cumulative": 0
+          },
+          "島野": {
+            "listings": 20,
+            "status": "",
+            "cumulative": 0
+          }
+        }
+      },
+      "30": {
+        "net_sales": 1800,
+        "store_sales": 32500,
+        "total_sales": 34300,
+        "net_items": 1,
+        "buy_count": 0,
+        "buy_items": 0,
+        "purchase_amount": 0,
+        "shiire_amount": 0,
+        "shiire_items": 0,
+        "purchase_people": 0,
+        "weekday": "月",
+        "highlights": "",
+        "staff": {
+          "菊池": {
+            "listings": 10,
+            "status": "",
+            "cumulative": 0
+          },
+          "島野": {
+            "listings": 13,
+            "status": "",
+            "cumulative": 0
+          }
+        }
+      },
+      "31": {
+        "net_sales": 4500,
+        "store_sales": 45000,
+        "total_sales": 49500,
+        "net_items": 1,
+        "buy_count": 0,
+        "buy_items": 0,
+        "purchase_amount": 0,
+        "shiire_amount": 0,
+        "shiire_items": 0,
+        "purchase_people": 0,
+        "weekday": "火",
+        "highlights": "3月月次集計（月末サマリーより）",
+        "staff": {
+          "菊池": {
+            "listings": 11,
+            "status": "",
+            "cumulative": 0
+          },
+          "島野": {
+            "listings": 0,
+            "status": "白金台",
+            "cumulative": 0
+          }
+        }
+      }
+    },
+    "pl": {
+      "gross_profit": 261100,
+      "gross_profit_rate": 100.0,
+      "fixed_total": 655000,
+      "variable_expenses": 0,
+      "operating_profit": -393900,
+      "operating_margin": -150.9,
+      "fixed_costs_detail": {
+        "家賃": 550000,
+        "システム費": 30000,
+        "ベクトル加盟金": 55000,
+        "電気ガス水道": 20000,
+        "ネット回線": 0
+      },
+      "variable_expenses_detail": []
+    }
+  },
+  {
+    "key": "2026-04",
+    "label": "2026年4月",
+    "total_sales": 567410,
+    "net_sales": 367600,
+    "store_sales": 199810,
+    "total_items": 47,
+    "buy_count": 0,
+    "buy_items": 210,
+    "purchase_amount": 276510,
+    "shiire_amount": 0,
+    "forecast": 1222114,
+    "days_in_month": 30,
+    "gross_profit": 290900,
+    "gross_profit_rate": 51.3,
+    "operating_profit": -364100,
+    "operating_margin": -64.2,
+    "avg_item_price": 12073,
+    "avg_daily_sales": 43647,
+    "target_sales": 0,
+    "achievement_rate": 0,
+    "staff_listings": {
+      "菊池": 101,
+      "島野": 102
+    },
+    "weekly_totals": {
+      "1": {
+        "total_sales": 170200,
+        "buy_count": 0,
+        "net_items": 18,
+        "days": 7
+      },
+      "2": {
+        "total_sales": 397210,
+        "buy_count": 0,
+        "net_items": 21,
+        "days": 7
+      }
+    },
+    "days": {
+      "1": {
+        "net_sales": 28600,
+        "store_sales": 0,
+        "total_sales": 28600,
+        "net_items": 3,
+        "buy_count": 0,
+        "buy_items": 0,
+        "purchase_amount": 0,
+        "shiire_amount": 0,
+        "shiire_items": 0,
+        "purchase_people": 0,
+        "weekday": "水",
+        "highlights": "",
+        "staff": {
+          "菊池": {
+            "listings": 0,
+            "status": "休み",
+            "cumulative": 0
+          },
+          "島野": {
+            "listings": 2,
+            "status": "",
+            "cumulative": 0
+          }
+        }
+      },
+      "2": {
+        "net_sales": 39400,
+        "store_sales": 0,
+        "total_sales": 39400,
+        "net_items": 3,
+        "buy_count": 0,
+        "buy_items": 0,
+        "purchase_amount": 0,
+        "shiire_amount": 0,
+        "shiire_items": 0,
+        "purchase_people": 0,
+        "weekday": "木",
+        "highlights": "",
+        "staff": {
+          "菊池": {
+            "listings": 0,
+            "status": "",
+            "cumulative": 0
+          },
+          "島野": {
+            "listings": 18,
+            "status": "",
+            "cumulative": 0
+          }
+        }
+      },
+      "3": {
+        "net_sales": 15500,
+        "store_sales": 0,
+        "total_sales": 15500,
+        "net_items": 3,
+        "buy_count": 0,
+        "buy_items": 11,
+        "purchase_amount": 23160,
+        "shiire_amount": 0,
+        "shiire_items": 0,
+        "purchase_people": 0,
+        "weekday": "金",
+        "highlights": "",
+        "staff": {
+          "菊池": {
+            "listings": 15,
+            "status": "",
+            "cumulative": 0
+          },
+          "島野": {
+            "listings": 0,
+            "status": "休み",
+            "cumulative": 0
+          }
+        }
+      },
+      "4": {
+        "net_sales": 42600,
+        "store_sales": 0,
+        "total_sales": 42600,
+        "net_items": 4,
+        "buy_count": 0,
+        "buy_items": 24,
+        "purchase_amount": 43800,
+        "shiire_amount": 0,
+        "shiire_items": 0,
+        "purchase_people": 0,
+        "weekday": "土",
+        "highlights": "",
+        "staff": {
+          "菊池": {
+            "listings": 10,
+            "status": "",
+            "cumulative": 0
+          },
+          "島野": {
+            "listings": 22,
+            "status": "",
+            "cumulative": 0
+          }
+        }
+      },
+      "5": {
+        "net_sales": 32500,
+        "store_sales": 0,
+        "total_sales": 32500,
+        "net_items": 3,
+        "buy_count": 0,
+        "buy_items": 88,
+        "purchase_amount": 100130,
+        "shiire_amount": 0,
+        "shiire_items": 0,
+        "purchase_people": 0,
+        "weekday": "日",
+        "highlights": "",
+        "staff": {
+          "菊池": {
+            "listings": 6,
+            "status": "",
+            "cumulative": 0
+          },
+          "島野": {
+            "listings": 11,
+            "status": "",
+            "cumulative": 0
+          }
+        }
+      },
+      "6": {
+        "net_sales": 0,
+        "store_sales": 0,
+        "total_sales": 0,
+        "net_items": 0,
+        "buy_count": 0,
+        "buy_items": 7,
+        "purchase_amount": 8400,
+        "shiire_amount": 0,
+        "shiire_items": 0,
+        "purchase_people": 0,
+        "weekday": "月",
+        "highlights": "",
+        "staff": {
+          "菊池": {
+            "listings": 12,
+            "status": "",
+            "cumulative": 0
+          },
+          "島野": {
+            "listings": 0,
+            "status": "白金台",
+            "cumulative": 0
+          }
+        }
+      },
+      "7": {
+        "net_sales": 11600,
+        "store_sales": 0,
+        "total_sales": 11600,
+        "net_items": 2,
+        "buy_count": 0,
+        "buy_items": 20,
+        "purchase_amount": 54460,
+        "shiire_amount": 0,
+        "shiire_items": 0,
+        "purchase_people": 0,
+        "weekday": "火",
+        "highlights": "",
+        "staff": {
+          "菊池": {
+            "listings": 7,
+            "status": "",
+            "cumulative": 0
+          },
+          "島野": {
+            "listings": 0,
+            "status": "白金台",
+            "cumulative": 0
+          }
+        }
+      },
+      "8": {
+        "net_sales": 51100,
+        "store_sales": 0,
+        "total_sales": 51100,
+        "net_items": 7,
+        "buy_count": 0,
+        "buy_items": 18,
+        "purchase_amount": 9240,
+        "shiire_amount": 0,
+        "shiire_items": 0,
+        "purchase_people": 0,
+        "weekday": "水",
+        "highlights": "",
+        "staff": {
+          "菊池": {
+            "listings": 8,
+            "status": "",
+            "cumulative": 0
+          },
+          "島野": {
+            "listings": 0,
+            "status": "休み",
+            "cumulative": 0
+          }
+        }
+      },
+      "9": {
+        "net_sales": 17000,
+        "store_sales": 0,
+        "total_sales": 17000,
+        "net_items": 1,
+        "buy_count": 0,
+        "buy_items": 0,
+        "purchase_amount": 0,
+        "shiire_amount": 0,
+        "shiire_items": 0,
+        "purchase_people": 0,
+        "weekday": "木",
+        "highlights": "",
+        "staff": {
+          "菊池": {
+            "listings": 0,
+            "status": "休み",
+            "cumulative": 0
+          },
+          "島野": {
+            "listings": 24,
+            "status": "",
+            "cumulative": 0
+          }
+        }
+      },
+      "10": {
+        "net_sales": 21700,
+        "store_sales": 0,
+        "total_sales": 21700,
+        "net_items": 3,
+        "buy_count": 0,
+        "buy_items": 6,
+        "purchase_amount": 4060,
+        "shiire_amount": 0,
+        "shiire_items": 0,
+        "purchase_people": 0,
+        "weekday": "金",
+        "highlights": "",
+        "staff": {
+          "菊池": {
+            "listings": 11,
+            "status": "",
+            "cumulative": 0
+          },
+          "島野": {
+            "listings": 11,
+            "status": "",
+            "cumulative": 0
+          }
+        }
+      },
+      "11": {
+        "net_sales": 12500,
+        "store_sales": 27760,
+        "total_sales": 40260,
+        "net_items": 2,
+        "buy_count": 0,
+        "buy_items": 13,
+        "purchase_amount": 5200,
+        "shiire_amount": 0,
+        "shiire_items": 0,
+        "purchase_people": 0,
+        "weekday": "土",
+        "highlights": "",
+        "staff": {
+          "菊池": {
+            "listings": 12,
+            "status": "",
+            "cumulative": 0
+          },
+          "島野": {
+            "listings": 0,
+            "status": "白金台",
+            "cumulative": 0
+          }
+        }
+      },
+      "12": {
+        "net_sales": 19600,
+        "store_sales": 149730,
+        "total_sales": 169330,
+        "net_items": 5,
+        "buy_count": 0,
+        "buy_items": 12,
+        "purchase_amount": 5500,
+        "shiire_amount": 0,
+        "shiire_items": 0,
+        "purchase_people": 0,
+        "weekday": "日",
+        "highlights": "",
+        "staff": {
+          "菊池": {
+            "listings": 6,
+            "status": "",
+            "cumulative": 0
+          },
+          "島野": {
+            "listings": 6,
+            "status": "",
+            "cumulative": 0
+          }
+        }
+      },
+      "13": {
+        "net_sales": 72000,
+        "store_sales": 0,
+        "total_sales": 72000,
+        "net_items": 1,
+        "buy_count": 0,
+        "buy_items": 0,
+        "purchase_amount": 0,
+        "shiire_amount": 0,
+        "shiire_items": 0,
+        "purchase_people": 0,
+        "weekday": "月",
+        "highlights": "リフレーミングの方のコーディネート。協業の可能性も浮上。ハンガーラック到着。",
+        "staff": {
+          "菊池": {
+            "listings": 0,
+            "status": "休み",
+            "cumulative": 87
+          },
+          "島野": {
+            "listings": 8,
+            "status": "",
+            "cumulative": 102
+          }
+        }
+      },
+      "14": {
+        "net_sales": 3500,
+        "store_sales": 22320,
+        "total_sales": 25820,
+        "net_items": 2,
+        "buy_count": 0,
+        "buy_items": 11,
+        "purchase_amount": 22560,
+        "shiire_amount": 0,
+        "shiire_items": 0,
+        "purchase_people": 0,
+        "weekday": "火",
+        "highlights": "",
+        "staff": {
+          "菊池": {
+            "listings": 14,
+            "status": "",
+            "cumulative": 101
+          },
+          "島野": {
+            "listings": 0,
+            "status": "白金台",
+            "cumulative": 0
+          }
+        }
+      }
+    },
+    "pl": {
+      "gross_profit": 290900,
+      "gross_profit_rate": 51.3,
+      "fixed_total": 655000,
+      "variable_expenses": 0,
+      "operating_profit": -364100,
+      "operating_margin": -64.2,
+      "fixed_costs_detail": {
+        "家賃": 550000,
+        "システム費": 30000,
+        "ベクトル加盟金": 55000,
+        "電気ガス水道": 20000,
+        "ネット回線": 0
+      },
+      "variable_expenses_detail": []
+    }
+  }
+];
+const SC_STAFF_COLORS = ['#1e3a5f', '#2563a8', '#1a6b45', '#5b4fcf', '#c0392b'];
+
+// ============ STATE ============
+let currentMonthIdx = SC_MONTHS.length - 1;
+let charts = {};
+
+// ============ INIT ============
+function init() {
+  buildMonthNav();
+  renderMonth(currentMonthIdx);
+}
+
+function buildMonthNav() {
+  const nav = document.getElementById('month-nav');
+  SC_MONTHS.forEach((m, i) => {
+    const btn = document.createElement('button');
+    btn.textContent = m.label;
+    btn.onclick = () => renderMonth(i);
+    btn.id = `month-btn-${i}`;
+    nav.appendChild(btn);
+  });
+}
+
+function renderMonth(idx) {
+  currentMonthIdx = idx;
+  const m = SC_MONTHS[idx];
+  document.getElementById('current-month-label').textContent = m.label;
+  document.querySelectorAll('.month-nav button').forEach((b, i) => b.classList.toggle('active', i === idx));
+  renderSummary(m, idx);
+  renderDaily(m);
+  renderPL(m);
+  renderPurchase(m);
+  renderStaff(m, idx);
+  renderComparison();
+}
+
+// ============ UTILS ============
+function yen(n) { return '¥' + Math.round(n || 0).toLocaleString(); }
+function pct(n) { return (n || 0).toFixed(1) + '%'; }
+function diff(a, b) {
+  if (!b) return '';
+  const d = ((a - b) / b * 100).toFixed(1);
+  const cls = d >= 0 ? 'diff-positive' : 'diff-negative';
+  const sign = d >= 0 ? '+' : '';
+  return `<span class="${cls}">${sign}${d}%</span>`;
+}
+function absChange(a, b) {
+  if (b == null) return '';
+  const d = a - b;
+  const cls = d >= 0 ? 'diff-positive' : 'diff-negative';
+  const sign = d >= 0 ? '+' : '';
+  return `<span class="${cls}">${sign}¥${Math.abs(d).toLocaleString()}</span>`;
+}
+function destroyChart(id) {
+  if (charts[id]) { charts[id].destroy(); delete charts[id]; }
+}
+function getWeekdayClass(wd) {
+  if (wd === '土') return 'badge badge-sat';
+  if (wd === '日') return 'badge badge-sun';
+  return '';
+}
+
+// ============ SUMMARY ============
+function renderSummary(m, idx) {
+  const prev = idx > 0 ? SC_MONTHS[idx - 1] : null;
+
+  // サマリーカード
+  const totalSales = Object.values(m.days).reduce((s, d) => s + (d.total_sales || 0), 0);
+  const netItems = Object.values(m.days).reduce((s, d) => s + (d.net_items || 0), 0);
+  const storeItems = Object.values(m.days).reduce((s, d) => s + (d.store_items || 0), 0);
+  const totalItems = netItems + storeItems;
+  const buyCount = Object.values(m.days).reduce((s, d) => s + (d.buy_count || 0), 0);
+  const buyItems = Object.values(m.days).reduce((s, d) => s + (d.buy_items || 0), 0);
+  const purchaseAmt = Object.values(m.days).reduce((s, d) => s + (d.purchase_amount || 0), 0);
+  const shiireAmt = Object.values(m.days).reduce((s, d) => s + (d.shiire_amount || 0), 0);
+  const activeDays = Object.values(m.days).filter(d => d.total_sales > 0).length;
+  const avgDaily = activeDays > 0 ? totalSales / activeDays : 0;
+  const avgItem = totalItems > 0 ? totalSales / totalItems : 0;
+  const cogs = purchaseAmt + shiireAmt;
+  const gross = totalSales - cogs;
+  const grossRate = totalSales > 0 ? gross / totalSales * 100 : 0;
+
+  const prevTotal = prev ? Object.values(prev.days).reduce((s, d) => s + (d.total_sales || 0), 0) : null;
+  const forecast = m.forecast || 0;
+  const daysInMonth = m.days_in_month || 30;
+
+  const cardsData = [
+    { label: '月間売上', value: yen(totalSales), sub: prevTotal != null ? `前月比 ${diff(totalSales, prevTotal).replace(/<[^>]+>/g, '')}` : '—', cls: '' },
+    forecast > 0 ? { label: '月末予測', value: yen(forecast), sub: `日販 ${yen(Math.round(avgDaily))}ペース`, cls: 'blue' } : null,
+    { label: '粗利率', value: pct(grossRate), sub: `粗利 ${yen(gross)}`, cls: grossRate >= 60 ? 'green' : grossRate >= 40 ? '' : 'red' },
+    { label: '日販平均', value: yen(avgDaily), sub: `稼働 ${activeDays}日`, cls: 'blue' },
+    { label: '1点単価', value: yen(avgItem), sub: `${totalItems}点販売`, cls: '' },
+    { label: '買取', value: buyItems + '着 / ' + buyCount + '組', sub: yen(purchaseAmt), cls: '' },
+    shiireAmt > 0 ? { label: '仕入れ', value: yen(shiireAmt), sub: '買取以外', cls: '' } : null,
+  ].filter(Boolean);
+
+  const container = document.getElementById('summary-cards');
+  container.innerHTML = cardsData.map(c => `
+    <div class="card ${c.cls}">
+      <div class="label">${c.label}</div>
+      <div class="value">${c.value}</div>
+      <div class="sub">${c.sub}</div>
+    </div>
+  `).join('');
+
+  // 目標達成率
+  if (m.target_sales > 0) {
+    const achRate = Math.min(totalSales / m.target_sales * 100, 150);
+    document.getElementById('achievement-bar').style.display = 'block';
+    document.getElementById('achievement-content').innerHTML = `
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span>達成率: <strong style="color:var(--accent-2)">${pct(totalSales / m.target_sales * 100)}</strong></span>
+        <span style="color:var(--text2)">${yen(totalSales)} / ${yen(m.target_sales)}</span>
+      </div>
+      <div class="progress-bar"><div class="fill ${achRate >= 100 ? 'over' : ''}" style="width:${Math.min(achRate, 100)}%"></div></div>
+    `;
+  } else {
+    document.getElementById('achievement-bar').style.display = 'none';
+  }
+
+  // 日次売上チャート
+  destroyChart('daily-sales');
+  const sortedDays = Object.keys(m.days).sort((a, b) => parseInt(a) - parseInt(b));
+  const labels = sortedDays.map(d => m.days[d].weekday ? `${d}(${m.days[d].weekday})` : d);
+  const netData = sortedDays.map(d => m.days[d].net_sales || 0);
+  const storeData = sortedDays.map(d => m.days[d].store_sales || 0);
+  charts['daily-sales'] = new Chart(document.getElementById('chart-daily-sales'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'ネット', data: netData, backgroundColor: 'rgba(30,58,95,0.8)', stack: 'a' },
+        { label: '店頭', data: storeData, backgroundColor: 'rgba(37,99,168,0.55)', stack: 'a' },
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#999', font: { size: 11 } } } },
+      scales: {
+        x: { stacked: true, ticks: { color: '#888', font: { size: 10 } }, grid: { color: '#ebebeb' } },
+        y: { stacked: true, ticks: { color: '#666', font: { size: 10 }, callback: v => '¥' + (v/10000).toFixed(0) + '万' }, grid: { color: '#ebebeb' } }
+      }
+    }
+  });
+
+  // チャンネル円グラフ
+  const netTotal = Object.values(m.days).reduce((s, d) => s + (d.net_sales || 0), 0);
+  const storeTotal = Object.values(m.days).reduce((s, d) => s + (d.store_sales || 0), 0);
+  destroyChart('channel');
+  charts['channel'] = new Chart(document.getElementById('chart-channel'), {
+    type: 'doughnut',
+    data: {
+      labels: ['ネット', '店頭'],
+      datasets: [{ data: [netTotal, storeTotal], backgroundColor: ['rgba(30,58,95,0.85)', 'rgba(37,99,168,0.65)'], borderWidth: 0 }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom', labels: { color: '#999', font: { size: 11 } } },
+        tooltip: { callbacks: { label: ctx => `${ctx.label}: ¥${ctx.raw.toLocaleString()}` } }
+      }
+    }
+  });
+
+  // 週次サマリー
+  const weeklyEl = document.getElementById('weekly-summary');
+  if (m.weekly_totals && Object.keys(m.weekly_totals).length > 0) {
+    const weeks = Object.entries(m.weekly_totals).filter(([, v]) => v.total_sales > 0 || v.days > 0);
+    const prevWeekly = prev ? prev.weekly_totals : null;
+    weeklyEl.innerHTML = `
+      <table>
+        <thead><tr><th>週</th><th>売上</th><th>買取</th><th>出品点</th>${prevWeekly ? '<th>前月同週比</th>' : ''}</tr></thead>
+        <tbody>
+          ${weeks.map(([wk, v]) => {
+            const prevW = prevWeekly ? prevWeekly[wk] : null;
+            return `<tr>
+              <td>${wk}週</td>
+              <td>${yen(v.total_sales)}</td>
+              <td>${v.buy_count}件</td>
+              <td>${v.net_items}点</td>
+              ${prevWeekly ? `<td>${prevW ? diff(v.total_sales, prevW.total_sales) : '—'}</td>` : ''}
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>`;
+  } else {
+    weeklyEl.innerHTML = '<p style="color:var(--text2);font-size:13px">データなし</p>';
+  }
+
+  // KPIテーブル
+  const kpiEl = document.getElementById('kpi-table');
+  kpiEl.innerHTML = `
+    <table>
+      <tbody>
+        <tr><td>月間売上合計</td><td>${yen(totalSales)}</td></tr>
+        <tr><td>ネット売上</td><td>${yen(netData.reduce((a, b) => a + b, 0))}</td></tr>
+        <tr><td>店頭売上</td><td>${yen(storeData.reduce((a, b) => a + b, 0))}</td></tr>
+        <tr><td>総販売点数</td><td>${totalItems} 点</td></tr>
+        <tr><td>1点単価（平均）</td><td>${yen(avgItem)}</td></tr>
+        <tr><td>日販平均</td><td>${yen(avgDaily)}</td></tr>
+        <tr><td>買取件数</td><td>${buyCount} 件</td></tr>
+        <tr><td>買取金額合計</td><td>${yen(purchaseAmt)}</td></tr>
+        <tr><td>粗利益</td><td style="color:var(--green)">${yen(gross)}</td></tr>
+        <tr><td>粗利率</td><td style="color:var(--green)">${pct(grossRate)}</td></tr>
+      </tbody>
+    </table>`;
+}
+
+// ============ DAILY ============
+function renderDaily(m) {
+  const days = Object.keys(m.days).sort((a, b) => parseInt(a) - parseInt(b));
+  const el = document.getElementById('daily-table-wrap');
+  if (!days.length) { el.innerHTML = '<p style="color:var(--text2)">データなし</p>'; return; }
+  // スタッフ名リスト（全日から収集）
+  const staffNames = [...new Set(days.flatMap(d => Object.keys(m.days[d].staff || {})))].sort();
+
+  el.innerHTML = `
+    <div style="overflow-x:auto">
+    <table class="daily-table">
+      <thead>
+        <tr>
+          <th style="text-align:left">日</th>
+          <th>ネット売上</th><th>点</th>
+          <th>店頭売上</th><th>点</th>
+          <th>合計</th>
+          <th>買取(着)</th><th>買取(組)</th><th>買取金額</th>
+          <th>仕入れ</th>
+          ${staffNames.map(n => `<th>${n}出品</th>`).join('')}
+          <th>特記</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${days.map(d => {
+          const v = m.days[d];
+          const wdCls = getWeekdayClass(v.weekday);
+          const staffCells = staffNames.map(n => {
+            const s = (v.staff || {})[n];
+            if (!s) return '<td style="color:var(--text2)">—</td>';
+            const st = s.status ? `<span style="font-size:10px;color:var(--text2)">${s.status}</span>` : '';
+            return `<td>${s.listings > 0 ? s.listings : ''}${st}</td>`;
+          }).join('');
+          return `<tr>
+            <td>${d}${wdCls ? `<span class="${wdCls}" style="margin-left:4px">${v.weekday}</span>` : `<span style="color:var(--text2);font-size:11px;margin-left:4px">${v.weekday}</span>`}</td>
+            <td>${yen(v.net_sales)}</td>
+            <td>${v.net_items || 0}</td>
+            <td>${yen(v.store_sales)}</td>
+            <td>${v.store_items || 0}</td>
+            <td style="font-weight:600">${yen(v.total_sales)}</td>
+            <td>${v.buy_items > 0 ? v.buy_items + '着' : ''}</td>
+            <td>${v.buy_count > 0 ? v.buy_count + '組' : ''}</td>
+            <td>${v.purchase_amount > 0 ? yen(v.purchase_amount) : ''}</td>
+            <td>${v.shiire_amount > 0 ? yen(v.shiire_amount) : ''}</td>
+            ${staffCells}
+            <td class="highlights" title="${v.highlights || ''}">${v.highlights || ''}</td>
+          </tr>`;
+        }).join('')}
+        <tr class="total-row">
+          <td>合計</td>
+          <td>${yen(days.reduce((s, d) => s + (m.days[d].net_sales || 0), 0))}</td>
+          <td>${days.reduce((s, d) => s + (m.days[d].net_items || 0), 0)}</td>
+          <td>${yen(days.reduce((s, d) => s + (m.days[d].store_sales || 0), 0))}</td>
+          <td>${days.reduce((s, d) => s + (m.days[d].store_items || 0), 0)}</td>
+          <td>${yen(days.reduce((s, d) => s + (m.days[d].total_sales || 0), 0))}</td>
+          <td>${days.reduce((s, d) => s + (m.days[d].buy_items || 0), 0)}着</td>
+          <td>${days.reduce((s, d) => s + (m.days[d].buy_count || 0), 0)}組</td>
+          <td>${yen(days.reduce((s, d) => s + (m.days[d].purchase_amount || 0), 0))}</td>
+          <td>${yen(days.reduce((s, d) => s + (m.days[d].shiire_amount || 0), 0))}</td>
+          ${staffNames.map(n => `<td>${days.reduce((s, d) => s + ((m.days[d].staff || {})[n]?.listings || 0), 0)}点</td>`).join('')}
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>`;
+}
+
+// ============ PL ============
+function renderPL(m) {
+  const days = Object.values(m.days);
+  const totalSales = days.reduce((s, d) => s + (d.total_sales || 0), 0);
+  const netSales = days.reduce((s, d) => s + (d.net_sales || 0), 0);
+  const storeSales = days.reduce((s, d) => s + (d.store_sales || 0), 0);
+  const purchaseAmt = days.reduce((s, d) => s + (d.purchase_amount || 0), 0);
+  const gross = totalSales - purchaseAmt;
+  const grossRate = totalSales > 0 ? gross / totalSales * 100 : 0;
+
+  const fixedCosts = m.pl ? m.pl.fixed_costs_detail : {};
+  const fixedTotal = Object.values(fixedCosts).reduce((s, v) => s + v, 0);
+  const varExpenses = m.pl ? m.pl.variable_expenses : 0;
+  const varDetail = m.pl ? (m.pl.variable_expenses_detail || []) : [];
+  const opProfit = gross - fixedTotal - varExpenses;
+  const opMargin = totalSales > 0 ? opProfit / totalSales * 100 : 0;
+
+  const el = document.getElementById('pl-table-wrap');
+  el.innerHTML = `
+    <table>
+      <thead><tr><th>項目</th><th>金額</th><th>比率</th></tr></thead>
+      <tbody>
+        <tr class="section-header"><td colspan="3">I. 売上高</td></tr>
+        <tr><td class="indent">ネット売上</td><td>${yen(netSales)}</td><td>${pct(totalSales > 0 ? netSales/totalSales*100 : 0)}</td></tr>
+        <tr><td class="indent">店頭売上</td><td>${yen(storeSales)}</td><td>${pct(totalSales > 0 ? storeSales/totalSales*100 : 0)}</td></tr>
+        <tr class="total-row"><td>売上合計</td><td>${yen(totalSales)}</td><td>100%</td></tr>
+
+        <tr class="section-header"><td colspan="3">II. 売上原価（買取金額）</td></tr>
+        <tr><td class="indent">買取金額</td><td>${yen(purchaseAmt)}</td><td>${pct(totalSales > 0 ? purchaseAmt/totalSales*100 : 0)}</td></tr>
+
+        <tr class="total-row"><td>粗利益</td><td style="color:var(--green)">${yen(gross)}</td><td style="color:var(--green)">${pct(grossRate)}</td></tr>
+
+        <tr class="section-header"><td colspan="3">III. 固定費</td></tr>
+        ${Object.entries(fixedCosts).map(([k, v]) => `
+          <tr><td class="indent">${k}</td><td>${yen(v)}</td><td style="color:var(--text2)">${pct(totalSales > 0 ? v/totalSales*100 : 0)}</td></tr>
+        `).join('')}
+        <tr class="total-row"><td>固定費合計</td><td>${yen(fixedTotal)}</td><td>${pct(totalSales > 0 ? fixedTotal/totalSales*100 : 0)}</td></tr>
+
+        <tr class="section-header"><td colspan="3">IV. 変動費（経費）</td></tr>
+        ${varDetail.length ? varDetail.map(e => `
+          <tr><td class="indent">${e.date || ''} ${e.category || ''} <span class="cat-badge">${e.memo || ''}</span></td><td>${yen(e.amount)}</td><td></td></tr>
+        `).join('') : '<tr><td class="indent" colspan="3" style="color:var(--text2)">経費の記録なし</td></tr>'}
+        <tr class="total-row"><td>変動費合計</td><td>${yen(varExpenses)}</td><td>${pct(totalSales > 0 ? varExpenses/totalSales*100 : 0)}</td></tr>
+
+        <tr class="total-row" style="font-size:15px">
+          <td>営業利益</td>
+          <td style="color:${opProfit >= 0 ? 'var(--green)' : 'var(--red)'}">${yen(opProfit)}</td>
+          <td style="color:${opProfit >= 0 ? 'var(--green)' : 'var(--red)'}">${pct(opMargin)}</td>
+        </tr>
+      </tbody>
+    </table>`;
+
+  // 経費テーブル
+  const expEl = document.getElementById('expenses-table-wrap');
+  if (varDetail.length) {
+    expEl.innerHTML = `
+      <table>
+        <thead><tr><th style="text-align:left">日付</th><th style="text-align:left">カテゴリ</th><th>金額</th><th style="text-align:left">メモ</th></tr></thead>
+        <tbody>
+          ${varDetail.map(e => `<tr><td>${e.date || ''}</td><td>${e.category || ''}</td><td>${yen(e.amount)}</td><td style="color:var(--text2)">${e.memo || ''}</td></tr>`).join('')}
+        </tbody>
+      </table>`;
+  } else {
+    expEl.innerHTML = '<p style="color:var(--text2);font-size:13px">経費の入力なし。Claudeに「経費を入力して」と話しかけてください。</p>';
+  }
+}
+
+// ============ COMPARISON ============
+function renderComparison() {
+  if (SC_MONTHS.length === 0) return;
+  const labels = SC_MONTHS.map(m => m.label);
+  const salesData = SC_MONTHS.map(m => Object.values(m.days).reduce((s, d) => s + (d.total_sales || 0), 0));
+  const grossData = SC_MONTHS.map(m => {
+    const total = Object.values(m.days).reduce((s, d) => s + (d.total_sales || 0), 0);
+    const cogs = Object.values(m.days).reduce((s, d) => s + (d.purchase_amount || 0), 0);
+    return total - cogs;
+  });
+  const grossRateData = SC_MONTHS.map((m, i) => salesData[i] > 0 ? (grossData[i] / salesData[i] * 100) : 0);
+  const avgItemData = SC_MONTHS.map(m => {
+    const items = Object.values(m.days).reduce((s, d) => s + (d.net_items || 0) + (d.store_items || 0), 0);
+    const total = Object.values(m.days).reduce((s, d) => s + (d.total_sales || 0), 0);
+    return items > 0 ? Math.round(total / items) : 0;
+  });
+  const avgDailyData = SC_MONTHS.map(m => {
+    const activeDays = Object.values(m.days).filter(d => d.total_sales > 0).length;
+    const total = Object.values(m.days).reduce((s, d) => s + (d.total_sales || 0), 0);
+    return activeDays > 0 ? Math.round(total / activeDays) : 0;
+  });
+
+  // 月次売上チャート
+  destroyChart('monthly-sales');
+  charts['monthly-sales'] = new Chart(document.getElementById('chart-monthly-sales'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: '売上', data: salesData, backgroundColor: 'rgba(30,58,95,0.8)', yAxisID: 'y' },
+        { label: '粗利', data: grossData, backgroundColor: 'rgba(26,107,69,0.65)', yAxisID: 'y' },
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#555' } } },
+      scales: {
+        x: { ticks: { color: '#888' }, grid: { color: '#ebebeb' } },
+        y: { ticks: { color: '#666', callback: v => '¥' + (v/10000).toFixed(0) + '万' }, grid: { color: '#ebebeb' } }
+      }
+    }
+  });
+
+  // 粗利率推移
+  destroyChart('margin');
+  charts['margin'] = new Chart(document.getElementById('chart-margin'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{ label: '粗利率(%)', data: grossRateData, borderColor: '#1a6b45', backgroundColor: 'rgba(26,107,69,0.08)', tension: 0.3, fill: true }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#555' } } },
+      scales: {
+        x: { ticks: { color: '#888' }, grid: { color: '#ebebeb' } },
+        y: { ticks: { color: '#666', callback: v => v + '%' }, grid: { color: '#ebebeb' }, min: 0, max: 100 }
+      }
+    }
+  });
+
+  // 1点単価・日販平均
+  destroyChart('unit-price');
+  charts['unit-price'] = new Chart(document.getElementById('chart-unit-price'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: '1点単価', data: avgItemData, borderColor: '#1e3a5f', backgroundColor: 'rgba(30,58,95,0.06)', tension: 0.3 },
+        { label: '日販平均', data: avgDailyData, borderColor: '#2563a8', backgroundColor: 'rgba(37,99,168,0.08)', tension: 0.3 },
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#555' } } },
+      scales: {
+        x: { ticks: { color: '#888' }, grid: { color: '#ebebeb' } },
+        y: { ticks: { color: '#666', callback: v => '¥' + v.toLocaleString() }, grid: { color: '#ebebeb' } }
+      }
+    }
+  });
+
+  // 月比較テーブル
+  const compEl = document.getElementById('comparison-table-wrap');
+  compEl.innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align:left">指標</th>
+          ${SC_MONTHS.map(m => `<th>${m.label}</th>`).join('')}
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>月間売上</td>${SC_MONTHS.map((m, i) => `<td>${yen(salesData[i])}</td>`).join('')}</tr>
+        <tr><td>粗利率</td>${SC_MONTHS.map((m, i) => `<td>${pct(grossRateData[i])}</td>`).join('')}</tr>
+        <tr><td>1点単価</td>${SC_MONTHS.map((m, i) => `<td>${yen(avgItemData[i])}</td>`).join('')}</tr>
+        <tr><td>日販平均</td>${SC_MONTHS.map((m, i) => `<td>${yen(avgDailyData[i])}</td>`).join('')}</tr>
+        <tr><td>前月比</td>${SC_MONTHS.map((m, i) => `<td>${i > 0 ? diff(salesData[i], salesData[i-1]) : '—'}</td>`).join('')}</tr>
+      </tbody>
+    </table>`;
+}
+
+// ============ PURCHASE ============
+function renderPurchase(m) {
+  const days = Object.keys(m.days).sort((a, b) => parseInt(a) - parseInt(b));
+  const buyCountData = days.map(d => m.days[d].buy_count || 0);
+  const buyAmtData = days.map(d => m.days[d].purchase_amount || 0);
+  const labels = days.map(d => m.days[d].weekday ? `${d}(${m.days[d].weekday})` : d);
+
+  const totalBuy = buyCountData.reduce((a, b) => a + b, 0);
+  const totalAmt = buyAmtData.reduce((a, b) => a + b, 0);
+  const totalPeople = Object.values(m.days).reduce((s, d) => s + (d.purchase_people || 0), 0);
+  const avgPerPerson = totalPeople > 0 ? totalAmt / totalPeople : 0;
+  const avgPerBuy = totalBuy > 0 ? totalAmt / totalBuy : 0;
+
+  document.getElementById('purchase-cards').innerHTML = [
+    { label: '買取件数', value: totalBuy + '件', sub: '今月合計' },
+    { label: '買取金額', value: yen(totalAmt), sub: '今月合計' },
+    { label: '1件平均', value: yen(avgPerBuy), sub: '買取単価' },
+    { label: '1人平均', value: yen(avgPerPerson), sub: totalPeople + '人' },
+  ].map(c => `<div class="card"><div class="label">${c.label}</div><div class="value">${c.value}</div><div class="sub">${c.sub}</div></div>`).join('');
+
+  destroyChart('buy-combined');
+  charts['buy-combined'] = new Chart(document.getElementById('chart-buy-combined'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: '買取金額', data: buyAmtData, backgroundColor: 'rgba(201,169,110,0.8)', yAxisID: 'yAmt' },
+        { label: '買取件数', data: buyCountData, type: 'line', borderColor: '#5b4fcf', backgroundColor: 'rgba(91,79,207,0.15)', fill: true, tension: 0.3, yAxisID: 'yCnt', pointRadius: 4 },
+      ]
+    },
+    options: {
+      responsive: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { labels: { color: '#555' } } },
+      scales: {
+        x: { ticks: { color: '#888', font: { size: 10 } }, grid: { color: '#ebebeb' } },
+        yAmt: { position: 'left', ticks: { color: '#888', callback: v => '¥' + v.toLocaleString() }, grid: { color: '#ebebeb' } },
+        yCnt: { position: 'right', ticks: { color: '#5b4fcf', stepSize: 1 }, grid: { drawOnChartArea: false } }
+      }
+    }
+  });
+
+  // 月次買取推移
+  const mLabels = SC_MONTHS.map(m => m.label);
+  const mBuyCount = SC_MONTHS.map(m => Object.values(m.days).reduce((s, d) => s + (d.buy_count || 0), 0));
+  const mBuyAmt = SC_MONTHS.map(m => Object.values(m.days).reduce((s, d) => s + (d.purchase_amount || 0), 0));
+  destroyChart('monthly-purchase');
+  charts['monthly-purchase'] = new Chart(document.getElementById('chart-monthly-purchase'), {
+    type: 'bar',
+    data: {
+      labels: mLabels,
+      datasets: [
+        { label: '買取金額', data: mBuyAmt, backgroundColor: 'rgba(30,58,95,0.8)', yAxisID: 'y' },
+        { label: '買取件数', data: mBuyCount, type: 'line', borderColor: '#5b4fcf', backgroundColor: 'transparent', yAxisID: 'y2' },
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#555' } } },
+      scales: {
+        x: { ticks: { color: '#888' }, grid: { color: '#ebebeb' } },
+        y: { ticks: { color: '#666', callback: v => '¥' + v.toLocaleString() }, grid: { color: '#ebebeb' }, position: 'left' },
+        y2: { ticks: { color: '#5b4fcf' }, grid: { display: false }, position: 'right' }
+      }
+    }
+  });
+}
+
+// ============ STAFF ============
+function renderStaff(m, monthIdx) {
+  const staffNames = new Set();
+  Object.values(m.days).forEach(d => Object.keys(d.staff || {}).forEach(n => staffNames.add(n)));
+  const names = [...staffNames];
+  const staffTotals = {};
+  names.forEach(n => staffTotals[n] = 0);
+  Object.values(m.days).forEach(d => {
+    Object.entries(d.staff || {}).forEach(([n, v]) => {
+      staffTotals[n] = (staffTotals[n] || 0) + (v.listings || 0);
+    });
+  });
+
+  // カードに累計表示（最新日のcumulative）
+  const cumulative = m.staff_listings || {};
+  const totalListings = Object.values(cumulative).reduce((a, b) => a + b, 0) || Object.values(staffTotals).reduce((a, b) => a + b, 0);
+
+  document.getElementById('staff-cards').innerHTML = [
+    { label: '月間出品数合計', value: totalListings + '点', sub: '累計' },
+    ...names.map((n, i) => ({ label: n, value: (cumulative[n] || staffTotals[n] || 0) + '点', sub: '今月累計' }))
+  ].map(c => `<div class="card"><div class="label">${c.label}</div><div class="value">${c.value}</div><div class="sub">${c.sub}</div></div>`).join('');
+
+  // 月次スタッフ比較
+  const mLabels = SC_MONTHS.map(m => m.label);
+  const staffDatasets = names.map((name, ni) => {
+    const data = SC_MONTHS.map(month => {
+      const cum = month.staff_listings || {};
+      if (cum[name] != null) return cum[name];
+      return Object.values(month.days).reduce((s, d) => s + ((d.staff || {})[name]?.listings || 0), 0);
+    });
+    return {
+      label: name,
+      data,
+      backgroundColor: `${SC_STAFF_COLORS[ni % SC_STAFF_COLORS.length]}bb`,
+      borderColor: SC_STAFF_COLORS[ni % SC_STAFF_COLORS.length],
+      borderWidth: 2
+    };
+  });
+
+  destroyChart('staff-monthly');
+  charts['staff-monthly'] = new Chart(document.getElementById('chart-staff-monthly'), {
+    type: 'bar',
+    data: { labels: mLabels, datasets: staffDatasets },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#555' } } },
+      scales: {
+        x: { ticks: { color: '#888' }, grid: { color: '#ebebeb' } },
+        y: { ticks: { color: '#888' }, grid: { color: '#ebebeb' } }
+      }
+    }
+  });
+
+  // 日次スタッフ出品
+  const days = Object.keys(m.days).sort((a, b) => parseInt(a) - parseInt(b));
+  const labels = days.map(d => m.days[d].weekday ? `${d}(${m.days[d].weekday})` : d);
+  const dailyDatasets = names.map((name, ni) => ({
+    label: name,
+    data: days.map(d => (m.days[d].staff || {})[name]?.listings || 0),
+    backgroundColor: `${SC_STAFF_COLORS[ni % SC_STAFF_COLORS.length]}bb`,
+    stack: 'a'
+  }));
+
+  destroyChart('staff-daily');
+  charts['staff-daily'] = new Chart(document.getElementById('chart-staff-daily'), {
+    type: 'bar',
+    data: { labels, datasets: dailyDatasets },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#555' } } },
+      scales: {
+        x: { stacked: true, ticks: { color: '#888', font: { size: 10 } }, grid: { color: '#ebebeb' } },
+        y: { stacked: true, ticks: { color: '#888' }, grid: { color: '#ebebeb' } }
+      }
+    }
+  });
+}
+
+// ============ TABS ============
+function showTab(name) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ============ START ============
+init();
+</script>
+</body>
+</html>
