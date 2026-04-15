@@ -254,7 +254,7 @@ tbody tr:hover { background: #fafafa; }
     </div>
   </div>
   <div class="panel" style="margin-top:16px">
-    <h3>低単価在庫（¥5,000以下）— 業者まとめ売り候補</h3>
+    <h3>低単価在庫（¥2,000以下）— 業者まとめ売り候補</h3>
     <div id="low-price-note" style="color:var(--text2);font-size:13px;margin-bottom:12px"></div>
     <table class="data-table" id="low-price-table">
       <thead><tr><th>商品名</th><th>ブランド</th><th>販売価格</th><th>原価</th></tr></thead>
@@ -3519,7 +3519,7 @@ function renderInventory() {
   }
   const inv = SC_INVENTORY;
   const s = inv.summary;
-  const lowItems = (inv.items || []).filter(i => i.price <= 5000);
+  const lowItems = (inv.items || []).filter(i => i.price <= 2000);
 
   // カード
   const cards = [
@@ -3528,7 +3528,7 @@ function renderInventory() {
     { label: '原価合計', value: yen(s.total_cost), sub: `平均原価 ${yen(s.avg_cost)}`, cls: '' },
     { label: '含み粗利', value: yen(s.gross_profit), sub: pct(s.total_price > 0 ? s.gross_profit/s.total_price*100 : 0), cls: 'green' },
     { label: '平均販売価格', value: yen(s.avg_price), sub: '全在庫平均', cls: '' },
-    { label: '低単価在庫', value: lowItems.length + '件', sub: `全体の ${Math.round(lowItems.length/s.total_items*100)}%（¥5,000以下）`, cls: lowItems.length > 200 ? 'red' : '' },
+    { label: '低単価在庫', value: lowItems.length + '件', sub: `全体の ${Math.round(lowItems.length/s.total_items*100)}%（¥2,000以下）`, cls: lowItems.length > 100 ? 'red' : '' },
   ];
   document.getElementById('inventory-cards').innerHTML = cards.map(c => `
     <div class="card ${c.cls}">
@@ -3573,7 +3573,7 @@ function renderInventory() {
 
   // 低単価一覧
   document.getElementById('low-price-note').textContent =
-    `¥5,000以下の在庫が ${lowItems.length}件（¥${lowItems.reduce((s,i)=>s+i.price,0).toLocaleString()}）あります。業者まとめ売りを検討してください。`;
+    `¥2,000以下の在庫が ${lowItems.length}件（¥${lowItems.reduce((s,i)=>s+i.price,0).toLocaleString()}）あります。業者まとめ売りを検討してください。`;
   const tbody = document.querySelector('#low-price-table tbody');
   tbody.innerHTML = lowItems.slice(0,50).map(i => `
     <tr>
