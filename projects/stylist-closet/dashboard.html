@@ -2747,6 +2747,8 @@ function renderSummary(m, idx) {
 
   // サマリーカード
   const totalSales = Object.values(m.days).reduce((s, d) => s + (d.total_sales || 0), 0);
+  const netSales = Object.values(m.days).reduce((s, d) => s + (d.net_sales || 0), 0);
+  const storeSales = Object.values(m.days).reduce((s, d) => s + (d.store_sales || 0), 0);
   const netItems = Object.values(m.days).reduce((s, d) => s + (d.net_items || 0), 0);
   const storeItems = Object.values(m.days).reduce((s, d) => s + (d.store_items || 0), 0);
   const totalItems = netItems + storeItems;
@@ -2777,8 +2779,13 @@ function renderSummary(m, idx) {
   const shimanoL = staffL['島野'] || 0;
   const staffSub = (kikuchiL > 0 || shimanoL > 0) ? `菊池${kikuchiL} / 島野${shimanoL}` : '—';
 
+  const prevNetSales = prev ? Object.values(prev.days).reduce((s, d) => s + (d.net_sales || 0), 0) : null;
+  const prevStoreSales = prev ? Object.values(prev.days).reduce((s, d) => s + (d.store_sales || 0), 0) : null;
+
   const cardsData = [
     { label: '月間売上', value: yen(totalSales), sub: prevTotal != null ? `前月比 ${diff(totalSales, prevTotal).replace(/<[^>]+>/g, '')}` : '—', cls: '' },
+    { label: 'EC売上', value: yen(netSales), sub: prevNetSales != null ? `前月比 ${diff(netSales, prevNetSales).replace(/<[^>]+>/g, '')} / ${netItems}点` : `${netItems}点`, cls: 'blue' },
+    { label: '店頭売上', value: yen(storeSales), sub: prevStoreSales != null ? `前月比 ${diff(storeSales, prevStoreSales).replace(/<[^>]+>/g, '')} / ${storeItems}点` : `${storeItems}点`, cls: '' },
     forecast > 0 ? { label: '月末予測(売上)', value: yen(forecast), sub: `日販 ${yen(Math.round(avgDaily))}ペース`, cls: 'blue' } : null,
     { label: '今月の出品数', value: totalListings + '点', sub: staffSub, cls: totalListings >= listingsTarget ? 'green' : '' },
     listingsForecast > 0 ? { label: '月末出品予測', value: listingsForecast + '点', sub: `目標${listingsTarget}点 (${listingsRate}%)`, cls: listingsForecast >= listingsTarget ? 'green' : listingsForecast >= listingsTarget * 0.8 ? 'blue' : 'red' } : null,
