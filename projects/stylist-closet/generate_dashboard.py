@@ -1104,13 +1104,22 @@ function renderPL(m) {{
   const opexRows = Object.entries(catLabels).map(([key, label]) => {{
     const cat = planOpex[key] || {{}};
     const items = cat.items || {{}};
-    const catTotal = cat.total || 0;
+    const planCatTotal = cat.total || 0;
+    // 実績: fixedCostsからカテゴリ内の各項目を合算
+    const actCatTotal = Object.keys(items).reduce((s, k) => s + (fixedCosts[k] || 0), 0);
     const itemRows = Object.entries(items)
       .filter(([,v]) => v > 0)
-      .map(([k,v]) => `<tr><td class="indent" style="padding-left:32px;color:var(--text2)">${{k}}</td><td>${{yen(v)}}</td><td>—</td><td></td></tr>`)
-      .join('');
+      .map(([k,v]) => {{
+        const actV = fixedCosts[k] || 0;
+        return `<tr>
+          <td class="indent" style="padding-left:32px;color:var(--text2)">${{k}}</td>
+          <td>${{yen(v)}}</td>
+          <td style="color:${{actV>0?'var(--text)':'var(--text2)'}}">${{actV>0?yen(actV):'—'}}</td>
+          <td></td>
+        </tr>`;
+      }}).join('');
     return `
-      <tr style="background:#f5f7fa"><td class="indent" style="font-weight:600;color:#1e3a5f">${{label}}</td><td>${{yen(catTotal)}}</td><td>—</td><td style="color:var(--text2)">${{pct(actualSales>0?catTotal/actualSales*100:0)}}</td></tr>
+      <tr style="background:#f5f7fa"><td class="indent" style="font-weight:600;color:#1e3a5f">${{label}}</td><td>${{yen(planCatTotal)}}</td><td style="font-weight:600">${{actCatTotal>0?yen(actCatTotal):'—'}}</td><td style="color:var(--text2)">${{pct(actualSales>0?actCatTotal/actualSales*100:0)}}</td></tr>
       ${{itemRows}}`;
   }}).join('');
   const planOpexTotal = Object.values(planOpex).reduce((s,c)=>s+(c.total||0),0);
