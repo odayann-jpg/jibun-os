@@ -1,0 +1,1996 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>吉祥寺ブランド古着・ブランド買取 | スタイリストクローゼット</title>
+  <meta name="description" content="吉祥寺のブランド古着買取・販売店「スタイリストクローゼット」。プロのスタイリストがブランドバッグ・古着・洋服を高価買取。LINE査定・店頭持ち込み・宅配買取に対応。査定・キャンセル無料。" />
+  <meta name="keywords" content="吉祥寺,ブランド買取,ブランド古着,古着買取,古着屋,吉祥寺買取,ブランド古着買取,スタイリスト,高価買取" />
+
+  <link rel="canonical" href="https://stylistcloset.jp/kaitori" />
+
+  <meta property="og:title" content="吉祥寺ブランド古着・ブランド買取 | スタイリストクローゼット" />
+  <meta property="og:description" content="プロのスタイリストが目利きするブランド古着買取。LINE査定・店頭・宅配に対応。吉祥寺駅近。" />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* === DESIGN TOKENS === */
+    :root {
+      --bg:      #FFFFFF;
+      --surface: #F6F6F6;
+      --ink:     #1A1A1A;
+      --accent:  #9B7A4F;
+      --muted:   #767676;
+      --rule:    #E2E2E2;
+      --line-green: #06C755;
+
+      --font: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN', Meiryo, sans-serif;
+
+      --sp-xs: 0.5rem;
+      --sp-sm: 1rem;
+      --sp-md: 2rem;
+      --sp-lg: 4rem;
+      --sp-xl: 6rem;
+
+      --r: 8px;
+    }
+
+    /* === RESET === */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font);
+      font-weight: 400;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; width: 100%; object-fit: cover; }
+    a { color: inherit; text-decoration: none; }
+
+    /* === LAYOUT === */
+    .wrap {
+      width: min(100%, 1200px);
+      margin-inline: auto;
+      padding-inline: clamp(1.25rem, 5vw, 4rem);
+    }
+    .wrap--narrow {
+      width: min(100%, 760px);
+      margin-inline: auto;
+      padding-inline: clamp(1.25rem, 5vw, 4rem);
+    }
+    hr.divider { border: none; border-top: 1px solid var(--rule); }
+
+    /* === TYPOGRAPHY === */
+    .label {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .section-title {
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: 0.02em;
+    }
+    .section-sub {
+      font-size: clamp(0.875rem, 1.5vw, 1rem);
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* === BUTTONS === */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1rem 2.25rem;
+      font-family: var(--font);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      border-radius: 50px;
+      transition: opacity 0.18s, background 0.18s, transform 0.18s;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn--dark  { background: var(--ink); color: #fff; }
+    .btn--dark:hover { opacity: 0.82; }
+    .btn--line  { background: var(--line-green); color: #fff; }
+    .btn--line:hover { opacity: 0.88; }
+    .btn--ghost {
+      background: transparent;
+      color: var(--ink);
+      border: 2px solid var(--ink);
+    }
+    .btn--ghost:hover { background: var(--ink); color: #fff; }
+    .btn svg { width: 20px; height: 20px; fill: currentColor; flex-shrink: 0; }
+
+    /* === NAVIGATION === */
+    .nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem clamp(1.25rem, 5vw, 4rem);
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+    .nav.scrolled { border-bottom-color: var(--rule); }
+
+    .nav__logo {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .nav__logo-en {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      line-height: 1;
+    }
+    .nav__logo-ja {
+      font-size: 0.625rem;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+    }
+    .nav__links {
+      display: flex;
+      gap: 1.75rem;
+      list-style: none;
+      align-items: center;
+    }
+    .nav__links a {
+      font-size: 0.8125rem;
+      font-weight: 400;
+      color: var(--muted);
+      transition: color 0.18s;
+    }
+    .nav__links a:hover { color: var(--ink); }
+    .nav__links .btn { padding: 0.5rem 1.25rem; font-size: 0.8125rem; }
+    .nav__hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .nav__hamburger span { display: block; width: 22px; height: 1.5px; background: var(--ink); }
+
+    /* === HERO === */
+    .hero {
+      min-height: 88svh;
+      padding-top: 5rem;
+      display: flex;
+      align-items: center;
+      background: #111 url('images/hero.jpg') center/cover no-repeat;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.2) 100%);
+      pointer-events: none;
+    }
+    .hero__body {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: var(--sp-lg) clamp(1.25rem, 5vw, 4rem);
+      max-width: 700px;
+    }
+    .hero__eyebrow {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.25rem;
+    }
+    .hero__title {
+      font-size: clamp(2.25rem, 5vw, 4rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      color: #fff;
+      margin-bottom: 1.25rem;
+    }
+    .hero__title small {
+      display: block;
+      font-size: clamp(1rem, 1.8vw, 1.25rem);
+      font-weight: 400;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 0.04em;
+      margin-top: 0.75rem;
+    }
+    .hero__lead {
+      font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+      line-height: 1.9;
+      color: rgba(255,255,255,0.65);
+      max-width: 36ch;
+      margin-bottom: var(--sp-md);
+    }
+    .hero__actions {
+      display: flex;
+      gap: var(--sp-sm);
+      flex-wrap: wrap;
+    }
+    .hero__actions .btn--ghost {
+      color: #fff;
+      border-color: rgba(255,255,255,0.4);
+    }
+    .hero__actions .btn--ghost:hover {
+      background: #fff;
+      color: var(--ink);
+      border-color: #fff;
+    }
+    .hero__img {
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 480px;
+    }
+    .hero__img-label {
+      font-size: 0.6875rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--rule);
+      text-align: center;
+    }
+
+    /* === TAGS === */
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding: 1.25rem clamp(1.25rem, 5vw, 4rem);
+      border-top: 1px solid var(--rule);
+    }
+    .tag {
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      padding: 0.3rem 0.8rem;
+      border: 1px solid var(--rule);
+      border-radius: 100px;
+      color: var(--muted);
+    }
+
+    /* === SECTION HEADER === */
+    .sec-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: var(--sp-md);
+      margin-bottom: var(--sp-lg);
+    }
+    .sec-header__left { display: flex; flex-direction: column; gap: 0.5rem; }
+
+    /* === FEATURE CARDS === */
+    .features { background: var(--surface); padding: var(--sp-xl) 0; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+    .feat {
+      background: #fff;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.625rem;
+    }
+    .feat__num {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+    }
+    .feat__title {
+      font-size: 1.0625rem;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+    .feat__body {
+      font-size: 0.8125rem;
+      line-height: 1.85;
+      color: var(--muted);
+      margin-top: auto;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--rule);
+    }
+
+    /* === FLOW === */
+    .flow { padding: var(--sp-xl) 0; }
+    .flow-tabs {
+      display: flex;
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+      border-radius: var(--r);
+      overflow: hidden;
+      margin-bottom: var(--sp-md);
+    }
+    .flow-tab {
+      flex: 1;
+      padding: 0.875rem 1rem;
+      background: var(--surface);
+      font-family: var(--font);
+      font-size: 0.875rem;
+      font-weight: 400;
+      color: var(--muted);
+      cursor: pointer;
+      border: none;
+      transition: background 0.18s, color 0.18s;
+      text-align: center;
+    }
+    .flow-tab.active { background: var(--ink); color: #fff; font-weight: 500; }
+    .flow-panel { display: none; }
+    .flow-panel.active { display: block; }
+    .flow-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+    .step {
+      background: #fff;
+      padding: 2rem 1.5rem;
+    }
+    .step__num {
+      font-size: 2.25rem;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--rule);
+      margin-bottom: 0.875rem;
+    }
+    .step__title {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      line-height: 1.4;
+    }
+    .step__body {
+      font-size: 0.8125rem;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+
+    /* === FLOW EXTRAS === */
+    .flow-lead {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--muted);
+      border-left: 3px solid var(--accent);
+      padding: 0.75rem 1.25rem;
+      margin-bottom: var(--sp-md);
+      background: var(--surface);
+      border-radius: 0 var(--r) var(--r) 0;
+    }
+    .step__you,
+    .step__shop {
+      display: inline-block;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      border-radius: 100px;
+      margin-bottom: 0.5rem;
+    }
+    .step__you  { background: #EBF4FF; color: #3B7DD8; }
+    .step__shop { background: #FFF4E8; color: #A8631A; }
+    .step__tips {
+      margin-top: 0.75rem;
+      padding-left: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.375rem;
+    }
+    .step__tips li {
+      font-size: 0.8125rem;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+    .step__tips strong { color: var(--ink); font-weight: 500; }
+    .flow-cta {
+      margin-top: var(--sp-md);
+      display: flex;
+      justify-content: center;
+    }
+    .flow-cta .btn { padding: 1rem 2.5rem; font-size: 0.9375rem; }
+
+    /* === BRANDS === */
+    .brands { background: #3C3C3C; padding: var(--sp-xl) 0; }
+    .brands .label { color: rgba(255,255,255,0.35); }
+    .brands .section-title { color: #fff; }
+    .brands-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.1);
+      margin-top: var(--sp-md);
+    }
+    .brand-item {
+      padding: 1.25rem 1rem;
+    }
+    .brand-item__name {
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: #fff;
+      letter-spacing: 0.04em;
+    }
+    .brand-item__cat {
+      font-size: 0.625rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-top: 3px;
+    }
+    .brands-note {
+      margin-top: var(--sp-md);
+      font-size: 0.8125rem;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.04em;
+    }
+
+    /* === CASES === */
+    .cases { padding: var(--sp-xl) 0; }
+    .cases-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+    .case {
+      background: #fff;
+      padding: 2rem 1.5rem;
+    }
+    .case__brand {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.375rem;
+    }
+    .case__item {
+      font-size: 1.0625rem;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 0.375rem;
+    }
+    .case__cond {
+      font-size: 0.8125rem;
+      color: var(--muted);
+      margin-bottom: var(--sp-sm);
+    }
+    .case__price {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1;
+    }
+    .case__price span {
+      font-size: 0.8125rem;
+      font-weight: 400;
+      color: var(--muted);
+      margin-left: 0.25rem;
+    }
+    .cases-note {
+      margin-top: var(--sp-sm);
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* === VOICES === */
+    .voices { background: var(--surface); padding: var(--sp-xl) 0; }
+    .voices-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--sp-sm);
+      margin-top: var(--sp-md);
+    }
+    .voice {
+      background: #fff;
+      border: 1px solid var(--rule);
+      border-radius: var(--r);
+      padding: 1.5rem;
+    }
+    .voice__stars { color: var(--accent); font-size: 0.875rem; margin-bottom: 0.75rem; }
+    .voice__text {
+      font-size: 0.875rem;
+      line-height: 1.85;
+      color: var(--ink);
+      margin-bottom: var(--sp-sm);
+    }
+    .voice__author { font-size: 0.75rem; color: var(--muted); }
+    .voice__method {
+      display: inline-block;
+      margin-top: 0.375rem;
+      font-size: 0.625rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      border: 1px solid var(--rule);
+      border-radius: 100px;
+      color: var(--muted);
+    }
+
+    /* === INSTAGRAM === */
+    .instagram { padding: var(--sp-xl) 0; background: var(--surface); }
+    .instagram-inner {
+      text-align: center;
+    }
+    .instagram-handle {
+      font-size: 0.8125rem;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      margin-bottom: var(--sp-sm);
+    }
+    .instagram-title {
+      font-size: clamp(1.375rem, 2.5vw, 1.75rem);
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+    .instagram-desc {
+      font-size: 0.9375rem;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: var(--sp-md);
+    }
+    .btn--instagram {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+      color: #fff;
+      padding: 0.85rem 2rem;
+      border-radius: 2rem;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .btn--instagram:hover { opacity: 0.85; }
+    .btn--instagram svg { width: 20px; height: 20px; fill: #fff; flex-shrink: 0; }
+
+    /* === FAQ === */
+    .faq { padding: var(--sp-xl) 0; }
+    .faq-list {
+      border: 1px solid var(--rule);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+    .faq-item { border-bottom: 1px solid var(--rule); }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      width: 100%;
+      padding: 1.25rem 1.5rem;
+      background: #fff;
+      border: none;
+      font-family: var(--font);
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: var(--ink);
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.18s;
+      line-height: 1.5;
+    }
+    .faq-q:hover { background: var(--surface); }
+    .faq-q::before {
+      content: 'Q';
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+    .faq-toggle {
+      width: 20px;
+      height: 20px;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .faq-toggle::before,
+    .faq-toggle::after {
+      content: '';
+      position: absolute;
+      background: var(--muted);
+      top: 50%; left: 50%;
+      transition: transform 0.22s, opacity 0.22s;
+    }
+    .faq-toggle::before { width: 12px; height: 1.5px; transform: translate(-50%,-50%); }
+    .faq-toggle::after  { width: 1.5px; height: 12px; transform: translate(-50%,-50%); }
+    .faq-item.open .faq-toggle::after { opacity: 0; transform: translate(-50%,-50%) rotate(90deg); }
+    .faq-a {
+      display: none;
+      padding: 0 1.5rem 1.25rem;
+      background: #fff;
+    }
+    .faq-item.open .faq-a { display: block; }
+    .faq-a p {
+      font-size: 0.875rem;
+      line-height: 1.9;
+      color: var(--muted);
+    }
+    .faq-a p::before {
+      content: 'A. ';
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    /* === STYLISTS === */
+    .stylists { padding: var(--sp-xl) 0; background: #fff; }
+    .stylists-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-lg);
+      margin-top: var(--sp-lg);
+    }
+    .stylist-card { text-align: center; }
+    .stylist-card__photo {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      object-position: top;
+      border-radius: var(--r);
+      display: block;
+      background: var(--surface);
+    }
+    .stylist-card__name {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-top: 1rem;
+      letter-spacing: 0.05em;
+    }
+    .stylists-caption {
+      text-align: center;
+      margin-top: var(--sp-md);
+      font-size: 0.9375rem;
+      line-height: 1.85;
+      color: var(--muted);
+    }
+    @media (max-width: 640px) {
+      .stylists-grid { gap: var(--sp-md); }
+    }
+
+    /* === ABOUT === */
+    .about { padding: var(--sp-xl) 0; background: #fff; }
+    .about-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-lg);
+      align-items: center;
+    }
+    .about__label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .about__title {
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.01em;
+    }
+    .about__body {
+      font-size: 0.9375rem;
+      line-height: 2;
+      color: #444;
+    }
+    .about__body p + p { margin-top: 1.25rem; }
+    .about__img {
+      border-radius: var(--r);
+      overflow: hidden;
+      aspect-ratio: 4/5;
+      background: var(--surface);
+    }
+    .about__img img { width: 100%; height: 100%; object-fit: cover; }
+    @media (max-width: 768px) {
+      .about-inner { grid-template-columns: 1fr; }
+      .about__img { aspect-ratio: 16/9; order: -1; }
+    }
+
+    /* === TRUST === */
+    .trust { background: var(--surface); padding: var(--sp-xl) 0; }
+    .trust-stats {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+      border-radius: var(--r);
+      overflow: hidden;
+      margin-bottom: var(--sp-md);
+    }
+    .trust-stat {
+      background: #fff;
+      padding: 1.75rem 1.5rem;
+    }
+    .trust-stat__val {
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 0.375rem;
+    }
+    .trust-stat__label {
+      font-size: 0.8125rem;
+      color: var(--muted);
+    }
+    .trust-body {
+      font-size: 0.9375rem;
+      line-height: 1.9;
+      color: var(--ink);
+    }
+    .trust-body strong { font-weight: 700; }
+    .trust-permit {
+      margin-top: var(--sp-md);
+      font-size: 0.8125rem;
+      color: var(--muted);
+      border-top: 1px solid var(--rule);
+      padding-top: var(--sp-sm);
+    }
+
+    /* === MAP === */
+    .map-section { padding: var(--sp-xl) 0; }
+    .map-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+    .map-embed { background: var(--surface); min-height: 340px; position: relative; }
+    .map-embed iframe { width: 100%; height: 100%; min-height: 340px; border: 0; display: block; }
+    .map-info {
+      background: #fff;
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .map-info__row { display: flex; flex-direction: column; gap: 0.25rem; }
+    .map-info__key {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .map-info__val {
+      font-size: 0.9375rem;
+      line-height: 1.7;
+    }
+    .map-info__actions { display: flex; flex-direction: column; gap: 0.625rem; margin-top: 0.5rem; }
+
+    /* === FINAL CTA === */
+    .cta-section { padding: var(--sp-xl) 0; }
+    .cta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+    .cta-col {
+      background: #fff;
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .cta-col--line { background: #F0FAF2; }
+    .cta-col__num {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+    }
+    .cta-col__title {
+      font-size: 1.375rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .cta-col__note {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+    .cta-col__desc {
+      font-size: 0.8125rem;
+      line-height: 1.85;
+      color: var(--muted);
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--rule);
+    }
+    .cta-col__action { margin-top: auto; padding-top: 0.75rem; }
+
+    /* === FOOTER === */
+    .footer { background: #3C3C3C; padding: var(--sp-xl) 0 var(--sp-lg); }
+    .footer__top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: var(--sp-lg);
+      padding-bottom: var(--sp-lg);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: var(--sp-md);
+    }
+    .footer__logo {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
+    }
+    .footer__logo-ja {
+      font-size: 0.625rem;
+      letter-spacing: 0.18em;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: var(--sp-sm);
+    }
+    .footer__tagline {
+      font-size: 0.8125rem;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.4);
+    }
+    .footer__nav-title {
+      font-size: 0.5625rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 0.875rem;
+    }
+    .footer__nav-list { list-style: none; display: flex; flex-direction: column; gap: 0.625rem; }
+    .footer__nav-list a {
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.55);
+      transition: color 0.18s;
+    }
+    .footer__nav-list a:hover { color: #fff; }
+    .footer__bottom { display: flex; align-items: center; justify-content: space-between; }
+    .footer__copy { font-size: 0.6875rem; color: rgba(255,255,255,0.2); letter-spacing: 0.08em; }
+    .footer__sns { display: flex; gap: var(--sp-sm); }
+    .footer__sns a {
+      font-size: 0.6875rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      transition: color 0.18s;
+    }
+    .footer__sns a:hover { color: rgba(255,255,255,0.8); }
+
+    /* === PAIN POINTS === */
+    .pain { padding: var(--sp-xl) 0; }
+    .pain-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+    .pain-item {
+      background: #fff;
+      padding: 1.75rem 1.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .pain-item__check {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #FFF3E0;
+      border: 1.5px solid var(--accent);
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+    }
+    .pain-item__text {
+      font-size: 0.9375rem;
+      line-height: 1.7;
+      color: var(--ink);
+    }
+    .pain-answer {
+      margin-top: var(--sp-lg);
+      background: #3C3C3C;
+      border-radius: var(--r);
+      padding: var(--sp-lg) clamp(1.5rem, 5vw, 4rem);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-lg);
+      align-items: center;
+    }
+    .pain-answer__heading {
+      font-size: clamp(1.375rem, 2.5vw, 2rem);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.35;
+    }
+    .pain-answer__heading em {
+      font-style: normal;
+      color: #FFD166;
+    }
+    .pain-answer__body {
+      font-size: 0.9375rem;
+      line-height: 1.85;
+      color: rgba(255,255,255,0.7);
+    }
+    .pain-answer__body strong { color: #fff; font-weight: 500; }
+
+    /* === STORE PHOTOS === */
+    .store-photos { padding: var(--sp-xl) 0; background: var(--surface); }
+    .photos-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: 260px 260px;
+      gap: 4px;
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+    .photos-grid__item {
+      overflow: hidden;
+      position: relative;
+    }
+    .photos-grid__item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .photos-grid__item:hover img { transform: scale(1.03); }
+    .photos-grid__item--tall { grid-row: 1 / 3; }
+
+    /* === REVEAL ANIMATION === */
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+      .reveal.visible { opacity: 1; transform: none; }
+    }
+
+    /* === RESPONSIVE: PAIN / PHOTOS === */
+    @media (max-width: 960px) {
+      .pain-grid { grid-template-columns: 1fr 1fr; }
+      .pain-answer { grid-template-columns: 1fr; }
+      .photos-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 200px 200px 200px;
+      }
+      .photos-grid__item--tall { grid-row: auto; }
+    }
+    @media (max-width: 640px) {
+      .pain-grid { grid-template-columns: 1fr; }
+      .photos-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(5, 220px);
+      }
+    }
+
+    /* === RESPONSIVE: TABLET (960px) === */
+    @media (max-width: 960px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero__img { min-height: 280px; order: -1; }
+      .hero__body { padding-block: 2.5rem; min-height: auto; }
+
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      .flow-steps { grid-template-columns: 1fr 1fr; }
+      .brands-grid { grid-template-columns: repeat(2, 1fr); }
+      .cases-grid { grid-template-columns: 1fr; }
+      .voices-grid { grid-template-columns: 1fr; }
+      .cta-grid { grid-template-columns: 1fr; }
+      .map-inner { grid-template-columns: 1fr; }
+
+      .trust-stats { grid-template-columns: 1fr; }
+      .footer__top { grid-template-columns: 1fr; gap: 2rem; }
+    }
+
+    /* === RESPONSIVE: MOBILE (640px) === */
+    @media (max-width: 640px) {
+      html { font-size: 15px; }
+
+      .nav__links { display: none; }
+      .nav__hamburger { display: flex; }
+
+      .hero__title { font-size: 1.875rem; }
+      .hero__lead { max-width: none; font-size: 0.9375rem; }
+      .hero__actions { flex-direction: column; align-items: stretch; }
+      .hero__actions .btn { justify-content: center; }
+
+      .sec-header { flex-direction: column; align-items: flex-start; }
+      .features-grid { grid-template-columns: 1fr; }
+      .flow-steps { grid-template-columns: 1fr; }
+      .brands-grid { grid-template-columns: 1fr 1fr; }
+      .cases-grid { grid-template-columns: 1fr; }
+      .voices-grid { grid-template-columns: 1fr; }
+      .trust-stats { grid-template-columns: 1fr; }
+      .cta-grid { grid-template-columns: 1fr; }
+
+      .footer__bottom { flex-direction: column; align-items: flex-start; gap: var(--sp-sm); }
+
+      /* タブのラベルを短く */
+      .flow-tab { font-size: 0.8125rem; padding: 0.75rem 0.5rem; }
+    }
+
+    /* === OMOI === */
+    .omoi { padding: var(--sp-xl) 0; background: var(--surface); }
+    .omoi-body { margin-top: var(--sp-md); display: flex; flex-direction: column; gap: 1.5rem; }
+    .omoi-body p { font-size: 1rem; line-height: 2.1; color: #333; text-align: justify; }
+
+    /* === CASES SCROLL === */
+    .cases-scroll {
+      display: flex; gap: 1rem;
+      overflow-x: auto; padding-bottom: 1rem;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+    .cases-scroll::-webkit-scrollbar { height: 4px; }
+    .cases-scroll::-webkit-scrollbar-track { background: var(--rule); border-radius: 2px; }
+    .cases-scroll::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+    .cases-scroll .case { min-width: 260px; scroll-snap-align: start; flex-shrink: 0; }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <header>
+    <nav class="nav" id="nav">
+      <a href="index.html" class="nav__logo">
+        <span class="nav__logo-en">Stylist Closet</span>
+        <span class="nav__logo-ja">スタイリストクローゼット — 吉祥寺</span>
+      </a>
+      <ul class="nav__links">
+        <li><a href="#features">強み</a></li>
+        <li><a href="#flow">買取の流れ</a></li>
+        <li><a href="#brands">ブランド</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contact">アクセス</a></li>
+        <li><a href="https://lin.ee/67FUOky" class="btn btn--line" target="_blank" rel="noopener">LINE査定</a></li>
+      </ul>
+      <button class="nav__hamburger" aria-label="メニューを開く">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__body">
+      <p class="hero__eyebrow">吉祥寺 · ブランド古着 買取 / 販売</p>
+      <h1 class="hero__title">
+        眠っている服を、<br />高く買い取ります。
+      </h1>
+      <p class="hero__lead">
+        LINEで写真を送るだけ。プロのスタイリストが適正価格で査定します。
+      </p>
+      <div class="hero__actions">
+        <a href="https://lin.ee/67FUOky" class="btn btn--line" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M19.365 9.89c.5 0 .907.41.907.91s-.407.91-.907.91h-2.38v1.48h2.38c.5 0 .907.41.907.91s-.407.91-.907.91h-3.29c-.5 0-.907-.41-.907-.91V8.97c0-.5.407-.91.907-.91h3.29c.5 0 .907.41.907.91s-.407.91-.907.91h-2.38v.92h2.38zm-8.47 4.12c0 .5-.407.91-.907.91-.26 0-.487-.1-.657-.27l-2.62-3.56v2.92c0 .5-.407.91-.907.91s-.907-.41-.907-.91V8.97c0-.5.407-.91.907-.91.26 0 .487.1.657.27l2.62 3.56V8.97c0-.5.407-.91.907-.91s.907.41.907.91v5.04zm-5.6 0c0 .5-.407.91-.907.91s-.907-.41-.907-.91V8.97c0-.5.407-.91.907-.91s.907.41.907.91v5.04zm14.88-2.52c0-4.95-4.96-8.97-11.06-8.97S1.05 6.54 1.05 11.49c0 4.43 3.93 8.14 9.23 8.84.36.08.85.24.97.55.11.28.07.72.04 1l-.16 1c-.05.28-.23 1.1.97.6 1.2-.5 6.46-3.8 8.82-6.51 1.63-1.79 2.41-3.6 2.41-5.49z"/></svg>
+          LINEで写真を送るだけ
+        </a>
+        <a href="#flow" class="btn btn--ghost">買取の流れを見る</a>
+      </div>
+    </div>
+
+  </section>
+
+<div class="tag-row">
+    <span class="tag">LINE査定</span>
+    <span class="tag">店頭持ち込み</span>
+    <span class="tag">宅配買取</span>
+    <span class="tag">査定無料</span>
+    <span class="tag">キャンセルOK</span>
+    <span class="tag">吉祥寺</span>
+  </div>
+
+  <hr class="divider" />
+
+
+  
+  <hr class="divider" />
+
+
+<!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="wrap">
+      <div class="about-inner reveal">
+        <div>
+          <p class="about__label">About</p>
+          <h2 class="about__title">スタイリストクローゼット<br />吉祥寺について</h2>
+          <div class="about__body">
+            <p>スタイリストクローゼット吉祥寺は、吉祥寺東町のスタイリスト事業を展開する<strong>株式会社リフレイム</strong>が運営するブランド古着の買取・販売店です。JR・京王井の頭線 吉祥寺駅から徒歩約5分、新井ビル1Fに位置します。</p>
+            <p>メンズ・レディース・キッズのブランド古着を中心に、CHANEL、LOUIS VUITTON、Maison Margiela、Supreme などハイブランドからヴィンテージ・デザイナーズブランドまで幅広く取り扱っています。</p>
+            <p>買取においては、スタイリスト歴15年のプロが「ブランドタグ」だけでなく「今の市場で着こなされるか」という視点で一点ずつ丁寧に査定します。ブランド古着の買取がはじめての方も、安心してご相談ください。</p>
+          </div>
+        </div>
+        <div class="about__img">
+          <img src="images/exterior.jpg" alt="スタイリストクローゼット 吉祥寺 外観" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- OMOI -->
+  <section class="omoi" id="omoi">
+    <div class="wrap--narrow">
+      <div class="sec-header reveal" style="justify-content:center;text-align:center;">
+        <div>
+          <span class="label">Our Philosophy</span>
+          <h2 class="section-title" style="margin-top:0.5rem;">店の想い</h2>
+        </div>
+      </div>
+      <div class="omoi-body reveal">
+        <p>スタイリストとして15年、たくさんの服と人を見てきました。</p>
+        <p>大切に着てきた服が、ただ捨てられていく——そんな現実をずっと目にしてきました。服には、それぞれの物語がある。選んだ理由、着ていた時間、一緒にいた記憶。</p>
+        <p>だから私たちは、服の価値を正直に伝えたいと思っています。高く買い取ることだけが目的ではなく、その服が次に相応しい人へ届くこと。それがスタイリストクローゼットの仕事です。</p>
+        <p>売る服も、買う服も——ファッションを通じて、吉祥寺から新しい出会いをつくっていきます。</p>
+      </div>
+    </div>
+  </section>
+
+
+  <hr class="divider" />
+
+
+<!-- FEATURES -->
+  <section class="features" id="items">
+    <div class="wrap">
+      <div class="sec-header reveal">
+        <div class="sec-header__left">
+          <span class="label">Why Choose Us</span>
+          <h2 class="section-title">スタクロ買取 4つの強み</h2>
+        </div>
+        <p class="section-sub">メンズ・レディース・キッズのブランド古着・バッグ・シューズ・アクセサリーを買取しています</p>
+      </div>
+
+      <div class="features-grid reveal">
+
+        <div class="feat">
+          <span class="feat__num">01</span>
+          <h3 class="feat__title">スタイリストの<br />審美眼で査定</h3>
+          <p class="feat__body">
+            運営会社・株式会社リフレイムはスタイリスト事業を15年続け、何万人ものコーディネートを手がけてきました。ブランドタグだけでなく「今着こなされるか」で判断するから、眠っていた服が正当に評価されます。
+          </p>
+        </div>
+
+        <div class="feat">
+          <span class="feat__num">02</span>
+          <h3 class="feat__title">人目を気にせず<br />ゆっくり相談</h3>
+          <p class="feat__body">
+            吉祥寺の実店舗では、落ち着いた空間で一点一点丁寧に対応。「この服どうしようか迷っている」そんな相談も、ゆっくりお聞きします。
+          </p>
+        </div>
+
+        <div class="feat">
+          <span class="feat__num">03</span>
+          <h3 class="feat__title">確かな販売<br />ルートがある</h3>
+          <p class="feat__body">
+            15年で築いた販売ネットワークがあるから、買い取ったアイテムを確実に次の人へ届けられます。売れる見込みがあるから、高く買い取ることが可能です。
+          </p>
+        </div>
+
+        <div class="feat">
+          <span class="feat__num">04</span>
+          <h3 class="feat__title">LINEで写真を<br />送るだけ</h3>
+          <p class="feat__body">
+            わざわざ持ち込む前に、LINEで写真を送るだけで仮査定が可能。送料・査定・キャンセル、すべて無料。まずは気軽にご連絡ください。
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+
+  <hr class="divider" />
+
+
+<!-- CASES -->
+  <section class="cases" id="cases">
+    <div class="wrap">
+      <div class="sec-header reveal">
+        <div class="sec-header__left">
+          <span class="label">Recent Cases</span>
+          <h2 class="section-title">買取実績の一例</h2>
+        </div>
+        <p class="section-sub">← スワイプして見る</p>
+      </div>
+
+      <div class="cases-scroll reveal">
+        <div class="case">
+          <p class="case__brand">Louis Vuitton</p>
+          <h3 class="case__item">モノグラム ネヴァーフル MM</h3>
+          <p class="case__cond">状態: B（通常使用感あり）・付属品なし</p>
+          <div class="case__price">¥68,000<span>買取</span></div>
+        </div>
+        <div class="case">
+          <p class="case__brand">Moncler</p>
+          <h3 class="case__item">ダウンジャケット MAYA</h3>
+          <p class="case__cond">状態: A（ほぼ未使用）・タグあり</p>
+          <div class="case__price">¥72,000<span>買取</span></div>
+        </div>
+        <div class="case">
+          <p class="case__brand">sacai</p>
+          <h3 class="case__item">ハイブリッド ブレザー</h3>
+          <p class="case__cond">状態: B（着用感あり）</p>
+          <div class="case__price">¥28,000<span>買取</span></div>
+        </div>
+      </div>
+
+      <p class="cases-note">
+        ※ 買取価格は時期・状態・市場価格により変動します。まずはLINEでご相談ください。
+      </p>
+    </div>
+  </section>
+
+
+
+  <hr class="divider" />
+
+
+<!-- PAIN POINTS -->
+  <section class="pain" id="pain">
+    <div class="wrap">
+      <div class="sec-header reveal">
+        <div class="sec-header__left">
+          <span class="label">Does this sound familiar?</span>
+          <h2 class="section-title">こんなお悩み、ありませんか？</h2>
+        </div>
+      </div>
+
+      <div class="pain-grid reveal">
+        <div class="pain-item">
+          <span class="pain-item__check"></span>
+          <p class="pain-item__text">服が多すぎて、クローゼットが片付かない</p>
+        </div>
+        <div class="pain-item">
+          <span class="pain-item__check"></span>
+          <p class="pain-item__text">あまり着ないけど、捨てるにはもったいない服が沢山ある</p>
+        </div>
+        <div class="pain-item">
+          <span class="pain-item__check"></span>
+          <p class="pain-item__text">昔買ったブランド物。もう使わないが、捨てるのはためらわれる</p>
+        </div>
+        <div class="pain-item">
+          <span class="pain-item__check"></span>
+          <p class="pain-item__text">着ない服を「もったいない」と思いつつ、仕方なく捨てていた</p>
+        </div>
+        <div class="pain-item">
+          <span class="pain-item__check"></span>
+          <p class="pain-item__text">売りたい服はあるが、リサイクルショップに持って行くのが面倒</p>
+        </div>
+        <div class="pain-item">
+          <span class="pain-item__check"></span>
+          <p class="pain-item__text">フリマアプリは出品・梱包・発送などが面倒くさい</p>
+        </div>
+        <div class="pain-item">
+          <span class="pain-item__check"></span>
+          <p class="pain-item__text">大切にしてきた服だから、価値をわかってくれる人にきちんと見てほしい</p>
+        </div>
+      </div>
+
+      <div class="pain-answer reveal">
+        <div>
+          <p style="font-size:0.75rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:0.75rem;">Solution</p>
+          <h3 class="pain-answer__heading">
+            「高く売る力」があるから<br />
+            <em>高価買取が可能です</em>
+          </h3>
+        </div>
+        <div>
+          <p class="pain-answer__body">
+            一般的なリユース店の<strong>約6倍にあたる約6,000ブランドに対応</strong>。他社では値段が付かなかった服も、しっかり買い取れます。<br /><br />
+            LINEで写真を送るだけ。出かけなくても査定が始まります。捨てる前に、一度ご相談ください。<br /><br />
+            <span style="font-size:0.75rem;color:rgba(255,255,255,0.35);">※ お洋服の状態によって買取金額は異なります</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <hr class="divider" />
+
+
+<!-- FLOW -->
+  <section class="flow" id="flow">
+    <div class="wrap">
+      <div class="sec-header reveal">
+        <div class="sec-header__left">
+          <span class="label">How It Works</span>
+          <h2 class="section-title">買取の流れ</h2>
+        </div>
+      </div>
+
+      <div class="flow-tabs reveal">
+        <button class="flow-tab active" data-tab="line">LINE査定</button>
+        <button class="flow-tab" data-tab="store">店頭持ち込み</button>
+        <button class="flow-tab" data-tab="delivery">宅配買取</button>
+      </div>
+
+      <!-- LINE -->
+      <div class="flow-panel active reveal" id="panel-line">
+        <div class="flow-lead">
+          LINEを友だち追加して、必要事項を送るだけ。担当者が確認して1〜2営業日以内にご連絡します。
+        </div>
+        <div class="flow-steps">
+          <div class="step">
+            <div class="step__num">01</div>
+            <div class="step__you">あなたがすること</div>
+            <h3 class="step__title">LINEを友だち追加して、以下を送る</h3>
+            <p class="step__body">下のボタンから公式LINEを友だち追加して、以下の内容をメッセージで送ってください。</p>
+            <ul class="step__tips">
+              <li><strong>お名前</strong></li>
+              <li><strong>買取希望のもの・ブランド名</strong></li>
+              <li><strong>写真：角度を変えて2〜3枚</strong>（ブランドタグ・刻印・全体が分かるように。傷や汚れがあればその箇所も）</li>
+              <li><strong>いつ頃ご購入されたか</strong>（おおよそで構いません）</li>
+            </ul>
+          </div>
+          <div class="step">
+            <div class="step__num">02</div>
+            <div class="step__shop">スタクロがすること</div>
+            <h3 class="step__title">担当者が確認して査定金額をご連絡</h3>
+            <p class="step__body">担当者が写真と情報をもとに確認し、<strong>1〜2営業日以内</strong>に査定金額をLINEでお伝えします。金額に納得できなければここで終了、費用は一切かかりません。</p>
+          </div>
+          <div class="step">
+            <div class="step__num">03</div>
+            <div class="step__you">あなたがすること</div>
+            <h3 class="step__title">問題なければ品物をお持ち込み or ご郵送</h3>
+            <p class="step__body">査定金額にご納得いただけたら、品物を実際にお送りください。</p>
+            <ul class="step__tips">
+              <li><strong>店頭持ち込み</strong>：吉祥寺店へそのままお越しください（予約不要）</li>
+              <li><strong>郵送</strong>：お客様ご自身で着払いにてお送りください（送料はこちら負担）</li>
+            </ul>
+          </div>
+          <div class="step">
+            <div class="step__num">04</div>
+            <div class="step__shop">スタクロがすること</div>
+            <h3 class="step__title">実物確認 → 正式査定 → 合意で買取成立</h3>
+            <p class="step__body">実物をお預かりした際に、お品物の状態確認を行い、買取の可否および正式な査定金額をお伝えします。金額にご合意いただけた時点で買取成立となります。納得いただけない場合はそのままお返しします。キャンセル費用は一切かかりません。</p>
+          </div>
+        </div>
+        <div class="flow-cta">
+          <a href="https://lin.ee/67FUOky" class="btn btn--line" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M19.365 9.89c.5 0 .907.41.907.91s-.407.91-.907.91h-2.38v1.48h2.38c.5 0 .907.41.907.91s-.407.91-.907.91h-3.29c-.5 0-.907-.41-.907-.91V8.97c0-.5.407-.91.907-.91h3.29c.5 0 .907.41.907.91s-.407.91-.907.91h-2.38v.92h2.38zm-8.47 4.12c0 .5-.407.91-.907.91-.26 0-.487-.1-.657-.27l-2.62-3.56v2.92c0 .5-.407.91-.907.91s-.907-.41-.907-.91V8.97c0-.5.407-.91.907-.91.26 0 .487.1.657.27l2.62 3.56V8.97c0-.5.407-.91.907-.91s.907.41.907.91v5.04zm-5.6 0c0 .5-.407.91-.907.91s-.907-.41-.907-.91V8.97c0-.5.407-.91.907-.91s.907.41.907.91v5.04zm14.88-2.52c0-4.95-4.96-8.97-11.06-8.97S1.05 6.54 1.05 11.49c0 4.43 3.93 8.14 9.23 8.84.36.08.85.24.97.55.11.28.07.72.04 1l-.16 1c-.05.28-.23 1.1.97.6 1.2-.5 6.46-3.8 8.82-6.51 1.63-1.79 2.41-3.6 2.41-5.49z"/></svg>
+            LINEで査定を依頼する（無料）
+          </a>
+        </div>
+      </div>
+
+      <!-- 店頭 -->
+      <div class="flow-panel reveal" id="panel-store">
+        <div class="flow-lead">
+          予約不要。アイテムを持ってそのままお越しください。査定からお支払いまで、すべてその日に完結します。
+        </div>
+        <div class="flow-steps">
+          <div class="step">
+            <div class="step__num">01</div>
+            <div class="step__you">あなたがすること</div>
+            <h3 class="step__title">アイテムを持って来店</h3>
+            <p class="step__body">吉祥寺店の1Fにある買取カウンターへ、そのままお持ちください。予約は不要です。</p>
+            <ul class="step__tips">
+              <li>営業時間: 毎日 11:00–20:00</li>
+              <li>何点でも持ち込みOK</li>
+              <li>保証書・付属品があれば一緒に</li>
+              <li>事前にLINEで写真を送っておくとさらにスムーズ</li>
+            </ul>
+          </div>
+          <div class="step">
+            <div class="step__num">02</div>
+            <div class="step__shop">スタクロがすること</div>
+            <h3 class="step__title">スタイリストが一点ずつ査定</h3>
+            <p class="step__body">プロのスタイリストがカウンターで一点ずつ丁寧に確認。ブランド・状態・市場価値を見ながら査定します。目の前で行うので、気になることはその場で何でも聞けます。点数によってお時間をいただく場合もありますが、その場でお待ちいただいてもOK。一度お預けいただいて後でお受け取りいただくことも可能です。</p>
+          </div>
+          <div class="step">
+            <div class="step__num">03</div>
+            <div class="step__shop">スタクロがすること</div>
+            <h3 class="step__title">査定額をその場でご提示</h3>
+            <p class="step__body">査定が終わったら、すぐに金額をお伝えします。「なぜこの金額か」もご説明します。納得いただけなければお持ち帰りいただけます。キャンセル費用は一切かかりません。</p>
+          </div>
+          <div class="step">
+            <div class="step__num">04</div>
+            <div class="step__you">あなたがすること</div>
+            <h3 class="step__title">合意 → その場で現金受け取り</h3>
+            <p class="step__body">査定額に合意いただければ、その場で現金をお渡しします。手続きはシンプル、来店からお支払いまで最短30分で完結します。</p>
+          </div>
+        </div>
+        <div class="flow-cta">
+          <a href="https://maps.app.goo.gl/6kiXxMtHBYWzshfJ8" class="btn btn--dark" target="_blank" rel="noopener">Google マップで場所を確認</a>
+        </div>
+      </div>
+
+      <!-- 宅配 -->
+      <div class="flow-panel reveal" id="panel-delivery">
+        <div class="flow-lead">
+          箱に詰めて送るだけ。送料はこちら負担。遠方の方や、まとめて整理したい方に向いています。
+        </div>
+        <div class="flow-steps">
+          <div class="step">
+            <div class="step__num">01</div>
+            <div class="step__you">あなたがすること</div>
+            <h3 class="step__title">LINEで「宅配買取希望」と送る</h3>
+            <p class="step__body">公式LINEに、お名前と「宅配買取希望」とメッセージを送ってください。折り返し手順をご案内します。</p>
+            <ul class="step__tips">
+              <li>事前に写真を送ると仮査定もできて安心</li>
+              <li>送料はこちら負担（着払いでお送りください）</li>
+              <li>ノーブランドのアイテムは宅配での査定が難しい場合があります。まずはLINEで写真をお送りください</li>
+            </ul>
+          </div>
+          <div class="step">
+            <div class="step__num">02</div>
+            <div class="step__you">あなたがすること</div>
+            <h3 class="step__title">箱に詰めて、着払いで発送</h3>
+            <p class="step__body">手持ちのダンボール箱にアイテムを詰め、着払いで最寄りのコンビニや宅配カウンターからお送りください。送料はすべてこちら負担です。</p>
+            <ul class="step__tips">
+              <li>箱は何でもOK（スーパーのダンボールなど）</li>
+              <li>高価なアイテムは梱包前に写真を撮っておくと安心</li>
+              <li>壊れやすいものはプチプチで包む</li>
+            </ul>
+          </div>
+          <div class="step">
+            <div class="step__num">03</div>
+            <div class="step__shop">スタクロがすること</div>
+            <h3 class="step__title">到着後、スタイリストが査定してLINEで連絡</h3>
+            <p class="step__body">商品が届いたら、スタイリストが一点ずつ丁寧に査定します。3〜5営業日以内に査定額をLINEでお知らせします。金額の根拠も一緒にお伝えします。</p>
+          </div>
+          <div class="step">
+            <div class="step__num">04</div>
+            <div class="step__you">あなたがすること</div>
+            <h3 class="step__title">合意すれば振り込み、断れば無料返送</h3>
+            <p class="step__body">査定額に合意いただければ、指定の口座に振り込みます。納得いただけない場合は、着払いで全点お返しします（返送料無料）。</p>
+            <ul class="step__tips">
+              <li>振り込みは合意後2〜3営業日以内</li>
+              <li>キャンセルは連絡するだけでOK</li>
+            </ul>
+          </div>
+        </div>
+        <div class="flow-cta">
+          <a href="https://lin.ee/67FUOky" class="btn btn--line" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M19.365 9.89c.5 0 .907.41.907.91s-.407.91-.907.91h-2.38v1.48h2.38c.5 0 .907.41.907.91s-.407.91-.907.91h-3.29c-.5 0-.907-.41-.907-.91V8.97c0-.5.407-.91.907-.91h3.29c.5 0 .907.41.907.91s-.407.91-.907.91h-2.38v.92h2.38zm-8.47 4.12c0 .5-.407.91-.907.91-.26 0-.487-.1-.657-.27l-2.62-3.56v2.92c0 .5-.407.91-.907.91s-.907-.41-.907-.91V8.97c0-.5.407-.91.907-.91.26 0 .487.1.657.27l2.62 3.56V8.97c0-.5.407-.91.907-.91s.907.41.907.91v5.04zm-5.6 0c0 .5-.407.91-.907.91s-.907-.41-.907-.91V8.97c0-.5.407-.91.907-.91s.907.41.907.91v5.04zm14.88-2.52c0-4.95-4.96-8.97-11.06-8.97S1.05 6.54 1.05 11.49c0 4.43 3.93 8.14 9.23 8.84.36.08.85.24.97.55.11.28.07.72.04 1l-.16 1c-.05.28-.23 1.1.97.6 1.2-.5 6.46-3.8 8.82-6.51 1.63-1.79 2.41-3.6 2.41-5.49z"/></svg>
+            LINEから宅配買取を申し込む
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+<!-- STORE PHOTOS -->
+  <section class="store-photos" id="store">
+    <div class="wrap">
+      <div class="sec-header reveal">
+        <div class="sec-header__left">
+          <span class="label">Our Store · Kichijoji</span>
+          <h2 class="section-title">吉祥寺の実店舗</h2>
+        </div>
+        <p class="section-sub">人目を気にせず、ゆっくり相談できる空間です</p>
+      </div>
+
+      <div class="photos-grid reveal" style="grid-template-columns:1fr 1fr;grid-template-rows:360px;">
+        <div class="photos-grid__item">
+          <img src="images/exterior.jpg" alt="スタイリストクローゼット 吉祥寺 外観" loading="lazy" />
+        </div>
+        <div class="photos-grid__item">
+          <img src="images/sign-brands.jpg" alt="取扱ブランド一覧の看板" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+<!-- STYLISTS -->
+  <section class="stylists" id="stylists">
+    <div class="wrap">
+      <div class="sec-header reveal">
+        <div class="sec-header__left">
+          <span class="label">Our Stylists</span>
+          <h2 class="section-title">査定担当スタイリスト</h2>
+        </div>
+      </div>
+      <div class="stylists-grid reveal">
+        <div class="stylist-card">
+          <img src="images/stylist-kikuchi.jpg" alt="スタイリスト 菊地翔平" class="stylist-card__photo" />
+          <p class="stylist-card__name">菊地 翔平</p>
+        </div>
+        <div class="stylist-card">
+          <img src="images/stylist-shimano.jpg" alt="スタイリスト 島野淳" class="stylist-card__photo" />
+          <p class="stylist-card__name">島野 淳</p>
+        </div>
+      </div>
+      <p class="stylists-caption reveal">
+        菊地翔平、島野淳。二人のスタイリストが直接対応します。<br />
+        お持ちいただいた服のことを、一点ずつ一緒に話しながら査定します。<br />
+        大切にしてきた服だから、その思いごと、きちんと受け取ります。
+      </p>
+    </div>
+  </section>
+
+
+<!-- INSTAGRAM -->
+  <section class="instagram" id="instagram">
+    <div class="wrap">
+      <div class="instagram-inner reveal">
+        <p class="instagram-handle">@stylist_closet2601</p>
+        <h2 class="instagram-title">Instagramで最新情報をチェック</h2>
+        <p class="instagram-desc">
+          入荷アイテム・買取実績・スタイリングをInstagramで発信しています。
+        </p>
+
+        <behold-widget feed-id="6B9dL4WPU12AB6d5Ro7L"></behold-widget>
+        <script>
+          (() => {
+            const d=document,s=d.createElement("script");s.type="module";
+            s.src="https://w.behold.so/widget.js";d.head.append(s);
+          })();
+        </script>
+
+        <div style="margin-top:var(--sp-md);">
+          <a href="https://www.instagram.com/stylist_closet2601/" target="_blank" rel="noopener" class="btn--instagram">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            Instagramをフォローする
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+<!-- BRANDS -->
+  <section class="brands" id="brands">
+    <div class="wrap">
+      <span class="label">Accepted Brands</span>
+      <h2 class="section-title" style="margin-top:0.5rem;">買取対応ブランド</h2>
+
+      <div class="brands-grid reveal">
+        <div class="brand-item"><span class="brand-item__name">HERMÈS</span><span class="brand-item__cat">Maison de Couture</span></div>
+        <div class="brand-item"><span class="brand-item__name">CHANEL</span><span class="brand-item__cat">Maison de Couture</span></div>
+        <div class="brand-item"><span class="brand-item__name">Louis Vuitton</span><span class="brand-item__cat">Luxury / Leather</span></div>
+        <div class="brand-item"><span class="brand-item__name">GUCCI</span><span class="brand-item__cat">Luxury</span></div>
+        <div class="brand-item"><span class="brand-item__name">CÉLINE</span><span class="brand-item__cat">Luxury</span></div>
+        <div class="brand-item"><span class="brand-item__name">LOEWE</span><span class="brand-item__cat">Luxury / Leather</span></div>
+        <div class="brand-item"><span class="brand-item__name">Moncler</span><span class="brand-item__cat">Outerwear</span></div>
+        <div class="brand-item"><span class="brand-item__name">sacai</span><span class="brand-item__cat">Designer</span></div>
+        <div class="brand-item"><span class="brand-item__name">Acne Studios</span><span class="brand-item__cat">Contemporary</span></div>
+        <div class="brand-item"><span class="brand-item__name">Isabel Marant</span><span class="brand-item__cat">Contemporary</span></div>
+        <div class="brand-item"><span class="brand-item__name">MAISON MARGIELA</span><span class="brand-item__cat">Designer</span></div>
+        <div class="brand-item"><span class="brand-item__name">Chrome Hearts</span><span class="brand-item__cat">Accessories</span></div>
+        <div class="brand-item"><span class="brand-item__name">Supreme</span><span class="brand-item__cat">Street</span></div>
+        <div class="brand-item"><span class="brand-item__name">COMME des GARÇONS</span><span class="brand-item__cat">Designer</span></div>
+        <div class="brand-item"><span class="brand-item__name">Yohji Yamamoto</span><span class="brand-item__cat">Designer</span></div>
+        <div class="brand-item"><span class="brand-item__name">その他多数</span><span class="brand-item__cat">Inquire via LINE</span></div>
+      </div>
+
+      <p class="brands-note reveal">
+        約6,000ブランドに対応（一般的なリユース店の約6倍）。掲載以外のブランドもLINEでご相談ください。ノーブランドでもスタイリストの目にかなった一点は高価買取の対象です。
+      </p>
+    </div>
+  </section>
+
+
+
+  <hr class="divider" />
+
+
+<!-- VOICES -->
+  <section class="voices" id="voices">
+    <div class="wrap">
+      <div class="sec-header reveal">
+        <div class="sec-header__left">
+          <span class="label">Customer Reviews</span>
+          <h2 class="section-title">お客様の声</h2>
+        </div>
+      </div>
+
+      <div class="voices-grid reveal">
+
+        <div class="voice">
+          <div class="voice__stars">★★★★★</div>
+          <p class="voice__text">店員さんの対応がとても良く、スピーディーに買い取ってもらえました。査定もその場ですぐに出してもらえて、時間をかけずに終わったのがとても助かりました。</p>
+          <div class="voice__author">
+            30代女性・吉祥寺在住
+            <span class="voice__method">店頭持ち込み</span>
+          </div>
+        </div>
+
+        <div class="voice">
+          <div class="voice__stars">★★★★★</div>
+          <p class="voice__text">なんとなく入ってみたのですが、とても感じが良くて驚きました。押しつけがましくなく、でも丁寧に説明してくれて。またここに来たいと思えるお店です。</p>
+          <div class="voice__author">
+            40代女性・武蔵野市
+            <span class="voice__method">店頭持ち込み</span>
+          </div>
+        </div>
+
+        <div class="voice">
+          <div class="voice__stars">★★★★★</div>
+          <p class="voice__text">店員さんがとても笑顔で感じ良く迎えてくれて、初めてでも緊張しませんでした。大切にしていた服を、安心して渡すことができました。ありがとうございました。</p>
+          <div class="voice__author">
+            20代女性・三鷹市
+            <span class="voice__method">店頭持ち込み</span>
+          </div>
+        </div>
+
+        <div class="voice">
+          <div class="voice__stars">★★★★★</div>
+          <p class="voice__text">LINEで写真を送ってから来店という流れがとても楽でした。事前に金額のイメージがあるので当日も安心感がありましたし、スタッフの方の対応も丁寧で気持ちよく利用できました。</p>
+          <div class="voice__author">
+            30代女性・杉並区
+            <span class="voice__method">LINE査定 → 来店</span>
+          </div>
+        </div>
+
+        <div class="voice">
+          <div class="voice__stars">★★★★★</div>
+          <p class="voice__text">他店で値段がつかなかった服も買い取ってもらえました。「このデザインは今も需要がある」と教えてもらえて、プロの目線だなと感じました。対応もとても親切です。</p>
+          <div class="voice__author">
+            40代女性・小金井市
+            <span class="voice__method">店頭持ち込み</span>
+          </div>
+        </div>
+
+        <div class="voice">
+          <div class="voice__stars">★★★★☆</div>
+          <p class="voice__text">宅配買取を使いました。LINEで申し込んだらすぐに返信がきて、対応がスムーズで安心しました。査定額も予想より高く、次回もぜひお願いしたいです。</p>
+          <div class="voice__author">
+            30代女性・練馬区
+            <span class="voice__method">宅配買取</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+
+  <hr class="divider" />
+
+
+<!-- FAQ -->
+  <section class="faq" id="faq">
+    <div class="wrap--narrow">
+      <div class="sec-header reveal">
+        <div class="sec-header__left">
+          <span class="label">FAQ</span>
+          <h2 class="section-title">よくあるご質問</h2>
+        </div>
+      </div>
+
+      <div class="faq-list reveal">
+
+        <div class="faq-item">
+          <button class="faq-q" type="button">
+            査定・送料・キャンセルは無料ですか？
+            <span class="faq-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="faq-a"><p>査定料・送料・キャンセル料はすべて無料です。査定後に金額にご納得いただけない場合も、費用は一切かかりません。</p></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" type="button">
+            ブランドの証明書（保証書・箱）がなくても買取できますか？
+            <span class="faq-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="faq-a"><p>付属品がなくても買取可能です。ただし付属品がある場合の方が査定額が高くなることが多いため、見つかれば一緒にお持ちください。</p></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" type="button">
+            ノーブランドの服でも買取してもらえますか？
+            <span class="faq-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="faq-a"><p>はい、スタイリストの目でしっかり確認します。ブランドタグがなくても、デザイン・素材・市場需要によっては高価買取になるアイテムもあります。まずはご相談ください。</p></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" type="button">
+            状態が悪い（傷・汚れあり）でも買取できますか？
+            <span class="faq-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="faq-a"><p>状態によっては買取が難しい場合もありますが、まずはご相談ください。傷・汚れの程度と、ブランド・デザインを総合的に判断します。事前にLINEで写真をお送りいただくとスムーズです。</p></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" type="button">
+            入金まで何日かかりますか？
+            <span class="faq-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="faq-a"><p>店頭持ち込みの場合は即日現金払い。宅配買取の場合は商品到着後3〜5営業日で振り込みを行います。</p></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" type="button">
+            どのような服・アイテムが買取対象ですか？
+            <span class="faq-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="faq-a"><p>メンズ・レディース・キッズのブランド古着を中心に、バッグ・アクセサリーも対応しています。ハイブランドはもちろん、ヴィンテージアイテム・デザイナーズブランドも積極的に買取しています。</p></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" type="button">
+            宅配買取の送り先住所を教えてください
+            <span class="faq-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="faq-a"><p>〒180-0002 東京都武蔵野市吉祥寺東町１丁目５−２５ 新井ビル　スタイリストクローゼット宛にお送りください。送料はこちら負担ですので、着払いでの発送をお願いします。</p></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+<!-- TRUST -->
+  <section class="trust" id="trust">
+    <div class="wrap">
+      <div class="sec-header reveal">
+        <div class="sec-header__left">
+          <span class="label">Trust &amp; Credentials</span>
+          <h2 class="section-title">選ばれる理由</h2>
+        </div>
+      </div>
+
+      <div class="trust-stats reveal">
+        <div class="trust-stat">
+          <div class="trust-stat__val">15年</div>
+          <div class="trust-stat__label">スタイリスト事業の実績</div>
+        </div>
+        <div class="trust-stat">
+          <div class="trust-stat__val">約6,000</div>
+          <div class="trust-stat__label">対応ブランド数（業界平均の約6倍）</div>
+        </div>
+      </div>
+
+      <p class="trust-body reveal">
+        スタイリストクローゼットは、<strong>株式会社リフレイム</strong>が運営するブランド古着の買取・販売店です。同社はスタイリスト事業を15年にわたり展開し、これまでに何万人ものコーディネートを手がけてきました。<br /><br />
+        その経験が、買取に活きます。「このアイテムが今の市場で動くか」「誰に着てもらえるか」——スタイリストの目利きだから見えるものがある。さらに、長年の実績で構築した<strong>確かな販売ルート</strong>があるから、買い取ったアイテムを適切な価格で次の人へ届けることができます。だから、他店より高く買い取ることが可能です。
+      </p>
+
+      <div class="trust-permit reveal">
+        運営: 株式会社リフレイム ／ 古物商許可番号: 第301121102561号
+      </div>
+    </div>
+  </section>
+
+
+<section class="map-section" id="contact">
+    <div class="wrap">
+      <div class="sec-header reveal">
+        <div class="sec-header__left">
+          <span class="label">Location &amp; Access</span>
+          <h2 class="section-title">店舗アクセス</h2>
+        </div>
+      </div>
+
+      <div class="map-inner reveal">
+        <div class="map-embed">
+          <iframe
+            src="https://www.google.com/maps?q=東京都武蔵野市吉祥寺東町１丁目５−２５+新井ビル&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="スタイリストクローゼット 吉祥寺 地図">
+          </iframe>
+          <!--
+            ★ より正確な埋め込みにするには:
+              Google マップでお店を検索 → 「共有」→「地図を埋め込む」
+              → iframeのsrc属性をここに貼り付けてください。
+          -->
+        </div>
+
+        <div class="map-info">
+          <div class="map-info__row">
+            <span class="map-info__key">Shop</span>
+            <span class="map-info__val">スタイリストクローゼット 吉祥寺</span>
+          </div>
+          <div class="map-info__row">
+            <span class="map-info__key">Address</span>
+            <span class="map-info__val">〒180-0002<br />東京都武蔵野市吉祥寺東町１丁目５−２５<br />新井ビル</span>
+          </div>
+          <div class="map-info__row">
+            <span class="map-info__key">Access</span>
+            <span class="map-info__val">JR・京王井の頭線 吉祥寺駅 徒歩約5分</span>
+          </div>
+          <div class="map-info__row">
+            <span class="map-info__key">Hours</span>
+            <span class="map-info__val">毎日 11:00–20:00</span>
+          </div>
+          <div class="map-info__actions">
+            <a href="https://maps.app.goo.gl/6kiXxMtHBYWzshfJ8" class="btn btn--dark" target="_blank" rel="noopener">
+              Google マップで開く
+            </a>
+            <a href="https://lin.ee/67FUOky" class="btn btn--line" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><path d="M19.365 9.89c.5 0 .907.41.907.91s-.407.91-.907.91h-2.38v1.48h2.38c.5 0 .907.41.907.91s-.407.91-.907.91h-3.29c-.5 0-.907-.41-.907-.91V8.97c0-.5.407-.91.907-.91h3.29c.5 0 .907.41.907.91s-.407.91-.907.91h-2.38v.92h2.38zm-8.47 4.12c0 .5-.407.91-.907.91-.26 0-.487-.1-.657-.27l-2.62-3.56v2.92c0 .5-.407.91-.907.91s-.907-.41-.907-.91V8.97c0-.5.407-.91.907-.91.26 0 .487.1.657.27l2.62 3.56V8.97c0-.5.407-.91.907-.91s.907.41.907.91v5.04zm-5.6 0c0 .5-.407.91-.907.91s-.907-.41-.907-.91V8.97c0-.5.407-.91.907-.91s.907.41.907.91v5.04zm14.88-2.52c0-4.95-4.96-8.97-11.06-8.97S1.05 6.54 1.05 11.49c0 4.43 3.93 8.14 9.23 8.84.36.08.85.24.97.55.11.28.07.72.04 1l-.16 1c-.05.28-.23 1.1.97.6 1.2-.5 6.46-3.8 8.82-6.51 1.63-1.79 2.41-3.6 2.41-5.49z"/></svg>
+              LINE査定を依頼する
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+<!-- FINAL CTA -->
+  <section class="cta-section" style="background: var(--surface);">
+    <div class="wrap">
+      <div class="sec-header reveal">
+        <div class="sec-header__left">
+          <span class="label">Start Here</span>
+          <h2 class="section-title">まずはお気軽にどうぞ</h2>
+        </div>
+      </div>
+
+      <div class="cta-grid reveal">
+
+        <div class="cta-col cta-col--line">
+          <span class="cta-col__num">01</span>
+          <h3 class="cta-col__title">LINE査定</h3>
+          <span class="cta-col__note">おすすめ — 無料・自宅から</span>
+          <p class="cta-col__desc">
+            写真を送るだけで仮査定。持ち込み前の確認にも便利です。返答は通常1〜2営業日以内。
+          </p>
+          <div class="cta-col__action">
+            <a href="https://lin.ee/67FUOky" class="btn btn--line" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><path d="M19.365 9.89c.5 0 .907.41.907.91s-.407.91-.907.91h-2.38v1.48h2.38c.5 0 .907.41.907.91s-.407.91-.907.91h-3.29c-.5 0-.907-.41-.907-.91V8.97c0-.5.407-.91.907-.91h3.29c.5 0 .907.41.907.91s-.407.91-.907.91h-2.38v.92h2.38zm-8.47 4.12c0 .5-.407.91-.907.91-.26 0-.487-.1-.657-.27l-2.62-3.56v2.92c0 .5-.407.91-.907.91s-.907-.41-.907-.91V8.97c0-.5.407-.91.907-.91.26 0 .487.1.657.27l2.62 3.56V8.97c0-.5.407-.91.907-.91s.907.41.907.91v5.04zm-5.6 0c0 .5-.407.91-.907.91s-.907-.41-.907-.91V8.97c0-.5.407-.91.907-.91s.907.41.907.91v5.04zm14.88-2.52c0-4.95-4.96-8.97-11.06-8.97S1.05 6.54 1.05 11.49c0 4.43 3.93 8.14 9.23 8.84.36.08.85.24.97.55.11.28.07.72.04 1l-.16 1c-.05.28-.23 1.1.97.6 1.2-.5 6.46-3.8 8.82-6.51 1.63-1.79 2.41-3.6 2.41-5.49z"/></svg>
+              LINEで査定を依頼
+            </a>
+          </div>
+        </div>
+
+        <div class="cta-col">
+          <span class="cta-col__num">02</span>
+          <h3 class="cta-col__title">店頭持ち込み</h3>
+          <span class="cta-col__note">予約不要 — 当日現金払い</span>
+          <p class="cta-col__desc">
+            吉祥寺店へ直接お持ちください。プロのスタイリストが対面で査定。人目を気にせずゆっくりご相談いただけます。<br /><br />
+            毎日 11:00–20:00
+          </p>
+          <div class="cta-col__action">
+            <a href="https://maps.app.goo.gl/6kiXxMtHBYWzshfJ8" class="btn btn--dark" target="_blank" rel="noopener">Google マップで開く</a>
+          </div>
+        </div>
+
+        <div class="cta-col">
+          <span class="cta-col__num">03</span>
+          <h3 class="cta-col__title">宅配買取</h3>
+          <span class="cta-col__note">送料無料 — 全国対応</span>
+          <p class="cta-col__desc">
+            遠方の方・外出が難しい方も対応。着払いでお送りください（送料はこちら負担）。キャンセル時は全点お返しします。
+          </p>
+          <div class="cta-col__action">
+            <a href="https://lin.ee/67FUOky" class="btn btn--ghost" target="_blank" rel="noopener">LINEから申し込む</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+<!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer__top">
+        <div>
+          <div class="footer__logo">Stylist Closet</div>
+          <div class="footer__logo-ja">スタイリストクローゼット</div>
+          <p class="footer__tagline">吉祥寺のブランド古着 買取・販売。<br />売る・買う・纏う——すべてをここで。</p>
+        </div>
+        <div>
+          <p class="footer__nav-title">Menu</p>
+          <ul class="footer__nav-list">
+            <li><a href="index.html">トップページ</a></li>
+            <li><a href="index.html#services">サービス</a></li>
+            <li><a href="index.html#brands">取扱ブランド</a></li>
+            <li><a href="index.html#access">アクセス</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__nav-title">買取</p>
+          <ul class="footer__nav-list">
+            <li><a href="#features">買取の強み</a></li>
+            <li><a href="#flow">買取の流れ</a></li>
+            <li><a href="#cases">買取実績</a></li>
+            <li><a href="#faq">よくある質問</a></li>
+            <li><a href="https://lin.ee/67FUOky" target="_blank" rel="noopener">LINE査定（無料）</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copy">&copy; 2026 Stylist Closet / 株式会社リフレイム</p>
+        <div class="footer__sns">
+          <a href="https://www.instagram.com/stylist_closet2601/" target="_blank" rel="noopener">Instagram</a>
+          <a href="#">X</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <script>
+    // Nav scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    // Reveal
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -48px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Flow tabs
+    document.querySelectorAll('.flow-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.flow-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.flow-panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+      });
+    });
+
+    // FAQ accordion
+    document.querySelectorAll('.faq-q').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-item');
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+  </script>
+
+</body>
+</html>
