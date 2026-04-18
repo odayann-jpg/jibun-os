@@ -175,58 +175,42 @@
 
     /* === HERO === */
     .hero {
-      min-height: 52svh;
+      min-height: 60svh;
       padding-top: 5rem;
       display: flex;
       align-items: center;
-      background: #333 url('images/hero.jpg') center/cover no-repeat;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.28) 60%, rgba(0,0,0,0.12) 100%);
-      pointer-events: none;
+      background: #F5F5F5;
     }
     .hero__body {
-      position: relative;
-      z-index: 1;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: var(--sp-lg) clamp(1.25rem, 5vw, 4rem);
-      max-width: 700px;
+      align-items: center;
+      text-align: center;
+      padding: var(--sp-lg) 0;
+      max-width: 680px;
+      margin: 0 auto;
     }
     .hero__eyebrow {
-      font-size: 0.75rem;
+      font-size: 0.6875rem;
       font-weight: 500;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.5rem;
     }
     .hero__title {
-      font-size: clamp(2.25rem, 5vw, 4rem);
+      font-size: clamp(2.25rem, 5.5vw, 4rem);
       font-weight: 700;
-      line-height: 1.15;
-      letter-spacing: -0.01em;
-      color: #fff;
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      color: var(--ink);
       margin-bottom: 1.25rem;
     }
-    .hero__title small {
-      display: block;
-      font-size: clamp(1rem, 1.8vw, 1.25rem);
-      font-weight: 400;
-      color: rgba(255,255,255,0.55);
-      letter-spacing: 0.04em;
-      margin-top: 0.75rem;
-    }
     .hero__lead {
-      font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+      font-size: clamp(0.9375rem, 1.4vw, 1rem);
       line-height: 1.9;
-      color: rgba(255,255,255,0.65);
+      color: #555;
       max-width: 36ch;
       margin-bottom: var(--sp-md);
     }
@@ -234,15 +218,7 @@
       display: flex;
       gap: var(--sp-sm);
       flex-wrap: wrap;
-    }
-    .hero__actions .btn--ghost {
-      color: #fff;
-      border-color: rgba(255,255,255,0.4);
-    }
-    .hero__actions .btn--ghost:hover {
-      background: #fff;
-      color: var(--ink);
-      border-color: #fff;
+      justify-content: center;
     }
     .hero__img {
       background: var(--surface);
@@ -288,13 +264,12 @@
     .sec-header__left { display: flex; flex-direction: column; gap: 0.5rem; }
 
     /* === FEATURE CARDS === */
-    .features { background: var(--surface); padding: var(--sp-xl) 0; }
+    .features { background: #fff; padding: var(--sp-xl) 0; }
     .features-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 1px;
       background: var(--rule);
-      border: 1px solid var(--rule);
       border-radius: var(--r);
       overflow: hidden;
     }
@@ -326,13 +301,12 @@
     }
 
     /* === SELL BANNERS === */
-    .sell-banners { padding: var(--sp-xl) 0; background: var(--surface); }
+    .sell-banners { padding: var(--sp-xl) 0; background: #fff; }
     .sell-banners-grid {
       display: flex;
       flex-direction: column;
       gap: 0;
       margin-top: var(--sp-lg);
-      border: 1px solid var(--rule);
       border-radius: var(--r);
       overflow: hidden;
       background: #fff;
@@ -343,7 +317,7 @@
       gap: 1rem;
       padding: 1rem;
       background: #fff;
-      border-bottom: 1px solid var(--rule);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
       text-decoration: none;
       cursor: default;
     }
@@ -391,41 +365,40 @@
     .flow { padding: var(--sp-xl) 0; }
     .flow-tabs {
       display: flex;
-      gap: 1px;
-      background: var(--rule);
-      border: 1px solid var(--rule);
+      gap: 4px;
+      background: var(--surface);
       border-radius: var(--r);
       overflow: hidden;
+      padding: 4px;
       margin-bottom: var(--sp-md);
     }
     .flow-tab {
       flex: 1;
-      padding: 0.875rem 1rem;
-      background: var(--surface);
+      padding: 0.75rem 1rem;
+      background: transparent;
       font-family: var(--font);
       font-size: 0.875rem;
       font-weight: 400;
       color: var(--muted);
       cursor: pointer;
       border: none;
+      border-radius: calc(var(--r) - 2px);
       transition: background 0.18s, color 0.18s;
       text-align: center;
     }
-    .flow-tab.active { background: var(--ink); color: #fff; font-weight: 500; }
+    .flow-tab.active { background: #fff; color: var(--ink); font-weight: 600; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
     .flow-panel { display: none; }
     .flow-panel.active { display: block; }
     .flow-steps {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: var(--rule);
-      border: 1px solid var(--rule);
+      gap: 1rem;
       border-radius: var(--r);
-      overflow: hidden;
     }
     .step {
-      background: #fff;
-      padding: 2rem 1.5rem;
+      background: var(--surface);
+      padding: 1.75rem 1.5rem;
+      border-radius: var(--r);
     }
     .step__num {
       font-size: 2.25rem;
@@ -491,22 +464,59 @@
     .flow-cta .btn { padding: 1rem 2.5rem; font-size: 0.9375rem; }
 
     /* === BRANDS === */
-    .brands { background: #F0EDE9; padding: var(--sp-xl) 0; }
+    .brands { background: #fff; padding: var(--sp-xl) 0; }
     .brands .label { color: var(--muted); }
     .brands .section-title { color: var(--ink); }
+    /* brand photo cards */
+    .brand-photos {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem;
+      margin-top: var(--sp-md);
+      max-width: 640px;
+    }
+    @media(max-width:600px){
+      .brand-photos { grid-template-columns: repeat(4, 1fr); gap: 0.375rem; }
+    }
+    .brand-card {
+      position: relative;
+      aspect-ratio: 1/1;
+      overflow: hidden;
+      border-radius: 6px;
+      background: #111;
+    }
+    .brand-card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0.88;
+      transition: opacity 0.3s, transform 0.4s;
+    }
+    .brand-card:hover img { opacity: 0.72; transform: scale(1.04); }
+    .brand-card__name {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 0.5rem 0.5rem;
+      background: linear-gradient(transparent, rgba(0,0,0,0.6));
+      color: #fff;
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      font-family: var(--ff-en);
+    }
+    /* remaining brand tags */
     .brands-tags {
       display: flex;
       flex-wrap: wrap;
       gap: 0.625rem;
-      margin-top: var(--sp-md);
+      margin-top: 1rem;
     }
     .brand-tag {
-      font-size: 0.875rem;
+      font-size: 0.8125rem;
       font-weight: 500;
-      padding: 0.5rem 1.125rem;
-      border: 1px solid rgba(0,0,0,0.18);
+      padding: 0.4rem 0.875rem;
+      border: 1px solid rgba(0,0,0,0.1);
       border-radius: 100px;
-      background: rgba(255,255,255,0.75);
+      background: rgba(0,0,0,0.03);
       color: var(--ink);
       letter-spacing: 0.04em;
     }
@@ -525,7 +535,6 @@
     .cases { padding: var(--sp-xl) 0; }
     .case {
       background: #fff;
-      border: 1px solid var(--rule);
       border-radius: var(--r);
       overflow: hidden;
       width: 180px;
@@ -587,7 +596,7 @@
     }
 
     /* === VOICES === */
-    .voices { background: var(--surface); padding: var(--sp-xl) 0; }
+    .voices { background: #fff; padding: var(--sp-xl) 0; }
     .voices-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -595,8 +604,7 @@
       margin-top: var(--sp-md);
     }
     .voice {
-      background: #fff;
-      border: 1px solid var(--rule);
+      background: var(--surface);
       border-radius: var(--r);
       padding: 1.5rem;
     }
@@ -622,7 +630,7 @@
     }
 
     /* === INSTAGRAM === */
-    .instagram { padding: var(--sp-xl) 0; background: var(--surface); }
+    .instagram { padding: var(--sp-xl) 0; background: #fff; }
     .instagram-inner {
       text-align: center;
     }
@@ -662,11 +670,10 @@
     /* === FAQ === */
     .faq { padding: var(--sp-xl) 0; }
     .faq-list {
-      border: 1px solid var(--rule);
       border-radius: var(--r);
       overflow: hidden;
     }
-    .faq-item { border-bottom: 1px solid var(--rule); }
+    .faq-item { border-bottom: 1px solid rgba(0,0,0,0.07); }
     .faq-item:last-child { border-bottom: none; }
     .faq-q {
       display: flex;
@@ -805,15 +812,13 @@
     }
 
     /* === TRUST === */
-    .trust { background: var(--surface); padding: var(--sp-xl) 0; }
+    .trust { background: #fff; padding: var(--sp-xl) 0; }
     .trust-stats {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 1px;
-      background: var(--rule);
-      border: 1px solid var(--rule);
+      gap: var(--sp-md);
+      background: #fff;
       border-radius: var(--r);
-      overflow: hidden;
       margin-bottom: var(--sp-md);
     }
     .trust-stat {
@@ -850,17 +855,15 @@
     .map-inner {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1px;
-      background: var(--rule);
-      border: 1px solid var(--rule);
+      gap: 2rem;
+      background: #fff;
       border-radius: var(--r);
-      overflow: hidden;
     }
     .map-embed { background: var(--surface); min-height: 340px; position: relative; }
     .map-embed iframe { width: 100%; height: 100%; min-height: 340px; border: 0; display: block; }
     .map-info {
-      background: #fff;
-      padding: 2.5rem 2rem;
+      background: var(--surface);
+      padding: 2rem 1.75rem;
       display: flex;
       flex-direction: column;
       gap: 1.25rem;
@@ -884,15 +887,13 @@
     .cta-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--rule);
-      border: 1px solid var(--rule);
+      gap: 1.5rem;
+      background: #fff;
       border-radius: var(--r);
-      overflow: hidden;
     }
     .cta-col {
-      background: #fff;
-      padding: 2.5rem 2rem;
+      background: var(--surface);
+      padding: 2rem 1.75rem;
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
@@ -986,7 +987,6 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 1px;
       background: var(--rule);
-      border: 1px solid var(--rule);
       border-radius: var(--r);
       overflow: hidden;
     }
@@ -1170,7 +1170,6 @@
       width: 200px;
       flex-shrink: 0;
       scroll-snap-align: start;
-      border: 1px solid var(--rule);
       border-radius: var(--r);
       overflow: hidden;
       background: #fff;
@@ -1231,20 +1230,16 @@
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero__body">
-      <h1 class="hero__title">
-        眠っている服を、<br />高く買い取ります。
-      </h1>
-      <p class="hero__lead">
-        LINEで写真を送るだけ。プロのスタイリストが適正価格で査定します。
-      </p>
+    <div class="wrap hero__body">
+      <p class="hero__eyebrow">吉祥寺 ブランド古着買取 — Stylist Closet</p>
+      <h1 class="hero__title">眠っている服を、<br>高く買い取ります。</h1>
+      <p class="hero__lead">LINEで写真を送るだけ。スタイリスト歴10年以上のプロが、ブランド・状態・市場価値を正直に査定します。</p>
     </div>
-
   </section>
 
 
   
-  <hr class="divider" />
+  
 
 
 <!-- ABOUT -->
@@ -1254,9 +1249,8 @@
         <div>
           <h2 class="about__title">スタイリストクローゼット<br />吉祥寺について</h2>
           <div class="about__body">
-            <p>スタイリストクローゼット吉祥寺は、東京都港区でスタイリスト事業を展開する<strong>株式会社リフレイム</strong>が運営するブランド古着の買取・販売店です。JR・京王井の頭線 吉祥寺駅から徒歩約5分、新井ビル1Fに位置します。</p>
-            <p>メンズ・レディース・キッズのブランド古着を中心に、CHANEL、LOUIS VUITTON、Maison Margiela、Supreme などハイブランドからヴィンテージ・デザイナーズブランドまで幅広く取り扱っています。</p>
-            <p>買取においては、10年以上のベテランスタイリストがブランド・状態・市場価値を一点ずつ丁寧に確認して査定します。ブランド古着の買取がはじめての方も、安心してご相談ください。</p>
+            <p><strong>株式会社リフレイム</strong>が運営するブランド古着の買取・販売店。東京都港区でスタイリスト事業を15年以上展開し、その審美眼をそのまま買取に活かした吉祥寺の専門店です。吉祥寺駅から徒歩約5分。</p>
+            <p>CHANEL、LOUIS VUITTON、Maison Margiela などハイブランドからヴィンテージまで幅広く対応。10年以上のベテランスタイリストが一点ずつ査定します。</p>
           </div>
         </div>
       </div>
@@ -1265,7 +1259,7 @@
 
 
 
-  <hr class="divider" />
+  
 
 
 <!-- CASES -->
@@ -1359,6 +1353,51 @@
             <div class="case__price">¥7,000<span>買取</span></div>
           </div>
         </div>
+        <div class="case">
+          <img src="images/case-prada-tee.jpg" alt="PRADA Tシャツ" class="case__photo" loading="lazy" />
+          <div class="case__body">
+            <p class="case__brand">PRADA</p>
+            <h3 class="case__item">Tシャツ</h3>
+            <p class="case__cond">状態: A</p>
+            <div class="case__price">¥12,000<span>買取</span></div>
+          </div>
+        </div>
+        <div class="case">
+          <img src="images/case-saint-michael.jpg" alt="SAINT MICHAEL パーカー" class="case__photo" loading="lazy" />
+          <div class="case__body">
+            <p class="case__brand">SAINT MICHAEL</p>
+            <h3 class="case__item">パーカー</h3>
+            <p class="case__cond">状態: B</p>
+            <div class="case__price">¥15,000<span>買取</span></div>
+          </div>
+        </div>
+        <div class="case">
+          <img src="images/case-loewe-tee.jpg" alt="LOEWE Tシャツ" class="case__photo" loading="lazy" />
+          <div class="case__body">
+            <p class="case__brand">LOEWE</p>
+            <h3 class="case__item">Tシャツ</h3>
+            <p class="case__cond">状態: A</p>
+            <div class="case__price">¥5,000<span>買取</span></div>
+          </div>
+        </div>
+        <div class="case">
+          <img src="images/case-dior-tee.jpg" alt="Christian Dior Tシャツ" class="case__photo" loading="lazy" />
+          <div class="case__body">
+            <p class="case__brand">Christian Dior</p>
+            <h3 class="case__item">Tシャツ</h3>
+            <p class="case__cond">状態: A</p>
+            <div class="case__price">¥10,000<span>買取</span></div>
+          </div>
+        </div>
+        <div class="case">
+          <img src="images/case-mackintosh.jpg" alt="MACKINTOSH コート" class="case__photo" loading="lazy" />
+          <div class="case__body">
+            <p class="case__brand">MACKINTOSH</p>
+            <h3 class="case__item">コート</h3>
+            <p class="case__cond">状態: A</p>
+            <div class="case__price">¥12,000<span>買取</span></div>
+          </div>
+        </div>
       </div>
       <div class="cases-dots" id="casesDots"></div>
 
@@ -1371,7 +1410,7 @@
 
 
 
-  <hr class="divider" />
+  
 
 
 <!-- PAIN POINTS -->
@@ -1404,7 +1443,7 @@
           </div>
   </section>
 
-  <hr class="divider" />
+  
 
 
 <!-- SELL BANNERS -->
@@ -1452,7 +1491,7 @@
     </div>
   </section>
 
-  <hr class="divider" />
+  
 
 <!-- FLOW -->
   <section class="flow" id="flow">
@@ -1472,43 +1511,34 @@
 
       <!-- LINE -->
       <div class="flow-panel active reveal" id="panel-line">
-        <div class="flow-lead">
-          LINEを友だち追加して、必要事項を送るだけ。担当者が確認して1〜2営業日以内にご連絡します。
-        </div>
+        <div class="flow-lead">写真を送るだけ。1〜2営業日以内に査定額をお知らせします。</div>
         <div class="flow-steps">
           <div class="step">
             <div class="step__num">01</div>
-            <div class="step__you">あなたがすること</div>
-            <h3 class="step__title">LINEを友だち追加して、以下を送る</h3>
-            <p class="step__body">下のボタンから公式LINEを友だち追加して、以下の内容をメッセージで送ってください。</p>
+            <h3 class="step__title">LINEで写真を送る</h3>
             <ul class="step__tips">
-              <li><strong>お名前</strong></li>
-              <li><strong>買取希望のもの・ブランド名</strong></li>
-              <li><strong>写真：角度を変えて2〜3枚</strong>（ブランドタグ・刻印・全体が分かるように。傷や汚れがあればその箇所も）</li>
-              <li><strong>いつ頃ご購入されたか</strong>（おおよそで構いません）</li>
+              <li>お名前・ブランド名</li>
+              <li>写真2〜3枚（全体・タグ・傷がある箇所）</li>
+              <li>購入時期（おおよそで可）</li>
             </ul>
           </div>
           <div class="step">
             <div class="step__num">02</div>
-            <div class="step__shop">スタクロがすること</div>
-            <h3 class="step__title">担当者が確認して査定金額をご連絡</h3>
-            <p class="step__body">担当者が写真と情報をもとに確認し、<strong>1〜2営業日以内</strong>に査定金額をLINEでお伝えします。金額に納得できなければここで終了、費用は一切かかりません。</p>
+            <h3 class="step__title">査定額をご連絡</h3>
+            <p class="step__body">1〜2営業日以内にLINEでお伝えします。納得できなければキャンセル無料。</p>
           </div>
           <div class="step">
             <div class="step__num">03</div>
-            <div class="step__you">あなたがすること</div>
-            <h3 class="step__title">問題なければ品物をお持ち込み or ご郵送</h3>
-            <p class="step__body">査定金額にご納得いただけたら、品物を実際にお送りください。</p>
+            <h3 class="step__title">品物を持込 or 郵送</h3>
             <ul class="step__tips">
-              <li><strong>店頭持ち込み</strong>：吉祥寺店へそのままお越しください（予約不要）</li>
-              <li><strong>郵送</strong>：お客様ご自身で着払いにてお送りください（送料はこちら負担）</li>
+              <li>店頭：予約不要でそのままお越しください</li>
+              <li>郵送：着払いで発送（送料当店負担）</li>
             </ul>
           </div>
           <div class="step">
             <div class="step__num">04</div>
-            <div class="step__shop">スタクロがすること</div>
-            <h3 class="step__title">実物確認 → 正式査定 → 合意で買取成立</h3>
-            <p class="step__body">実物をお預かりした際に、お品物の状態確認を行い、買取の可否および正式な査定金額をお伝えします。金額にご合意いただけた時点で買取成立となります。納得いただけない場合はそのままお返しします。キャンセル費用は一切かかりません。</p>
+            <h3 class="step__title">実物確認で買取成立</h3>
+            <p class="step__body">合意で成立。不満なら費用0円でお返しします。</p>
           </div>
         </div>
         <div class="flow-cta">
@@ -1521,32 +1551,26 @@
 
       <!-- 店頭 -->
       <div class="flow-panel reveal" id="panel-store">
-        <div class="flow-lead">
-          予約不要。そのままお持ちください。スタイリストがカウンターで一点ずつ丁寧に確認します。
-        </div>
+        <div class="flow-lead">予約不要。その場で即日買取。</div>
         <div class="flow-steps">
           <div class="step">
             <div class="step__num">01</div>
-            <div class="step__you">あなたがすること</div>
-            <h3 class="step__title">品物を持って吉祥寺店へ</h3>
-            <p class="step__body">予約不要でお越しいただけます。バッグやブランド品は付属品（箱・保証書・タグなど）があればご一緒にお持ちください。</p>
+            <h3 class="step__title">品物を持って来店</h3>
             <ul class="step__tips">
-              <li>営業時間：11:00〜20:00（不定休）</li>
-              <li>〒180-0002 東京都武蔵野市吉祥寺東町1-5-25 新井ビル</li>
-              <li>吉祥寺駅から徒歩約5分</li>
+              <li>11:00〜20:00（不定休）</li>
+              <li>吉祥寺駅 徒歩約5分・新井ビル1F</li>
+              <li>付属品（箱・保証書）があればご持参を</li>
             </ul>
           </div>
           <div class="step">
             <div class="step__num">02</div>
-            <div class="step__shop">スタクロがすること</div>
             <h3 class="step__title">スタイリストが査定</h3>
-            <p class="step__body">スタイリストがカウンターで一点ずつ確認します。点数が多い場合や詳細確認が必要な場合は、お預かりして後日ご連絡することもできます。</p>
+            <p class="step__body">カウンターで一点ずつ確認します。</p>
           </div>
           <div class="step">
             <div class="step__num">03</div>
-            <div class="step__you">あなたがすること</div>
-            <h3 class="step__title">査定額に合意 → その場で買取成立</h3>
-            <p class="step__body">査定金額にご同意いただければ、その場で買取成立。お断りいただいても費用は一切かかりません。</p>
+            <h3 class="step__title">合意でその場で買取成立</h3>
+            <p class="step__body">断っても費用0円。</p>
           </div>
         </div>
         <div class="flow-cta">
@@ -1556,47 +1580,29 @@
 
       <!-- 宅配 -->
       <div class="flow-panel reveal" id="panel-delivery">
-        <div class="flow-lead">
-          箱に詰めて送るだけ。送料はこちら負担。遠方の方や、まとめて整理したい方に向いています。
-        </div>
+        <div class="flow-lead">着払いで送るだけ。送料無料。</div>
         <div class="flow-steps">
           <div class="step">
             <div class="step__num">01</div>
-            <div class="step__you">あなたがすること</div>
-            <h3 class="step__title">LINEで「宅配買取希望」と送る</h3>
-            <p class="step__body">公式LINEに、お名前と「宅配買取希望」とメッセージを送ってください。折り返し手順をご案内します。</p>
-            <ul class="step__tips">
-              <li>事前に写真を送ると仮査定もできて安心</li>
-              <li>送料はこちら負担（着払いでお送りください）</li>
-              <li>ノーブランドのアイテムは宅配での査定が難しい場合があります。まずはLINEで写真をお送りください</li>
-            </ul>
+            <h3 class="step__title">LINEで「宅配希望」と送る</h3>
+            <p class="step__body">手順を折り返しご案内します。事前に写真を送ると仮査定もできます。</p>
           </div>
           <div class="step">
             <div class="step__num">02</div>
-            <div class="step__you">あなたがすること</div>
-            <h3 class="step__title">箱に詰めて、着払いで発送</h3>
-            <p class="step__body">手持ちのダンボール箱にアイテムを詰め、着払いで最寄りのコンビニや宅配カウンターからお送りください。送料はすべてこちら負担です。</p>
+            <h3 class="step__title">箱に詰めて着払いで発送</h3>
             <ul class="step__tips">
-              <li>箱は何でもOK（スーパーのダンボールなど）</li>
-              <li>高価なアイテムは梱包前に写真を撮っておくと安心</li>
-              <li>壊れやすいものはプチプチで包む</li>
+              <li>箱は何でもOK</li>
+              <li>送料は当店負担</li>
             </ul>
           </div>
           <div class="step">
             <div class="step__num">03</div>
-            <div class="step__shop">スタクロがすること</div>
-            <h3 class="step__title">到着後、スタイリストが査定してLINEで連絡</h3>
-            <p class="step__body">商品が届いたら、スタイリストが一点ずつ丁寧に査定します。3〜5営業日以内に査定額をLINEでお知らせします。金額の根拠も一緒にお伝えします。</p>
+            <h3 class="step__title">3〜5営業日で査定額をご連絡</h3>
           </div>
           <div class="step">
             <div class="step__num">04</div>
-            <div class="step__you">あなたがすること</div>
-            <h3 class="step__title">合意すれば振り込み、断れば無料返送</h3>
-            <p class="step__body">査定額に合意いただければ、指定の口座に振り込みます。納得いただけない場合は、着払いで全点お返しします（返送料無料）。</p>
-            <ul class="step__tips">
-              <li>振り込みは合意後2〜3営業日以内</li>
-              <li>キャンセルは連絡するだけでOK</li>
-            </ul>
+            <h3 class="step__title">合意で振込、断れば返送無料</h3>
+            <p class="step__body">振込は合意後2〜3営業日以内。</p>
           </div>
         </div>
         <div class="flow-cta">
@@ -1609,31 +1615,22 @@
 
       <!-- 出張 -->
       <div class="flow-panel reveal" id="panel-visit">
-        <div class="flow-lead">
-          ご自宅やご指定の場所へお伺いして買取します。大量整理・お持ち込みが難しい方に最適です。
-        </div>
+        <div class="flow-lead">ご自宅へお伺い。出張費無料。東京都内及び近郊対応。</div>
         <div class="flow-steps">
           <div class="step">
             <div class="step__num">01</div>
-            <div class="step__you">あなたがすること</div>
-            <h3 class="step__title">LINEで「出張買取希望」と送る</h3>
-            <p class="step__body">公式LINEにお名前と「出張買取希望」をメッセージでお送りください。対応エリアや日程について折り返しご連絡します。</p>
-            <ul class="step__tips">
-              <li>対応エリア：東京都内及び近郊</li>
-              <li>事前に写真を送ると概算査定もできます</li>
-            </ul>
+            <h3 class="step__title">LINEで「出張希望」と送る</h3>
+            <p class="step__body">日程・エリアを調整してご連絡します。</p>
           </div>
           <div class="step">
             <div class="step__num">02</div>
-            <div class="step__shop">スタクロがすること</div>
-            <h3 class="step__title">日程・場所を調整してお伺い</h3>
-            <p class="step__body">ご希望の日時・場所をお聞きし、担当スタイリストがお伺いします。交通費・出張費は一切かかりません。</p>
+            <h3 class="step__title">スタイリストがお伺い</h3>
+            <p class="step__body">交通費・出張費は一切かかりません。</p>
           </div>
           <div class="step">
             <div class="step__num">03</div>
-            <div class="step__shop">スタクロがすること</div>
-            <h3 class="step__title">その場で査定・即日買取</h3>
-            <p class="step__body">現地で一点ずつ丁寧に確認・査定します。金額にご合意いただければその場で買取成立。断っていただいても費用は一切かかりません。</p>
+            <h3 class="step__title">現地で即日査定・買取</h3>
+            <p class="step__body">断っても費用0円。</p>
           </div>
         </div>
         <div class="flow-cta">
@@ -1697,9 +1694,7 @@
         </div>
       </div>
       <p class="stylists-caption reveal">
-        菊地翔平、島野淳。二人のスタイリストが直接対応します。<br />
-        お持ちいただいた服のことを、一点ずつ一緒に話しながら査定します。<br />
-        大切にしてきた服だから、その思いごと、きちんと受け取ります。
+        スタイリスト歴10年以上の菊地翔平・島野淳が直接対応。ブランド・状態・市場価値を総合的に判断し、一点ずつ丁寧に査定します。
       </p>
     </div>
   </section>
@@ -1714,10 +1709,8 @@
         </div>
       </div>
       <div class="omoi-body reveal">
-        <p>スタイリストとして15年、たくさんの服と人を見てきました。</p>
-        <p>大切に着てきた服が、ただ捨てられていく——そんな現実をずっと目にしてきました。服には、それぞれの物語がある。選んだ理由、着ていた時間、一緒にいた記憶。</p>
-        <p>だから私たちは、服の価値を正直に伝えたいと思っています。高く買い取ることだけが目的ではなく、その服が次に相応しい人へ届くこと。それがスタイリストクローゼットの仕事です。</p>
-        <p>売る服も、買う服も——ファッションを通じて、吉祥寺から新しい出会いをつくっていきます。</p>
+        <p>大切に着てきた服が、ただ眠ったままになっていく——そんな現実をスタイリストとしてずっと目にしてきました。</p>
+        <p>だから私たちは、ブランドの名前だけでなく、その服の状態・デザイン・今の市場価値を正直に見て、正直に伝えることを大切にしています。高く買い取ることが目的ではなく、その服が次に相応しい人へ届くこと。それがスタイリストクローゼットの仕事です。</p>
       </div>
     </div>
   </section>
@@ -1753,7 +1746,7 @@
 
 
 
-  <hr class="divider" />
+  
 
 
 <!-- VOICES -->
@@ -1828,7 +1821,7 @@
 
 
 
-  <hr class="divider" />
+  
 
 
 <!-- BRANDS -->
@@ -1836,33 +1829,44 @@
     <div class="wrap">
       <h2 class="section-title" style="margin-top:0.5rem;">買取強化ブランド</h2>
 
+      <div class="brand-photos reveal">
+        <div class="brand-card">
+          <img src="images/brand-hermes.jpg" alt="HERMÈS" loading="lazy">
+          <span class="brand-card__name">HERMÈS</span>
+        </div>
+        <div class="brand-card">
+          <img src="images/brand-lv.jpg" alt="Louis Vuitton" loading="lazy">
+          <span class="brand-card__name">Louis Vuitton</span>
+        </div>
+        <div class="brand-card">
+          <img src="images/brand-supreme.jpg" alt="Supreme" loading="lazy">
+          <span class="brand-card__name">Supreme</span>
+        </div>
+        <div class="brand-card">
+          <img src="images/brand-margiela.jpg" alt="MAISON MARGIELA" loading="lazy">
+          <span class="brand-card__name">MAISON MARGIELA</span>
+        </div>
+      </div>
+
       <div class="brands-tags reveal">
-        <span class="brand-tag">HERMÈS</span>
         <span class="brand-tag">CHANEL</span>
-        <span class="brand-tag">Louis Vuitton</span>
         <span class="brand-tag">GUCCI</span>
         <span class="brand-tag">CÉLINE</span>
         <span class="brand-tag">LOEWE</span>
         <span class="brand-tag">Moncler</span>
         <span class="brand-tag">sacai</span>
-        <span class="brand-tag">MAISON MARGIELA</span>
         <span class="brand-tag">COMME des GARÇONS</span>
-        <span class="brand-tag">Supreme</span>
         <span class="brand-tag">Acne Studios</span>
         <span class="brand-tag">Yohji Yamamoto</span>
         <span class="brand-tag">その他多数</span>
       </div>
-
-      <p class="brands-note reveal">
-        その他多数取り扱い中
-      </p>
     </div>
   </section>
 
 
 
 
-  <hr class="divider" />
+  
 
 
 <!-- FAQ -->
@@ -1881,7 +1885,7 @@
             査定・送料・キャンセルは無料ですか？
             <span class="faq-toggle" aria-hidden="true"></span>
           </button>
-          <div class="faq-a"><p>査定料・送料・キャンセル料はすべて無料です。査定後に金額にご納得いただけない場合も、費用は一切かかりません。</p></div>
+          <div class="faq-a"><p>はい、すべて無料です。査定後に金額にご納得いただけない場合も、費用は一切かかりません。</p></div>
         </div>
 
         <div class="faq-item">
@@ -1889,7 +1893,7 @@
             ブランドの証明書（保証書・箱）がなくても買取できますか？
             <span class="faq-toggle" aria-hidden="true"></span>
           </button>
-          <div class="faq-a"><p>付属品がなくても買取可能です。ただし付属品がある場合の方が査定額が高くなることが多いため、見つかれば一緒にお持ちください。</p></div>
+          <div class="faq-a"><p>なくても買取可能です。あれば一緒にお持ちください（査定額が上がる場合あり）。</p></div>
         </div>
 
         <div class="faq-item">
@@ -1897,7 +1901,7 @@
             ノーブランドの服でも買取してもらえますか？
             <span class="faq-toggle" aria-hidden="true"></span>
           </button>
-          <div class="faq-a"><p>基本的にはブランド品が買取の対象となります。ノーブランドのアイテムはお受けできないケースがほとんどです。不明な場合はLINEでお気軽にご相談ください。</p></div>
+          <div class="faq-a"><p>基本的にはブランド品が対象です。不明な場合はLINEでご相談ください。</p></div>
         </div>
 
         <div class="faq-item">
@@ -1905,15 +1909,12 @@
             状態が悪い（傷・汚れあり）でも買取できますか？
             <span class="faq-toggle" aria-hidden="true"></span>
           </button>
-          <div class="faq-a"><p>状態によっては買取が難しい場合もありますが、まずはご相談ください。傷・汚れの程度と、ブランド・デザインを総合的に判断します。事前にLINEで写真をお送りいただくとスムーズです。</p></div>
+          <div class="faq-a"><p>状態次第ですが、まずLINEで写真をお送りください。</p></div>
         </div>
 
         <div class="faq-item">
-          <button class="faq-q" type="button">
-            入金まで何日かかりますか？
-            <span class="faq-toggle" aria-hidden="true"></span>
-          </button>
-          <div class="faq-a"><p>店頭持ち込みの場合は即日現金払い。宅配買取の場合は商品到着後3〜5営業日で振り込みを行います。</p></div>
+          <button class="faq-q" type="button">入金まで何日かかりますか？<span class="faq-toggle" aria-hidden="true"></span></button>
+          <div class="faq-a"><p>店頭は即日。宅配は到着後3〜5営業日で振込。</p></div>
         </div>
 
         <div class="faq-item">
@@ -1921,7 +1922,7 @@
             どのような服・アイテムが買取対象ですか？
             <span class="faq-toggle" aria-hidden="true"></span>
           </button>
-          <div class="faq-a"><p>メンズ・レディース・キッズのブランド古着を中心に、バッグ・アクセサリーも対応しています。ハイブランドはもちろん、ヴィンテージアイテム・デザイナーズブランドも積極的に買取しています。</p></div>
+          <div class="faq-a"><p>ブランド古着（メンズ・レディース）、バッグ、アクセサリー。ヴィンテージ・デザイナーズも対応。</p></div>
         </div>
 
         <div class="faq-item">
@@ -1929,15 +1930,12 @@
             宅配買取の送り先住所を教えてください
             <span class="faq-toggle" aria-hidden="true"></span>
           </button>
-          <div class="faq-a"><p>〒180-0002 東京都武蔵野市吉祥寺東町１丁目５−２５ 新井ビル　スタイリストクローゼット宛にお送りください。送料はこちら負担ですので、着払いでの発送をお願いします。</p></div>
+          <div class="faq-a"><p>〒180-0002 東京都武蔵野市吉祥寺東町1-5-25 新井ビル。着払いでお送りください（送料こちら負担）。</p></div>
         </div>
 
         <div class="faq-item">
-          <button class="faq-q" type="button">
-            買取に本人確認書類は必要ですか？
-            <span class="faq-toggle" aria-hidden="true"></span>
-          </button>
-          <div class="faq-a"><p>古物営業法の規定により、買取の際は本人確認書類のご提示をお願いしております。運転免許証・マイナンバーカード・パスポートなど顔写真付きの公的証明書をご持参ください。宅配買取の場合は、査定成立後にコピーをお送りいただくか、来店時にご提示いただきます。</p></div>
+          <button class="faq-q" type="button">買取に本人確認書類は必要ですか？<span class="faq-toggle" aria-hidden="true"></span></button>
+          <div class="faq-a"><p>法律の規定により必要です。免許証・マイナンバーカード等の顔写真付き証明書をご用意ください。</p></div>
         </div>
 
       </div>
@@ -2011,9 +2009,7 @@
           <span class="cta-col__num">01</span>
           <h3 class="cta-col__title">LINE査定</h3>
           <span class="cta-col__note">おすすめ — 無料・自宅から</span>
-          <p class="cta-col__desc">
-            写真を送るだけで仮査定。持ち込み前の確認にも便利です。返答は通常1〜2営業日以内。
-          </p>
+          <p class="cta-col__desc">写真を送るだけ。返答は1〜2営業日以内。</p>
           <div class="cta-col__action">
             <a href="https://lin.ee/67FUOky" class="btn btn--line" target="_blank" rel="noopener">
               <svg viewBox="0 0 24 24"><path d="M19.365 9.89c.5 0 .907.41.907.91s-.407.91-.907.91h-2.38v1.48h2.38c.5 0 .907.41.907.91s-.407.91-.907.91h-3.29c-.5 0-.907-.41-.907-.91V8.97c0-.5.407-.91.907-.91h3.29c.5 0 .907.41.907.91s-.407.91-.907.91h-2.38v.92h2.38zm-8.47 4.12c0 .5-.407.91-.907.91-.26 0-.487-.1-.657-.27l-2.62-3.56v2.92c0 .5-.407.91-.907.91s-.907-.41-.907-.91V8.97c0-.5.407-.91.907-.91.26 0 .487.1.657.27l2.62 3.56V8.97c0-.5.407-.91.907-.91s.907.41.907.91v5.04zm-5.6 0c0 .5-.407.91-.907.91s-.907-.41-.907-.91V8.97c0-.5.407-.91.907-.91s.907.41.907.91v5.04zm14.88-2.52c0-4.95-4.96-8.97-11.06-8.97S1.05 6.54 1.05 11.49c0 4.43 3.93 8.14 9.23 8.84.36.08.85.24.97.55.11.28.07.72.04 1l-.16 1c-.05.28-.23 1.1.97.6 1.2-.5 6.46-3.8 8.82-6.51 1.63-1.79 2.41-3.6 2.41-5.49z"/></svg>
@@ -2026,10 +2022,7 @@
           <span class="cta-col__num">02</span>
           <h3 class="cta-col__title">店頭持ち込み</h3>
           <span class="cta-col__note">予約不要 — 当日現金払い</span>
-          <p class="cta-col__desc">
-            吉祥寺店へ直接お持ちください。プロのスタイリストが対面で査定。人目を気にせずゆっくりご相談いただけます。<br /><br />
-            毎日 11:00–20:00
-          </p>
+          <p class="cta-col__desc">直接持ち込みでその場査定・即日お支払い。<br>毎日 11:00–20:00</p>
           <div class="cta-col__action">
             <a href="https://maps.app.goo.gl/6kiXxMtHBYWzshfJ8" class="btn btn--dark" target="_blank" rel="noopener">Google マップで開く</a>
           </div>
@@ -2039,9 +2032,7 @@
           <span class="cta-col__num">03</span>
           <h3 class="cta-col__title">宅配買取</h3>
           <span class="cta-col__note">送料無料 — 全国対応</span>
-          <p class="cta-col__desc">
-            遠方の方・外出が難しい方も対応。着払いでお送りください（送料はこちら負担）。キャンセル時は全点お返しします。
-          </p>
+          <p class="cta-col__desc">着払いで送るだけ（送料こちら負担）。キャンセル無料。</p>
           <div class="cta-col__action">
             <a href="https://lin.ee/67FUOky" class="btn btn--ghost" target="_blank" rel="noopener">LINEから申し込む</a>
           </div>
