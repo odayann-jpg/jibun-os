@@ -18,9 +18,16 @@
 │   ├── inbox/
 │   ├── todos/
 │   └── notes/
-└── marketing/
+├── marketing/
+│   ├── CLAUDE.md
+│   ├── content-plan/
+│   └── campaigns/
+└── sales/
     ├── CLAUDE.md
-    ├── content-plan/
+    ├── prospects/
+    ├── clients/
+    ├── proposals/
+    ├── templates/
     └── campaigns/
 ```
 
@@ -40,6 +47,7 @@
 |------|---------|------|
 | 秘書室 | secretary | 窓口・相談役。TODO管理、壁打ち、メモ。常設。 |
 | マーケティング | marketing | 集客施策・売上分析・コンテンツ企画・HP改善。スタクロ主軸。 |
+| 営業 | sales | 新規開拓・既存顧客管理。リフレイム印象研修のアウトリーチが主軸。 |
 
 ## 部署への振り分け（`/company` 単体参照用・詳細は根 `CLAUDE.md`）
 

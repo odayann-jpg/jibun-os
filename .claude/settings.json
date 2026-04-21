@@ -11,6 +11,18 @@
           }
         ]
       }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 /Users/hirotaseiji/Desktop/自分OS/.claude/hooks/extract_feedback.py",
+            "timeout": 180
+          }
+        ]
+      }
     ]
   }
 }
