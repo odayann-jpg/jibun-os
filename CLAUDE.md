@@ -25,6 +25,7 @@ AIはコーチ・戦略パートナー・振り返りの鏡として機能する
 4. `growth/weekly/` の最新ファイルを確認し、前回の振り返りを把握する
 5. 毎週日曜日で、その週の週次レポートが未生成なら自動生成を提案する
 6. `.company/CLAUDE.md` と `.company/secretary/CLAUDE.md` を読み、秘書窓口の記録ルール・口調・フォルダ運用を把握する（存在する場合）
+7. Google Calendar MCP で当日の予定を取得する（誠司: `odayann@gmail.com` と 西岡: `s.nishioka@fashion-stylist.co.jp` の両カレンダー）
 
 ---
 
