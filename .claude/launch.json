@@ -12,6 +12,12 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "8000", "--directory", "/Users/hirotaseiji/Desktop/nishioka-website"],
       "port": 8000
+    },
+    {
+      "name": "Stylist Photo",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "/Users/hirotaseiji/Desktop/自分OS/projects/stylist-photo/site", "-p", "8100"],
+      "port": 8100
     }
   ]
 }
