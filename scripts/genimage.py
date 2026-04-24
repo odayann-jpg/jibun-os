@@ -27,7 +27,7 @@ except ImportError:
     print("  python3 -m pip install openai python-dotenv")
     sys.exit(1)
 
-MODEL = "gpt-image-1"  # gpt-image-2 API公開後はここを差し替え
+MODEL = "gpt-image-2"  # デフォルトは gpt-image-2（組織認証済み）
 
 VALID_SIZES = ["1024x1024", "1024x1536", "1536x1024", "auto"]
 VALID_QUALITIES = ["low", "medium", "high", "auto"]
