@@ -1,0 +1,1103 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LSIC | ライフスタイル印象設計コンサルティング</title>
+  <meta name="description" content="経営者の服・家具・空間・夫婦関係・生活導線を整え、生産性と売上が伸びやすい土台をつくる、3か月集中コンサルティング。">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
+  <meta name="referrer" content="no-referrer">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #101942;
+      --ink-soft: #2a2f4a;
+      --muted: #5a607a;
+      --line: #e2e1dc;
+      --paper: #ffffff;
+      --soft: #f6f4f0;
+      --bg: #faf9f6;
+      --violet: #5d2bb8;
+      --violet-dark: #32186f;
+      --shadow-sm: 0 4px 16px rgba(16, 25, 66, .06);
+      --shadow-md: 0 12px 36px rgba(16, 25, 66, .09);
+      --shadow-lg: 0 24px 60px rgba(16, 25, 66, .14);
+      --serif: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+      --sans: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--bg);
+      font-family: var(--serif);
+      line-height: 1.85;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img { display: block; max-width: 100%; height: auto; }
+
+    p { margin: 0; }
+
+    a { color: inherit; }
+
+    .container {
+      width: min(1120px, 100% - 48px);
+      margin-inline: auto;
+    }
+
+    /* ============ Header ============ */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, .92);
+      backdrop-filter: saturate(180%) blur(10px);
+      -webkit-backdrop-filter: saturate(180%) blur(10px);
+      border-bottom: 1px solid rgba(16, 25, 66, .07);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      height: 76px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-mark {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      color: var(--ink);
+    }
+
+    .brand-copy {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.55;
+      letter-spacing: .08em;
+      color: var(--ink-soft);
+    }
+
+    .nav {
+      display: flex;
+      gap: 28px;
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: var(--ink-soft);
+      transition: color .2s;
+    }
+
+    .nav a:hover { color: var(--violet); }
+
+    .header-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 22px;
+      border-radius: 4px;
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, var(--violet), var(--violet-dark));
+      text-decoration: none;
+      box-shadow: 0 8px 22px rgba(58, 28, 124, .28);
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .header-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 28px rgba(58, 28, 124, .35);
+    }
+
+    .menu {
+      display: none;
+      width: 32px;
+      height: 24px;
+      border: 0;
+      background: transparent;
+      position: relative;
+      cursor: pointer;
+      z-index: 60;
+    }
+
+    .menu::before, .menu::after, .menu span {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 32px;
+      height: 2px;
+      background: var(--ink);
+      transition: transform .25s, opacity .2s, top .25s, bottom .25s;
+    }
+
+    .menu::before { top: 0; }
+    .menu span { top: 11px; }
+    .menu::after { bottom: 0; }
+
+    .menu.is-open::before { top: 11px; transform: rotate(45deg); }
+    .menu.is-open span { opacity: 0; }
+    .menu.is-open::after { bottom: 11px; transform: rotate(-45deg); }
+
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 64px;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, .98);
+      backdrop-filter: saturate(180%) blur(10px);
+      -webkit-backdrop-filter: saturate(180%) blur(10px);
+      border-bottom: 1px solid rgba(16, 25, 66, .07);
+      padding: 16px 24px 24px;
+      box-shadow: 0 8px 24px rgba(16, 25, 66, .08);
+      z-index: 49;
+    }
+
+    .mobile-nav.is-open {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .mobile-nav a {
+      padding: 14px 8px;
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink-soft);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(16, 25, 66, .06);
+    }
+
+    .mobile-nav a:last-child {
+      margin-top: 8px;
+      padding: 14px 22px;
+      border-bottom: 0;
+      border-radius: 4px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--violet), var(--violet-dark));
+      text-align: center;
+    }
+
+    /* ============ Hero ============ */
+    .hero {
+      position: relative;
+      min-height: 80vh;
+      padding: 120px 0 100px;
+      color: #fff;
+      background:
+        linear-gradient(90deg, rgba(8, 10, 24, .72), rgba(8, 10, 24, .25)),
+        url("https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=2000&q=82") center / cover;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-inner {
+      max-width: 720px;
+    }
+
+    .hero h1 {
+      margin: 0 0 32px;
+      font-size: clamp(32px, 5vw, 60px);
+      line-height: 1.45;
+      font-weight: 700;
+    }
+
+    .hero p {
+      max-width: 32em;
+      font-family: var(--sans);
+      font-size: clamp(15px, 1.4vw, 17px);
+      font-weight: 600;
+      line-height: 2.1;
+    }
+
+    .hero .program {
+      margin-top: 40px;
+      font-family: var(--sans);
+      font-weight: 800;
+      font-size: clamp(15px, 1.5vw, 18px);
+      line-height: 2;
+      letter-spacing: .04em;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      min-height: 64px;
+      padding: 0 36px;
+      margin-top: 28px;
+      border: 0;
+      border-radius: 4px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--violet), var(--violet-dark));
+      font-family: var(--sans);
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-decoration: none;
+      box-shadow: 0 14px 32px rgba(58, 28, 124, .38);
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 40px rgba(58, 28, 124, .45);
+    }
+
+    .button-arrow { font-size: 18px; }
+
+    /* ============ Section base ============ */
+    .section {
+      padding: 100px 0;
+    }
+
+    .section-alt {
+      background: var(--soft);
+    }
+
+    .section-head {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section h2 {
+      margin: 0 0 18px;
+      font-size: clamp(26px, 3vw, 36px);
+      line-height: 1.55;
+      font-weight: 700;
+      letter-spacing: .02em;
+    }
+
+    .lead {
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--muted);
+      line-height: 2.05;
+    }
+
+    /* ============ 悩み ============ */
+    .check-list {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 18px;
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink-soft);
+    }
+
+    .check-list li {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      align-items: start;
+      gap: 14px;
+      padding: 18px 22px;
+      background: #fff;
+      border-radius: 6px;
+      box-shadow: var(--shadow-sm);
+      line-height: 1.85;
+    }
+
+    .check-list li::before {
+      content: "✓";
+      color: var(--violet);
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    /* ============ なぜ ============ */
+    .reason-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    .reason {
+      display: grid;
+      grid-template-columns: 70px 1fr;
+      gap: 22px;
+      align-items: start;
+      padding: 30px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: var(--shadow-sm);
+      transition: transform .25s, box-shadow .25s;
+    }
+
+    .reason:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .reason-icon {
+      display: grid;
+      place-items: center;
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, #f0ecf8, #fff);
+      border-radius: 50%;
+      color: var(--violet-dark);
+      font-family: var(--sans);
+      font-size: 32px;
+      font-weight: 800;
+    }
+
+    .reason h3 {
+      margin: 0 0 10px;
+      font-size: 19px;
+      line-height: 1.5;
+      font-weight: 700;
+    }
+
+    .reason p,
+    .area p,
+    .lease p,
+    .flow p,
+    .overview p,
+    .note p {
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--muted);
+      line-height: 2;
+    }
+
+    /* ============ サービス概要 ============ */
+    .overview-text {
+      max-width: 760px;
+      margin: 0 auto 56px;
+      text-align: center;
+    }
+
+    .overview-text p + p { margin-top: 22px; }
+
+    .overview-media {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 16px;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .overview-media img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      border-radius: 6px;
+      box-shadow: var(--shadow-md);
+    }
+
+    /* ============ 整える5領域 ============ */
+    .area-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 28px;
+    }
+
+    .area {
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform .25s, box-shadow .25s;
+    }
+
+    .area:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .area figure {
+      margin: 0;
+      height: 220px;
+      overflow: hidden;
+    }
+
+    .area img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .area-body {
+      padding: 28px;
+    }
+
+    .area-number {
+      display: block;
+      margin-bottom: 14px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .15em;
+      color: var(--violet);
+      font-family: var(--sans);
+    }
+
+    .area h3 {
+      margin: 0 0 12px;
+      font-size: 20px;
+      line-height: 1.5;
+      font-weight: 700;
+    }
+
+    /* ============ リース ============ */
+    .lease-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 32px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .lease {
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .lease figure {
+      margin: 0;
+      height: 240px;
+      overflow: hidden;
+    }
+
+    .lease img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .lease-body {
+      padding: 32px;
+    }
+
+    .lease h3 {
+      margin: 0 0 16px;
+      font-size: 22px;
+      line-height: 1.5;
+      font-weight: 700;
+    }
+
+    .lease p + p { margin-top: 16px; }
+
+    .note {
+      max-width: 860px;
+      margin: 56px auto 0;
+      padding: 36px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .note h3 {
+      margin: 0 0 18px;
+      font-size: 18px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .note p + p { margin-top: 16px; }
+
+    /* ============ 3か月の流れ ============ */
+    .flow-list {
+      display: grid;
+      gap: 32px;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 36px;
+      align-items: center;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .flow:nth-child(even) {
+      grid-template-columns: 1.2fr 1fr;
+    }
+
+    .flow:nth-child(even) figure {
+      order: 2;
+    }
+
+    .flow figure {
+      margin: 0;
+      height: 280px;
+      overflow: hidden;
+    }
+
+    .flow img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .flow-body {
+      padding: 36px;
+    }
+
+    .flow-number {
+      display: block;
+      margin-bottom: 14px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .2em;
+      color: var(--violet);
+      font-family: var(--sans);
+    }
+
+    .flow h3 {
+      margin: 0 0 18px;
+      font-size: 22px;
+      line-height: 1.5;
+      font-weight: 700;
+    }
+
+    /* ============ プラン ============ */
+    .plans {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .plan-card {
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: transform .25s, box-shadow .25s, border-color .25s;
+    }
+
+    .plan-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--violet);
+    }
+
+    .plan-name {
+      padding: 28px 16px;
+      text-align: center;
+      background: linear-gradient(135deg, #f0ecf8, #fff);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .plan-name strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: .15em;
+      color: var(--violet-dark);
+      font-family: var(--sans);
+    }
+
+    .plan-price {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .plan-detail {
+      flex: 1;
+      padding: 24px 16px;
+      text-align: center;
+    }
+
+    .fineprint {
+      max-width: 920px;
+      margin: 36px auto 0;
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+      line-height: 2;
+    }
+
+    /* ============ Closing ============ */
+    .closing {
+      position: relative;
+      padding: 120px 0;
+      color: #fff;
+      background:
+        linear-gradient(180deg, rgba(13, 22, 55, .92), rgba(13, 22, 55, .7)),
+        url("https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=2000&q=82") center / cover;
+      text-align: center;
+    }
+
+    .closing h2 {
+      margin: 0 0 28px;
+      font-size: clamp(22px, 2.6vw, 32px);
+      line-height: 1.7;
+      font-weight: 700;
+    }
+
+    .closing p {
+      max-width: 36em;
+      margin: 0 auto;
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 2.1;
+    }
+
+    .closing .button {
+      margin-top: 36px;
+    }
+
+    /* ============ Footer ============ */
+    .footer {
+      padding: 40px 0;
+      background: #0d1637;
+      color: rgba(255, 255, 255, .65);
+      font-family: var(--sans);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    /* ============ Responsive ============ */
+    @media (max-width: 880px) {
+      .nav { display: none; }
+      .header-cta { display: none; }
+      .menu { display: block; }
+
+      .container { width: min(1120px, 100% - 32px); }
+
+      .section { padding: 72px 0; }
+
+      .hero { padding: 90px 0 80px; min-height: 70vh; }
+
+      .overview-media {
+        grid-template-columns: 1fr;
+      }
+
+      .overview-media img {
+        height: 220px;
+      }
+
+      .flow,
+      .flow:nth-child(even) {
+        grid-template-columns: 1fr;
+      }
+
+      .flow:nth-child(even) figure {
+        order: 0;
+      }
+
+      .flow figure { height: 220px; }
+
+      .lease-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 540px) {
+      .container { width: min(1120px, 100% - 24px); }
+
+      .brand-copy { display: none; }
+
+      .header-inner { height: 64px; }
+
+      .hero h1 { font-size: 28px; }
+
+      .section { padding: 60px 0; }
+
+      .section-head { margin-bottom: 40px; }
+
+      .reason {
+        grid-template-columns: 56px 1fr;
+        padding: 22px;
+        gap: 16px;
+      }
+
+      .reason-icon {
+        width: 52px;
+        height: 52px;
+        font-size: 26px;
+      }
+
+      .area-body,
+      .lease-body,
+      .flow-body {
+        padding: 22px;
+      }
+
+      .note { padding: 24px; }
+
+      .closing { padding: 80px 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="container header-inner">
+      <a href="#top" class="brand" style="text-decoration:none;">
+        <div class="brand-mark">LSIC</div>
+        <div class="brand-copy">ライフスタイル印象設計<br>コンサルティング</div>
+      </a>
+      <nav class="nav">
+        <a href="#concept">コンセプト</a>
+        <a href="#service">サービス</a>
+        <a href="#flow">流れ</a>
+        <a href="#plans">プラン</a>
+      </nav>
+      <button class="menu" id="menuBtn" aria-label="メニューを開く" aria-expanded="false" aria-controls="mobileNav"><span></span></button>
+    </div>
+    <nav class="mobile-nav" id="mobileNav" aria-label="モバイルメニュー">
+      <a href="#concept">コンセプト</a>
+      <a href="#service">サービス</a>
+      <a href="#flow">流れ</a>
+      <a href="#plans">プラン</a>
+    </nav>
+  </header>
+
+  <section class="hero" id="top">
+    <div class="container hero-inner">
+      <h1>経営者の売上は、<br>仕事中だけで決まらない。</h1>
+      <p>服・家具・空間・夫婦関係・生活導線を整え、経営者本人の状態を高めることで、生産性と売上が伸びやすい土台をつくる。</p>
+      <p class="program">ライフスタイル印象設計コンサルティング<br>3か月集中プログラム</p>
+    </div>
+  </section>
+
+  <section class="section" id="concept">
+    <div class="container">
+      <div class="section-head">
+        <h2>こんな悩みはありませんか？</h2>
+      </div>
+      <ul class="check-list">
+        <li>仕事では成果を出しているのに、家庭ではうまく噛み合わない</li>
+        <li>服選びや見え方を、今の立場に合わせて整えたい</li>
+        <li>自宅に帰っても疲れが抜けず、仕事の集中力が落ちている</li>
+        <li>部屋やクローゼットが整っておらず、毎日の準備に無駄が多い</li>
+        <li>夫婦間のすれ違いが、仕事の判断や行動に影響している</li>
+        <li>経営者として、仕事も家庭も次のステージに進みたい</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head">
+        <h2>なぜ暮らしが仕事に影響するのか</h2>
+        <p class="lead">経営者の成果は、日常の状態からつくられます。</p>
+      </div>
+      <div class="reason-grid">
+        <div class="reason">
+          <div class="reason-icon">♜</div>
+          <div>
+            <h3>服は信頼感をつくる</h3>
+            <p>営業・会食・紹介・商談など、あらゆる場面で、あなたの印象と信頼感を左右します。</p>
+          </div>
+        </div>
+        <div class="reason">
+          <div class="reason-icon">▱</div>
+          <div>
+            <h3>空間は集中力と回復力をつくる</h3>
+            <p>住空間や仕事空間の使い方で、集中・思考・回復の質が大きく変わります。</p>
+          </div>
+        </div>
+        <div class="reason">
+          <div class="reason-icon">◑</div>
+          <div>
+            <h3>夫婦関係は精神的安定をつくる</h3>
+            <p>家庭での安心感が、経営判断やメンタルの安定、挑戦する力を支えます。</p>
+          </div>
+        </div>
+        <div class="reason">
+          <div class="reason-icon">◷</div>
+          <div>
+            <h3>生活導線は時間効率をつくる</h3>
+            <p>小さな無駄をなくすことで、本来使うべき仕事や人との時間にエネルギーを使えます。</p>
+          </div>
+        </div>
+        <div class="reason">
+          <div class="reason-icon">♮</div>
+          <div>
+            <h3>キッチン・食の環境は体調と行動力を支える</h3>
+            <p>食生活の質が、体調・判断力・行動力に直結します。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="service">
+    <div class="container">
+      <div class="section-head">
+        <h2>サービス概要</h2>
+      </div>
+      <div class="overview-text">
+        <p>ライフスタイル印象設計コンサルティングは、経営者の仕事・家庭・装い・住空間・生活導線を統合して整える、3か月集中型のコンサルティングです。</p>
+        <p>目的は、見た目だけを整えることではなく、経営者本人の状態を整え、仕事の生産性と売上が伸びやすい環境をつくること。</p>
+      </div>
+      <div class="overview-media">
+        <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=82" alt="整えられたリビング">
+        <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=82" alt="相談中のビジネスパーソン">
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head">
+        <h2>整える5つの領域</h2>
+      </div>
+      <div class="area-grid">
+        <article class="area">
+          <figure><img src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=900&q=82" alt="スーツの身だしなみ"></figure>
+          <div class="area-body">
+            <span class="area-number">01</span>
+            <h3>営業印象設計</h3>
+            <p>経営者としての印象を設計し、信頼され、選ばれる見え方をつくります。</p>
+          </div>
+        </article>
+        <article class="area">
+          <figure><img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=900&q=82" alt="相談テーブル"></figure>
+          <div class="area-body">
+            <span class="area-number">02</span>
+            <h3>夫婦間コンサルティング</h3>
+            <p>夫婦が同じ未来を描けるように、関係性を設計し、家庭内パフォーマンスを高めます。</p>
+          </div>
+        </article>
+        <article class="area">
+          <figure><img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=900&q=82" alt="洗練された室内空間"></figure>
+          <div class="area-body">
+            <span class="area-number">03</span>
+            <h3>空間設計・家具選定</h3>
+            <p>集中力・回復力・夫婦の会話・生活しやすさを高める空間と家具を設計します。</p>
+          </div>
+        </article>
+        <article class="area">
+          <figure><img src="https://images.unsplash.com/photo-1556909212-d5b604d0c90d?auto=format&fit=crop&w=900&q=82" alt="収納された洋服"></figure>
+          <div class="area-body">
+            <span class="area-number">04</span>
+            <h3>生活導線の設計</h3>
+            <p>日常の動線や収納、時間の使い方を整え、無駄のないストレスの少ない生活をつくります。</p>
+          </div>
+        </article>
+        <article class="area">
+          <figure><img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=900&q=82" alt="食卓と食材"></figure>
+          <div class="area-body">
+            <span class="area-number">05</span>
+            <h3>キッチン・食の環境設計</h3>
+            <p>キッチンや食の環境を整え、健康と家族の時間を豊かにする基盤をつくります。</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>リースに含まれるもの</h2>
+        <p class="lead">本サービスには、コンサルティングに付随するリース枠が含まれます。<br>リース対象は、主に「洋服」と「家具」です。</p>
+      </div>
+      <div class="lease-grid">
+        <article class="lease">
+          <figure><img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=1000&q=82" alt="洋服のラック"></figure>
+          <div class="lease-body">
+            <h3>洋服</h3>
+            <p>経営者としての印象、営業力、信頼感、会食や紹介の場での見え方を整えるために必要なもの。</p>
+            <p>スーツ、ジャケット、シャツ、パンツ、コート、靴、バッグ、ベルト、ネクタイ、小物類など</p>
+          </div>
+        </article>
+        <article class="lease">
+          <figure><img src="https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=1000&q=82" alt="上質な家具のある部屋"></figure>
+          <div class="lease-body">
+            <h3>家具</h3>
+            <p>仕事の生産性、回復力、夫婦関係、生活導線を整えるために必要なもの。</p>
+            <p>ソファ、テーブル、ダイニングテーブル、チェア、デスク、ベッド、マットレス、収納家具、棚、照明、ラグ、カーテン、ミラー、キッチン収納、食器棚など</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="note">
+        <h3>— ご注意ください —</h3>
+        <p>本サービスは、洋服や家具を単体で販売・貸与するものではありません。コンサルティングを通じて設計したライフスタイルを実現するために、必要な洋服・家具を付随リースとしてご提案するものです。</p>
+        <p>リース対象品は、コンサルティング内容に基づき、当社が必要と判断したものに限ります。すべての購入希望品が対象になるわけではありません。</p>
+        <p>工事費、施工費、設置費、冷蔵庫、清掃品、配送・設置費等は原則として別途費用となります。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="flow">
+    <div class="container">
+      <div class="section-head">
+        <h2>3か月の流れ</h2>
+      </div>
+      <div class="flow-list">
+        <article class="flow">
+          <figure><img src="https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=1000&q=82" alt="ノートとペン"></figure>
+          <div class="flow-body">
+            <span class="flow-number">PHASE 01</span>
+            <h3>1か月目<br>現状把握と軸の設計</h3>
+            <p>経営者としての印象、仕事の目的、家庭での関係性、住空間、クローゼット、生活導線を確認。じっくり状況を把握し、明確にします。</p>
+          </div>
+        </article>
+        <article class="flow">
+          <figure><img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1000&q=82" alt="設計と選定資料"></figure>
+          <div class="flow-body">
+            <span class="flow-number">PHASE 02</span>
+            <h3>2か月目<br>設計と選定</h3>
+            <p>営業印象、夫婦関係、住空間、生活導線を整理し、必要な洋服・家具を検討・選定。仕事・家庭・空間・装いが同じ方向に整う状態をつくります。</p>
+          </div>
+        </article>
+        <article class="flow">
+          <figure><img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1000&q=82" alt="家具を整えた上質な部屋"></figure>
+          <div class="flow-body">
+            <span class="flow-number">PHASE 03</span>
+            <h3>3か月目<br>実装と定着</h3>
+            <p>洋服・家具・空間アイテムを導入し、実際の生活に落とし込みます。使ってみた後の違和感を調整し、3か月後も続く生活の型を整えます。</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="plans">
+    <div class="container">
+      <div class="section-head">
+        <h2>プラン</h2>
+        <p class="lead">3か月集中プログラム</p>
+      </div>
+      <div class="plans">
+        <article class="plan-card">
+          <div class="plan-name">
+            <strong>LIGHT</strong>
+            <div class="plan-price">300万円</div>
+          </div>
+          <div class="plan-detail">
+            <p>コンサルティング費 200万円<br>付随リース枠 100万円</p>
+          </div>
+        </article>
+        <article class="plan-card">
+          <div class="plan-name">
+            <strong>STANDARD</strong>
+            <div class="plan-price">600万円</div>
+          </div>
+          <div class="plan-detail">
+            <p>コンサルティング費 400万円<br>付随リース枠 200万円</p>
+          </div>
+        </article>
+        <article class="plan-card">
+          <div class="plan-name">
+            <strong>POWER</strong>
+            <div class="plan-price">900万円</div>
+          </div>
+          <div class="plan-detail">
+            <p>コンサルティング費 600万円<br>付随リース枠 300万円</p>
+          </div>
+        </article>
+        <article class="plan-card">
+          <div class="plan-name">
+            <strong>EX</strong>
+            <div class="plan-price">1,200万円</div>
+          </div>
+          <div class="plan-detail">
+            <p>コンサルティング費 800万円<br>付随リース枠 400万円</p>
+          </div>
+        </article>
+        <article class="plan-card">
+          <div class="plan-name">
+            <strong>PLATINUM</strong>
+            <div class="plan-price">1,800万円</div>
+          </div>
+          <div class="plan-detail">
+            <p>コンサルティング費 1,200万円<br>付随リース枠 600万円</p>
+          </div>
+        </article>
+        <article class="plan-card">
+          <div class="plan-name">
+            <strong>BLACK</strong>
+            <div class="plan-price">2,700万円</div>
+          </div>
+          <div class="plan-detail">
+            <p>コンサルティング費 1,800万円<br>付随リース枠 900万円</p>
+          </div>
+        </article>
+      </div>
+      <p class="fineprint">
+        ※金額は税別です。※期間は3か月集中です。<br>
+        ※付随リース枠は、洋服・家具を中心に、コンサルティング内容に基づいて必要と判断したものに充当します。<br>
+        ※施工費・工事費・設備費・家電・配送設置費等は別途となる場合があります。
+      </p>
+    </div>
+  </section>
+
+  <section class="closing">
+    <div class="container">
+      <h2>仕事の成果は、日常の状態から変わります。</h2>
+      <p>服・家具・空間・夫婦関係・生活導線を統合して整え、<br>経営者本人の状態から成果を引き上げる3か月。</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      © LSIC — ライフスタイル印象設計コンサルティング
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var btn = document.getElementById('menuBtn');
+      var nav = document.getElementById('mobileNav');
+      if (!btn || !nav) return;
+      function toggle(open) {
+        var isOpen = open !== undefined ? open : !btn.classList.contains('is-open');
+        btn.classList.toggle('is-open', isOpen);
+        nav.classList.toggle('is-open', isOpen);
+        btn.setAttribute('aria-expanded', String(isOpen));
+        btn.setAttribute('aria-label', isOpen ? 'メニューを閉じる' : 'メニューを開く');
+      }
+      btn.addEventListener('click', function () { toggle(); });
+      nav.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () { toggle(false); });
+      });
+    })();
+  </script>
+
+</body>
+</html>
