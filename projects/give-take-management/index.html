@@ -164,13 +164,24 @@
     padding: 140px var(--pad-section-x) 160px;
     position: relative;
     overflow: hidden;
+    background-color: var(--bg);
+    background-image: url('images/hero.png');
+    background-size: cover;
+    background-position: center right;
+    background-repeat: no-repeat;
   }
   .hero::before {
     content: "";
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse 800px 600px at 85% 20%, var(--blue-light) 0%, transparent 60%);
+    background: linear-gradient(to right, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.88) 38%, rgba(255,255,255,0.45) 70%, rgba(255,255,255,0.25) 100%);
     pointer-events: none;
+  }
+  @media (max-width: 1023px) {
+    .hero { background-position: center; }
+    .hero::before {
+      background: linear-gradient(to bottom, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.92) 50%, rgba(255,255,255,0.7) 100%);
+    }
   }
   .hero__inner {
     position: relative;
@@ -331,7 +342,11 @@
 
   /* ============ Turning Point (dark) ============ */
   .turning {
-    background: var(--navy);
+    background-color: var(--navy);
+    background-image: linear-gradient(rgba(10, 37, 64, 0.78), rgba(10, 37, 64, 0.88)), url('images/turning.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     color: #fff;
   }
   .turning__inner {
@@ -874,12 +889,17 @@
   .vision {
     position: relative;
     overflow: hidden;
+    background-color: var(--bg);
+    background-image: url('images/vision.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
   }
   .vision::before {
     content: "";
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse 1000px 600px at 50% 50%, var(--blue-light) 0%, transparent 70%);
+    background: rgba(255, 255, 255, 0.82);
     pointer-events: none;
   }
   .vision__inner {
@@ -1024,7 +1044,11 @@
 
   /* ============ Closing ============ */
   .closing {
-    background: linear-gradient(180deg, var(--blue-light) 0%, var(--navy) 100%);
+    background-color: var(--navy);
+    background-image: linear-gradient(rgba(10, 37, 64, 0.55) 0%, rgba(10, 37, 64, 0.78) 100%), url('images/closing.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     padding: 180px var(--pad-section-x);
     text-align: center;
     color: #fff;
