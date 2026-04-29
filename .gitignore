@@ -30,3 +30,6 @@ node_modules/
 *.log
 *.tmp
 projects/gentle-space/
+
+# Superpowers brainstorming companion
+.superpowers/
