@@ -924,32 +924,18 @@
   .profile__photo-wrap { display: flex; flex-direction: column; align-items: stretch; }
   .profile__photo {
     width: 100%;
-    aspect-ratio: 3 / 4;
-    background: repeating-linear-gradient(
-      135deg,
-      var(--blue-light) 0px,
-      var(--blue-light) 12px,
-      #f4f8fc 12px,
-      #f4f8fc 24px
-    );
-    border: 1px solid var(--line);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: ui-monospace, "JetBrains Mono", "SFMono-Regular", monospace;
-    font-size: 11px;
-    color: var(--muted);
-    text-align: center;
-    margin-bottom: 20px;
-    line-height: 1.6;
+    aspect-ratio: 1 / 1;
+    background: #fff;
+    overflow: hidden;
+    margin-bottom: 4px;
   }
-  .profile__photo img { width: 100%; height: 100%; object-fit: cover; }
-  .profile__photo-note {
-    font-size: 11px;
-    font-family: ui-monospace, "JetBrains Mono", monospace;
-    color: var(--muted);
-    margin: 0;
+  .profile__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
   }
+  .profile__photo-note { display: none; }
   .profile__caption {
     font-size: 13px;
     color: var(--muted);
@@ -1417,11 +1403,9 @@
 <section class="section profile" id="profile">
   <div class="profile__inner">
     <div class="profile__photo-wrap">
-      <div class="profile__photo" aria-label="立花 由佳 プロフィール写真（プレースホルダー）">
-        <!-- 写真到着時、この内容を <img src="images/yuka-tachibana.png" alt="立花 由佳"> に差し替え -->
-        立花由佳<br>プロフィール写真
+      <div class="profile__photo">
+        <img src="images/yuka-tachibana.png" alt="立花 由佳 — 一般社団法人 日本Give&amp;Takeマネジメント協会 代表理事">
       </div>
-      <p class="profile__photo-note">// portrait placeholder</p>
     </div>
     <div>
       <div class="eyebrow">Profile</div>
