@@ -1,0 +1,23 @@
+# Give & Take マネジメント協会 LP の Xserver デプロイ設定
+# このファイルを `.ftpconfig` にコピーして、値を埋めてください。
+# `.ftpconfig` は .gitignore 済みなので git にはコミットされません。
+#
+# 取得方法:
+#   1. https://secure.xserver.ne.jp/xapanel/xserver/login_server.php でログイン
+#   2. 「Give&Takeマネジメント協会サーバー」の「サーバー管理」をクリック
+#   3. サーバーパネル内の「FTPアカウント設定」から情報を確認（または新規作成）
+#
+# FTP_HOST = サーバーパネルの「サーバー情報」に表示される「ホスト名」（例: sv****.xserver.jp）
+#            もしくはドメイン名 (例: giveandtake-japan.xsrv.jp)
+# FTP_USER = FTPアカウント名（多くの場合サーバーIDと同じ。例: giveand）
+# FTP_PASS = FTPパスワード
+# FTP_REMOTE = リモートパス。ドメイン直下に置く場合は /giveandtake-japan.org/public_html/
+#              サブパス（例 /lp/）に置く場合は /giveandtake-japan.org/public_html/lp/
+
+FTP_HOST=
+FTP_USER=
+FTP_PASS=
+FTP_REMOTE=
+
+# 公開URL（デプロイ完了時のメッセージ用）
+PUBLIC_URL=https://giveandtake-japan.org/

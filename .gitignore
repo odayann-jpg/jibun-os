@@ -33,3 +33,7 @@ projects/gentle-space/
 
 # Superpowers brainstorming companion
 .superpowers/
+
+# FTP / deploy credentials
+.ftpconfig
+.env.deploy
