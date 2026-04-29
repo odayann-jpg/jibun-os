@@ -36,6 +36,18 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["serve", "/Users/hirotaseiji/Desktop/自分OS/projects/give-take-management", "-p", "8400"],
       "port": 8400
+    },
+    {
+      "name": "Gentle Space",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "/Users/hirotaseiji/Desktop/自分OS/projects/gentle-space", "-p", "8500"],
+      "port": 8500
+    },
+    {
+      "name": "Gentle Space PHP",
+      "runtimeExecutable": "php",
+      "runtimeArgs": ["-S", "localhost:8501", "-t", "/Users/hirotaseiji/Desktop/自分OS/projects/gentle-space"],
+      "port": 8501
     }
   ]
 }

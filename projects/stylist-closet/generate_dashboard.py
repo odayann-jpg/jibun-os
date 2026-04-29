@@ -314,57 +314,246 @@ def generate_html(data):
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
 :root {{
-  --bg: #f4f6f9;
-  --bg2: #ffffff;
-  --bg3: #eef1f6;
-  --border: #dde2eb;
-  --text: #1a202c;
-  --text2: #64748b;
-  --accent: #1e3a5f;
-  --accent2: #2c5282;
-  --green: #1a6b45;
-  --red: #c0392b;
-  --blue: #2563a8;
-  --purple: #5b4fcf;
+  /* Paper neutrals (warm-tinted, not cool blue-gray) */
+  --bg:           oklch(0.984 0.004 75);
+  --surface:      oklch(0.997 0.002 75);
+  --surface-2:    oklch(0.967 0.006 75);
+  --surface-3:    oklch(0.945 0.008 75);
+  --border:       oklch(0.915 0.010 75);
+  --border-strong:oklch(0.860 0.014 75);
+  --divider:      oklch(0.940 0.008 75);
+
+  /* Ink (text), slightly cool to feel deliberate */
+  --ink:    oklch(0.225 0.018 252);
+  --ink-2:  oklch(0.450 0.014 252);
+  --ink-3:  oklch(0.595 0.012 252);
+  --ink-4:  oklch(0.720 0.010 252);
+
+  /* Brand */
+  --accent:       oklch(0.320 0.075 252);
+  --accent-2:     oklch(0.420 0.090 252);
+  --accent-soft:  oklch(0.945 0.025 252);
+
+  /* Functional */
+  --pos:        oklch(0.500 0.105 158);
+  --pos-soft:   oklch(0.960 0.025 158);
+  --neg:        oklch(0.560 0.165 25);
+  --neg-soft:   oklch(0.960 0.030 25);
+  --warn:       oklch(0.640 0.115 75);
+
+  /* Legacy aliases (keep JS chart code & inline `var(--green)` etc working) */
+  --bg2: var(--surface);
+  --bg3: var(--surface-2);
+  --text: var(--ink);
+  --text2: var(--ink-3);
+  --green: var(--pos);
+  --red: var(--neg);
+  --blue: var(--accent-2);
+  --purple: oklch(0.500 0.165 295);
+
+  /* Spacing (4px base) */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px;
+
+  /* Radius */
+  --r-sm:6px; --r-md:10px; --r-lg:14px; --r-pill:999px;
+
+  /* Shadow (brand-tinted) */
+  --shadow-sm: 0 1px 2px oklch(0.32 0.075 252 / 0.05);
+  --shadow-md: 0 6px 24px -8px oklch(0.32 0.075 252 / 0.10);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 120ms;
+  --dur:      180ms;
+  --dur-slow: 260ms;
 }}
 * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-body {{ background: var(--bg); color: var(--text); font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif; font-size: 14px; }}
+body {{
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Gothic Medium', 'Yu Gothic', 'Meiryo', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  font-feature-settings: "palt", "kern";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}}
 a {{ color: var(--accent); text-decoration: none; }}
+.tabular {{ font-variant-numeric: tabular-nums; }}
+
+@media (prefers-reduced-motion: reduce) {{
+  * {{ transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }}
+}}
 
 /* Header */
-.header {{ background: #1e3a5f; border-bottom: none; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(30,58,95,0.2); }}
-.header h1 {{ font-size: 16px; font-weight: 700; letter-spacing: 0.05em; color: #ffffff; }}
-.header .meta {{ font-size: 12px; color: rgba(255,255,255,0.65); }}
+.header {{
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 28px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: saturate(1.4);
+}}
+.header h1 {{
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  color: var(--ink);
+}}
+.header h1 .brand {{ font-weight: 700; letter-spacing: 0.01em; }}
+.header h1 .sep {{ color: var(--ink-4); margin: 0 10px; font-weight: 400; }}
+.header h1 .role {{ font-weight: 500; color: var(--ink-2); }}
+.header .meta {{
+  font-size: 12px;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+}}
+.header .meta strong {{ color: var(--ink-2); font-weight: 600; }}
 
 /* Month Nav */
-.month-nav {{ background: var(--bg2); padding: 10px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; overflow-x: auto; box-shadow: 0 1px 4px rgba(0,0,0,0.04); position: sticky; top: 49px; z-index: 90; }}
-.month-nav button {{ background: var(--bg3); border: 1px solid var(--border); color: var(--text2); padding: 6px 16px; border-radius: 20px; cursor: pointer; font-size: 13px; white-space: nowrap; transition: all 0.2s; }}
-.month-nav button.active {{ background: #1e3a5f; color: #fff; border-color: #1e3a5f; font-weight: 600; }}
-.month-nav button:hover:not(.active) {{ border-color: var(--accent); color: var(--accent); }}
+.month-nav {{
+  background: var(--surface);
+  padding: 10px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  overflow-x: auto;
+  position: sticky;
+  top: 50px;
+  z-index: 90;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}}
+.month-nav::-webkit-scrollbar {{ height: 6px; }}
+.month-nav::-webkit-scrollbar-thumb {{ background: var(--border-strong); border-radius: var(--r-pill); }}
+.month-nav button {{
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--ink-3);
+  padding: 5px 12px;
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  transition: color var(--dur) var(--ease-out), background-color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out);
+}}
+.month-nav button:hover:not(.active) {{ color: var(--ink); background: var(--surface-2); }}
+.month-nav button.active {{
+  background: var(--ink);
+  color: var(--surface);
+  border-color: var(--ink);
+  font-weight: 600;
+}}
 
 /* Tab Nav */
-.tab-nav {{ display: flex; gap: 0; border-bottom: 1px solid var(--border); background: var(--bg2); padding: 0 24px; }}
-.tab-nav button {{ background: none; border: none; color: var(--text2); padding: 12px 18px; cursor: pointer; font-size: 13px; font-weight: 500; border-bottom: 2px solid transparent; transition: all 0.2s; }}
-.tab-nav button.active {{ color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }}
-.tab-nav button:hover:not(.active) {{ color: var(--text); }}
+.tab-nav {{
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  padding: 0 24px;
+  position: sticky;
+  top: 100px;
+  z-index: 80;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}}
+.tab-nav::-webkit-scrollbar {{ height: 4px; }}
+.tab-nav::-webkit-scrollbar-thumb {{ background: var(--border-strong); border-radius: var(--r-pill); }}
+.tab-nav button {{
+  background: none;
+  border: none;
+  color: var(--ink-3);
+  padding: 13px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  border-bottom: 1.5px solid transparent;
+  margin-bottom: -1px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out);
+}}
+.tab-nav button:hover:not(.active) {{ color: var(--ink); }}
+.tab-nav button.active {{
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+  font-weight: 600;
+}}
 
 /* Main */
-.main {{ padding: 16px 20px; max-width: 1400px; margin: 0 auto; }}
+.main {{ padding: 24px 24px 64px; max-width: 1400px; margin: 0 auto; }}
 
 /* Cards */
-.cards {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 24px; }}
-.card {{ background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 18px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }}
-.card .label {{ font-size: 11px; color: var(--text2); margin-bottom: 6px; letter-spacing: 0.05em; font-weight: 500; }}
-.card .value {{ font-size: 22px; font-weight: 700; color: var(--accent); }}
-.card .sub {{ font-size: 11px; color: var(--text2); margin-top: 4px; }}
-.card.green .value {{ color: var(--green); }}
-.card.red .value {{ color: var(--red); }}
-.card.blue .value {{ color: var(--blue); }}
+.cards {{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-bottom: 24px;
+}}
+.card {{
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 16px 18px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: border-color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}}
+.card:hover {{ border-color: var(--border-strong); box-shadow: var(--shadow-sm); }}
+.card .label {{
+  font-size: 11.5px;
+  color: var(--ink-3);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}}
+.card .value {{
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  margin-top: 2px;
+  word-break: keep-all;
+}}
+.card .sub {{
+  font-size: 11.5px;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+  margin-top: auto;
+}}
+.card.green .value {{ color: var(--pos); }}
+.card.red .value {{ color: var(--neg); }}
+.card.blue .value {{ color: var(--accent-2); }}
 
 /* Progress bar */
-.progress-bar {{ background: var(--bg3); border-radius: 4px; height: 8px; margin-top: 8px; overflow: hidden; }}
-.progress-bar .fill {{ height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.5s; }}
-.progress-bar .fill.over {{ background: var(--green); }}
+.progress-bar {{
+  background: var(--surface-3);
+  border-radius: var(--r-pill);
+  height: 8px;
+  margin-top: 8px;
+  overflow: hidden;
+}}
+.progress-bar .fill {{
+  height: 100%;
+  background: var(--accent);
+  border-radius: var(--r-pill);
+  transition: width var(--dur-slow) var(--ease-out);
+}}
+.progress-bar .fill.over {{ background: var(--pos); }}
 
 /* Grid layouts */
 .grid-2 {{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }}
@@ -372,75 +561,172 @@ a {{ color: var(--accent); text-decoration: none; }}
 @media (max-width: 900px) {{
   .grid-2, .grid-3 {{ grid-template-columns: 1fr; }}
   .cards {{ grid-template-columns: repeat(2, 1fr); }}
+  .header {{ padding: 10px 16px; flex-wrap: wrap; row-gap: 2px; align-items: center; }}
+  .header h1 {{ font-size: 14px; flex: 1 1 100%; line-height: 1.35; }}
+  .header h1 .sep {{ margin: 0 8px; }}
+  .header .meta {{ font-size: 11px; flex: 1 1 100%; }}
+  .month-nav {{ top: 58px; padding: 8px 16px; }}
+  .tab-nav {{ top: 102px; padding-left: 16px; padding-right: 16px; }}
+  .main {{ padding: 16px 16px 48px; }}
+  .panel {{ padding: 14px 14px; }}
+  .card {{ padding: 14px 14px 12px; }}
+  .card .value {{ font-size: 22px; }}
 }}
 
-/* Chart panels */
-.panel {{ background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }}
-.panel h3 {{ font-size: 11px; font-weight: 600; color: var(--text2); margin-bottom: 10px; letter-spacing: 0.08em; text-transform: uppercase; border-bottom: 1px solid var(--border); padding-bottom: 8px; }}
-.chart-wrap {{ position: relative; max-height: 180px; }}
+/* Panels */
+.panel {{
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 16px 18px;
+}}
+.panel h3 {{
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-2);
+  margin-bottom: 14px;
+  letter-spacing: 0.005em;
+  text-transform: none;
+  border-bottom: 1px solid var(--divider);
+  padding-bottom: 10px;
+}}
+.chart-wrap {{ position: relative; height: 180px; overflow: hidden; }}
 
 /* Table */
-table {{ width: 100%; border-collapse: collapse; }}
-thead th {{ background: #f8f8f8; color: var(--text2); font-size: 11px; font-weight: 600; padding: 10px 12px; text-align: right; letter-spacing: 0.04em; border-bottom: 2px solid var(--border); }}
-thead th:first-child {{ text-align: left; }}
-tbody td {{ padding: 10px 12px; text-align: right; border-bottom: 1px solid #f0f0f0; font-size: 13px; color: var(--text); }}
-tbody td:first-child {{ text-align: left; color: var(--text2); }}
-tbody tr:hover {{ background: #fafafa; }}
-.positive {{ color: var(--green); }}
-.negative {{ color: var(--red); }}
-.total-row td {{ font-weight: 700; color: var(--text); border-top: 2px solid var(--border); background: #fafafa; }}
-.section-header td {{ background: #eef2f8; color: #1e3a5f; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }}
-.indent {{ padding-left: 24px !important; color: var(--text) !important; }}
+table {{
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}}
+thead th {{
+  background: transparent;
+  color: var(--ink-3);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 9px 12px;
+  text-align: right;
+  letter-spacing: 0.01em;
+  border-bottom: 1px solid var(--border-strong);
+}}
+thead th:first-child {{ text-align: left; font-weight: 500; }}
+tbody td {{
+  padding: 10px 12px;
+  text-align: right;
+  border-bottom: 1px solid var(--divider);
+  font-size: 13px;
+  color: var(--ink);
+}}
+tbody td:first-child {{ text-align: left; color: var(--ink-2); font-weight: 500; }}
+tbody tr:hover {{ background: var(--surface-2); }}
+tbody tr:last-child td {{ border-bottom: none; }}
+.positive {{ color: var(--pos); }}
+.negative {{ color: var(--neg); }}
+.total-row td {{
+  font-weight: 700;
+  color: var(--ink);
+  border-top: 1.5px solid var(--border-strong);
+  background: var(--surface-2);
+}}
+.section-header td {{
+  background: transparent;
+  color: var(--ink-2);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  padding-top: 18px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--divider);
+}}
+.indent {{ padding-left: 24px !important; color: var(--ink) !important; }}
 
 /* Daily table */
 .daily-table {{ font-size: 12px; }}
 .daily-table th, .daily-table td {{ padding: 7px 10px; }}
-.highlights {{ font-size: 11px; color: var(--text2); max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
+.highlights {{ font-size: 11px; color: var(--ink-3); max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
 
 /* Badge */
-.badge {{ display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }}
-.badge-sat {{ background: rgba(37,99,168,0.1); color: var(--blue); }}
-.badge-sun {{ background: rgba(192,57,43,0.1); color: var(--red); }}
+.badge {{
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}}
+.badge-sat {{ background: var(--accent-soft); color: var(--accent); }}
+.badge-sun {{ background: var(--neg-soft); color: var(--neg); }}
 
 /* Tab content */
 .tab-content {{ display: none; }}
 .tab-content.active {{ display: block; }}
 
 /* Diff column */
-.diff-positive {{ color: var(--green); font-weight: 600; }}
-.diff-negative {{ color: var(--red); font-weight: 600; }}
+.diff-positive {{ color: var(--pos); font-weight: 600; font-variant-numeric: tabular-nums; }}
+.diff-negative {{ color: var(--neg); font-weight: 600; font-variant-numeric: tabular-nums; }}
 
 /* Week summary */
 .week-grid {{ display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }}
-.week-card {{ background: var(--bg3); border-radius: 6px; padding: 12px; text-align: center; }}
-.week-card .wk-label {{ font-size: 11px; color: var(--text2); margin-bottom: 6px; }}
-.week-card .wk-value {{ font-size: 16px; font-weight: 700; color: var(--accent); }}
+.week-card {{
+  background: var(--surface-2);
+  border-radius: var(--r-sm);
+  padding: 12px;
+  text-align: center;
+}}
+.week-card .wk-label {{ font-size: 11px; color: var(--ink-3); margin-bottom: 6px; }}
+.week-card .wk-value {{
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}}
 
-/* Staff table */
-.staff-bar {{ background: var(--bg3); border-radius: 3px; height: 12px; margin-top: 4px; overflow: hidden; display: flex; }}
-.staff-bar .bar-fill {{ height: 100%; border-radius: 3px; transition: width 0.5s; }}
+/* Staff bar */
+.staff-bar {{
+  background: var(--surface-3);
+  border-radius: var(--r-pill);
+  height: 10px;
+  margin-top: 4px;
+  overflow: hidden;
+  display: flex;
+}}
+.staff-bar .bar-fill {{
+  height: 100%;
+  border-radius: var(--r-pill);
+  transition: width var(--dur-slow) var(--ease-out);
+}}
 
 /* Category badges for expenses */
-.cat-badge {{ display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 10px; background: #f0f0f0; color: var(--text2); }}
+.cat-badge {{
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  font-size: 10.5px;
+  font-weight: 500;
+  background: var(--surface-2);
+  color: var(--ink-2);
+  letter-spacing: 0.02em;
+}}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <h1>📊 {store_name} 経営ダッシュボード</h1>
-  <div class="meta">最終更新: {last_updated} | <span id="current-month-label">{latest_label}</span></div>
+  <h1><span class="brand">{store_name}</span><span class="sep">／</span><span class="role">経営ダッシュボード</span></h1>
+  <div class="meta"><strong id="current-month-label">{latest_label}</strong>　最終更新 {last_updated}</div>
 </div>
 
 <div class="month-nav" id="month-nav"></div>
 
 <div class="tab-nav">
-  <button class="active" onclick="showTab('summary')">📊 今月サマリー</button>
-  <button onclick="showTab('daily')">📅 日次データ</button>
-  <button onclick="showTab('pl')">📊 収支計画</button>
-  <button onclick="showTab('comparison')">📈 月比較</button>
-  <button onclick="showTab('purchase')">🛍 買取分析</button>
-  <button onclick="showTab('staff')">👥 スタッフ</button>
-  <button onclick="showTab('inventory')">📦 在庫</button>
+  <button class="active" onclick="showTab('summary', event)">今月サマリー</button>
+  <button onclick="showTab('daily', event)">日次データ</button>
+  <button onclick="showTab('pl', event)">収支計画</button>
+  <button onclick="showTab('comparison', event)">月比較</button>
+  <button onclick="showTab('purchase', event)">買取分析</button>
+  <button onclick="showTab('staff', event)">スタッフ</button>
+  <button onclick="showTab('inventory', event)">在庫</button>
 </div>
 
 <div class="main">
@@ -489,7 +775,7 @@ tbody tr:hover {{ background: #fafafa; }}
   <div id="pl-plan-cards" class="cards" style="margin-bottom:24px"></div>
   <div class="panel" style="margin-bottom:16px">
     <h3>累計損益推移（計画 vs 実績）</h3>
-    <div class="chart-wrap" style="max-height:200px"><canvas id="chart-cumulative" height="180"></canvas></div>
+    <div class="chart-wrap" style="height:200px"><canvas id="chart-cumulative" height="180"></canvas></div>
   </div>
   <div class="panel" style="margin-bottom:16px">
     <h3>月次 計画 vs 実績</h3>
@@ -592,7 +878,7 @@ tbody tr:hover {{ background: #fafafa; }}
 const SC_MONTHS = {months_js};
 const SC_INVENTORY = {inventory_js};
 const SC_PL_PLAN = {pl_plan_js};
-const SC_STAFF_COLORS = ['#1e3a5f', '#2563a8', '#1a6b45', '#5b4fcf', '#c0392b'];
+const SC_STAFF_COLORS = ['#324b6e', '#5876a3', '#3a8055', '#6e62c2', '#b6543d'];
 
 // ============ STATE ============
 let currentMonthIdx = SC_MONTHS.length - 1;
@@ -701,9 +987,9 @@ function renderSummary(m, idx) {{
   const prevStoreSales = prev ? Object.values(prev.days).reduce((s, d) => s + (d.store_sales || 0), 0) : null;
 
   const cardsData = [
-    {{ label: '月間売上', value: yen(totalSales), sub: prevTotal != null ? `前月比 ${{diff(totalSales, prevTotal).replace(/<[^>]+>/g, '')}}` : '—', cls: '' }},
-    {{ label: 'EC売上', value: yen(netSales), sub: prevNetSales != null ? `前月比 ${{diff(netSales, prevNetSales).replace(/<[^>]+>/g, '')}} / ${{netItems}}点` : `${{netItems}}点`, cls: 'blue' }},
-    {{ label: '店頭売上', value: yen(storeSales), sub: prevStoreSales != null ? `前月比 ${{diff(storeSales, prevStoreSales).replace(/<[^>]+>/g, '')}} / ${{storeItems}}点` : `${{storeItems}}点`, cls: '' }},
+    {{ label: '月間売上', value: yen(totalSales), sub: prevTotal != null ? `前月比 ${{diff(totalSales, prevTotal)}}` : '—', cls: '' }},
+    {{ label: 'EC売上', value: yen(netSales), sub: prevNetSales != null ? `前月比 ${{diff(netSales, prevNetSales)}} / ${{netItems}}点` : `${{netItems}}点`, cls: 'blue' }},
+    {{ label: '店頭売上', value: yen(storeSales), sub: prevStoreSales != null ? `前月比 ${{diff(storeSales, prevStoreSales)}} / ${{storeItems}}点` : `${{storeItems}}点`, cls: '' }},
     forecast > 0 ? {{ label: '月末予測(売上)', value: yen(forecast), sub: `日販 ${{yen(Math.round(avgDaily))}}ペース`, cls: 'blue' }} : null,
     {{ label: '今月の出品数', value: totalListings + '点', sub: staffSub, cls: totalListings >= listingsTarget ? 'green' : '' }},
     listingsForecast > 0 ? {{ label: '月末出品予測', value: listingsForecast + '点', sub: `目標${{listingsTarget}}点 (${{listingsRate}}%)`, cls: listingsForecast >= listingsTarget ? 'green' : listingsForecast >= listingsTarget * 0.8 ? 'blue' : 'red' }} : null,
@@ -727,14 +1013,21 @@ function renderSummary(m, idx) {{
 
   // 目標達成率
   if (m.target_sales > 0) {{
-    const achRate = Math.min(totalSales / m.target_sales * 100, 150);
+    const achRateRaw = totalSales / m.target_sales * 100;
+    const achRate = Math.min(achRateRaw, 150);
+    const achColor = totalSales === 0 ? 'var(--ink-3)' : achRateRaw >= 100 ? 'var(--pos)' : achRateRaw >= 80 ? 'var(--accent-2)' : achRateRaw >= 50 ? 'var(--warn)' : 'var(--neg)';
+    const remain = Math.max(m.target_sales - totalSales, 0);
     document.getElementById('achievement-bar').style.display = 'block';
     document.getElementById('achievement-content').innerHTML = `
-      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
-        <span>達成率: <strong style="color:var(--accent-2)">${{pct(totalSales / m.target_sales * 100)}}</strong></span>
-        <span style="color:var(--text2)">${{yen(totalSales)}} / ${{yen(m.target_sales)}}</span>
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:14px;flex-wrap:wrap">
+        <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+          <span style="font-size:11.5px;color:var(--ink-3);font-weight:500;letter-spacing:.01em;white-space:nowrap">達成率</span>
+          <strong class="tabular" style="font-size:30px;font-weight:700;color:${{achColor}};line-height:1;letter-spacing:-.01em;white-space:nowrap">${{pct(achRateRaw)}}</strong>
+          <span class="tabular" style="font-size:13px;color:var(--ink-3);white-space:nowrap">${{yen(totalSales)}} / ${{yen(m.target_sales)}}</span>
+        </div>
+        <span class="tabular" style="font-size:12px;color:var(--ink-3);white-space:nowrap">${{remain > 0 ? '残り ' + yen(remain) : '達成済 +' + yen(totalSales - m.target_sales)}}</span>
       </div>
-      <div class="progress-bar"><div class="fill ${{achRate >= 100 ? 'over' : ''}}" style="width:${{Math.min(achRate, 100)}}%"></div></div>
+      <div class="progress-bar" style="height:10px"><div class="fill ${{achRateRaw >= 100 ? 'over' : ''}}" style="width:${{Math.min(achRate, 100)}}%"></div></div>
     `;
   }} else {{
     document.getElementById('achievement-bar').style.display = 'none';
@@ -752,26 +1045,26 @@ function renderSummary(m, idx) {{
     data: {{
       labels,
       datasets: [
-        {{ label: 'ネット', data: netData, backgroundColor: 'rgba(30,58,95,0.8)', stack: 'a',
+        {{ label: 'ネット', data: netData, backgroundColor: 'rgba(50,75,110,0.85)', stack: 'a',
            datalabels: {{ display: false }} }},
-        {{ label: '店頭', data: storeData, backgroundColor: 'rgba(37,99,168,0.55)', stack: 'a',
+        {{ label: '店頭', data: storeData, backgroundColor: 'rgba(88,118,163,0.6)', stack: 'a',
            datalabels: {{
              display: ctx => totalData[ctx.dataIndex] > 0,
              anchor: 'end', align: 'end',
              formatter: (v, ctx) => totalData[ctx.dataIndex] > 0 ? '¥' + Math.round(totalData[ctx.dataIndex]/10000*10)/10 + '万' : '',
-             color: '#444', font: {{ size: 10, weight: '600' }}
+             color: '#3a3f48', font: {{ size: 10, weight: '600' }}
            }} }},
       ]
     }},
     options: {{
       responsive: true,
       plugins: {{
-        legend: {{ labels: {{ color: '#999', font: {{ size: 11 }} }} }},
+        legend: {{ labels: {{ color: '#a4a8b1', font: {{ size: 11 }} }} }},
         datalabels: {{ display: false }}
       }},
       scales: {{
-        x: {{ stacked: true, ticks: {{ color: '#888', font: {{ size: 10 }} }}, grid: {{ color: '#ebebeb' }} }},
-        y: {{ stacked: true, ticks: {{ color: '#666', font: {{ size: 10 }}, callback: v => '¥' + (v/10000).toFixed(0) + '万' }}, grid: {{ color: '#ebebeb' }} }}
+        x: {{ stacked: true, ticks: {{ color: '#7b818d', font: {{ size: 10 }} }}, grid: {{ color: '#e8e2d8' }} }},
+        y: {{ stacked: true, ticks: {{ color: '#5e646f', font: {{ size: 10 }}, callback: v => '¥' + (v/10000).toFixed(0) + '万' }}, grid: {{ color: '#e8e2d8' }} }}
       }}
     }}
   }});
@@ -784,12 +1077,12 @@ function renderSummary(m, idx) {{
     type: 'doughnut',
     data: {{
       labels: ['ネット', '店頭'],
-      datasets: [{{ data: [netTotal, storeTotal], backgroundColor: ['rgba(30,58,95,0.85)', 'rgba(37,99,168,0.65)'], borderWidth: 0 }}]
+      datasets: [{{ data: [netTotal, storeTotal], backgroundColor: ['rgba(50,75,110,0.85)', 'rgba(88,118,163,0.65)'], borderWidth: 0 }}]
     }},
     options: {{
       responsive: true,
       plugins: {{
-        legend: {{ position: 'bottom', labels: {{ color: '#999', font: {{ size: 11 }} }} }},
+        legend: {{ position: 'bottom', labels: {{ color: '#a4a8b1', font: {{ size: 11 }} }} }},
         tooltip: {{ callbacks: {{ label: ctx => `${{ctx.label}}: ¥${{ctx.raw.toLocaleString()}}` }} }}
       }}
     }}
@@ -963,7 +1256,7 @@ function renderPL(m) {{
     {{ label: '計画営業利益', value: yen(planOpProfit), sub: `計画買取比率 ${{pct(mp.gross_profit_rate || 70)}}`, cls: planOpProfit >= 0 ? '' : 'red' }},
     {{ label: '実績営業利益', value: yen(actualOpProfit), sub: opDiff >= 0 ? `計画比 +${{yen(opDiff)}}` : `計画比 ${{yen(opDiff)}}`, cls: actualOpProfit >= 0 ? 'green' : 'red' }},
     {{ label: '計画累計損益', value: yen(planCumul),   sub: '計画ベース', cls: planCumul >= 0 ? 'green' : 'red' }},
-    {{ label: '実績累計損益', value: yen(actualCumul), sub: actualCumul >= 0 ? '✅ 黒字転換！' : `あと ${{yen(-actualCumul)}}`, cls: actualCumul >= 0 ? 'green' : 'red' }},
+    {{ label: '実績累計損益', value: yen(actualCumul), sub: actualCumul >= 0 ? '黒字転換' : `あと ${{yen(-actualCumul)}}`, cls: actualCumul >= 0 ? 'green' : 'red' }},
   ].map(c => `<div class="card ${{c.cls||''}}"><div class="label">${{c.label}}</div><div class="value">${{c.value}}</div><div class="sub">${{c.sub||''}}</div></div>`).join('');
 
   // ── 累計損益チャート（計画 vs 実績） ──
@@ -995,19 +1288,19 @@ function renderPL(m) {{
     data: {{
       labels: chartLabels,
       datasets: [
-        {{ label: '計画累計',  data: planCumulData,   borderColor: '#2563a8', backgroundColor: 'rgba(37,99,168,0.08)', fill: true, tension: 0.3, borderDash: [5,3], pointRadius: 3, datalabels: {{display:false}} }},
-        {{ label: '実績累計',  data: actualCumulData, borderColor: '#1a6b45', backgroundColor: 'rgba(26,107,69,0.1)',  fill: true, tension: 0.2, borderWidth: 2.5, pointRadius: 5, datalabels: {{display:false}} }},
+        {{ label: '計画累計',  data: planCumulData,   borderColor: '#5876a3', backgroundColor: 'rgba(88,118,163,0.1)', fill: true, tension: 0.3, borderDash: [5,3], pointRadius: 3, datalabels: {{display:false}} }},
+        {{ label: '実績累計',  data: actualCumulData, borderColor: '#3a8055', backgroundColor: 'rgba(58,128,85,0.12)',  fill: true, tension: 0.2, borderWidth: 2.5, pointRadius: 5, datalabels: {{display:false}} }},
       ]
     }},
     options: {{
       responsive: true,
       plugins: {{
-        legend: {{ labels: {{ color: '#666', font: {{ size: 11 }} }} }},
-        annotation: {{ annotations: {{ zeroLine: {{ type: 'line', yMin: 0, yMax: 0, borderColor: '#e74c3c', borderWidth: 1.5, borderDash: [4,4] }} }} }}
+        legend: {{ labels: {{ color: '#5e646f', font: {{ size: 11 }} }} }},
+        annotation: {{ annotations: {{ zeroLine: {{ type: 'line', yMin: 0, yMax: 0, borderColor: '#b6543d', borderWidth: 1.5, borderDash: [4,4] }} }} }}
       }},
       scales: {{
-        x: {{ ticks: {{ color: '#888', font: {{ size: 10 }} }}, grid: {{ color: '#ebebeb' }} }},
-        y: {{ ticks: {{ color: '#666', font: {{ size: 10 }}, callback: v => (v>=0?'+':'')+Math.round(v/10000)+'万' }}, grid: {{ color: '#ebebeb' }},
+        x: {{ ticks: {{ color: '#7b818d', font: {{ size: 10 }} }}, grid: {{ color: '#e8e2d8' }} }},
+        y: {{ ticks: {{ color: '#5e646f', font: {{ size: 10 }}, callback: v => (v>=0?'+':'')+Math.round(v/10000)+'万' }}, grid: {{ color: '#e8e2d8' }},
               afterDataLimits: axis => {{ axis.min = Math.min(axis.min, -5000000); }} }}
       }}
     }}
@@ -1037,14 +1330,14 @@ function renderPL(m) {{
     const oDiff = actOp !== null ? actOp - (p.op_profit||0) : null;
     const cumul = actOp !== null ? runningOp : null;
     const isCurrent = sm && sm.key === m.key;
-    return `<tr style="${{isCurrent ? 'background:#eef2f8;font-weight:600' : ''}}">
+    return `<tr style="${{isCurrent ? 'background:var(--accent-soft);font-weight:600' : ''}}">
       <td>${{label}}</td>
       <td>${{p.total_sales ? yen(p.total_sales) : '—'}}</td>
       <td>${{actSales > 0 ? yen(actSales) : '—'}}</td>
-      <td style="color:${{sDiff === null ? '#999' : sDiff >= 0 ? 'var(--green)' : 'var(--red)'}}">${{sDiff === null ? '—' : (sDiff >= 0 ? '+' : '') + yen(sDiff)}}</td>
+      <td style="color:${{sDiff === null ? '#a4a8b1' : sDiff >= 0 ? 'var(--green)' : 'var(--red)'}}">${{sDiff === null ? '—' : (sDiff >= 0 ? '+' : '') + yen(sDiff)}}</td>
       <td style="color:${{(p.op_profit||0) >= 0 ? 'var(--green)' : 'var(--red)'}}">${{p.op_profit !== undefined ? yen(p.op_profit) : '—'}}</td>
-      <td style="color:${{actOp === null ? '#999' : actOp >= 0 ? 'var(--green)' : 'var(--red)'}}">${{actOp !== null ? yen(actOp) : '—'}}</td>
-      <td style="color:${{cumul === null ? '#999' : cumul >= 0 ? 'var(--green)' : 'var(--red)'}}">${{cumul !== null ? yen(cumul) : '—'}}</td>
+      <td style="color:${{actOp === null ? '#a4a8b1' : actOp >= 0 ? 'var(--green)' : 'var(--red)'}}">${{actOp !== null ? yen(actOp) : '—'}}</td>
+      <td style="color:${{cumul === null ? '#a4a8b1' : cumul >= 0 ? 'var(--green)' : 'var(--red)'}}">${{cumul !== null ? yen(cumul) : '—'}}</td>
     </tr>`;
   }}).join('');
   document.getElementById('pl-comparison-table-wrap').innerHTML = `
@@ -1077,16 +1370,16 @@ function renderPL(m) {{
     data: {{
       labels: chartLabels,
       datasets: [
-        {{ label: '計画', data: opPlanData, backgroundColor: 'rgba(37,99,168,0.45)', datalabels: {{display:false}} }},
-        {{ label: '実績', data: opActualData, backgroundColor: opActualData.map(v => v === null ? 'transparent' : v >= 0 ? 'rgba(26,107,69,0.75)' : 'rgba(192,57,43,0.7)'), datalabels: {{display:false}} }},
+        {{ label: '計画', data: opPlanData, backgroundColor: 'rgba(88,118,163,0.5)', datalabels: {{display:false}} }},
+        {{ label: '実績', data: opActualData, backgroundColor: opActualData.map(v => v === null ? 'transparent' : v >= 0 ? 'rgba(58,128,85,0.8)' : 'rgba(180,75,55,0.75)'), datalabels: {{display:false}} }},
       ]
     }},
     options: {{
       responsive: true,
-      plugins: {{ legend: {{ labels: {{ color: '#666', font: {{ size: 11 }} }} }} }},
+      plugins: {{ legend: {{ labels: {{ color: '#5e646f', font: {{ size: 11 }} }} }} }},
       scales: {{
-        x: {{ ticks: {{ color: '#888', font: {{ size: 10 }} }} }},
-        y: {{ ticks: {{ color: '#666', font: {{ size: 10 }}, callback: v => (v>=0?'+':'')+Math.round(v/10000)+'万' }}, grid: {{ color: '#ebebeb' }} }}
+        x: {{ ticks: {{ color: '#7b818d', font: {{ size: 10 }} }} }},
+        y: {{ ticks: {{ color: '#5e646f', font: {{ size: 10 }}, callback: v => (v>=0?'+':'')+Math.round(v/10000)+'万' }}, grid: {{ color: '#e8e2d8' }} }}
       }}
     }}
   }});
@@ -1119,7 +1412,7 @@ function renderPL(m) {{
         </tr>`;
       }}).join('');
     return `
-      <tr style="background:#f5f7fa"><td class="indent" style="font-weight:600;color:#1e3a5f">${{label}}</td><td>${{yen(planCatTotal)}}</td><td style="font-weight:600">${{actCatTotal>0?yen(actCatTotal):'—'}}</td><td style="color:var(--text2)">${{pct(actualSales>0?actCatTotal/actualSales*100:0)}}</td></tr>
+      <tr style="background:var(--surface-2)"><td class="indent" style="font-weight:600;color:var(--ink-2)">${{label}}</td><td>${{yen(planCatTotal)}}</td><td style="font-weight:600">${{actCatTotal>0?yen(actCatTotal):'—'}}</td><td style="color:var(--text2)">${{pct(actualSales>0?actCatTotal/actualSales*100:0)}}</td></tr>
       ${{itemRows}}`;
   }}).join('');
   const planOpexTotal = Object.values(planOpex).reduce((s,c)=>s+(c.total||0),0);
@@ -1201,9 +1494,9 @@ function renderComparison() {{
     data: {{
       labels,
       datasets: [
-        {{ label: '売上', data: salesData, backgroundColor: 'rgba(30,58,95,0.8)', yAxisID: 'y',
-           datalabels: {{ anchor: 'end', align: 'end', formatter: v => v > 0 ? '¥' + Math.round(v/10000*10)/10 + '万' : '', color: '#1e3a5f', font: {{ size: 11, weight: '700' }} }} }},
-        {{ label: '粗利', data: grossData, backgroundColor: 'rgba(26,107,69,0.65)', yAxisID: 'y',
+        {{ label: '売上', data: salesData, backgroundColor: 'rgba(50,75,110,0.85)', yAxisID: 'y',
+           datalabels: {{ anchor: 'end', align: 'end', formatter: v => v > 0 ? '¥' + Math.round(v/10000*10)/10 + '万' : '', color: '#324b6e', font: {{ size: 11, weight: '700' }} }} }},
+        {{ label: '粗利', data: grossData, backgroundColor: 'rgba(58,128,85,0.7)', yAxisID: 'y',
            datalabels: {{ display: false }} }},
       ]
     }},
@@ -1211,12 +1504,12 @@ function renderComparison() {{
       responsive: true,
       layout: {{ padding: {{ top: 24 }} }},
       plugins: {{
-        legend: {{ labels: {{ color: '#555' }} }},
+        legend: {{ labels: {{ color: '#5e646f' }} }},
         datalabels: {{ display: true }}
       }},
       scales: {{
-        x: {{ ticks: {{ color: '#888' }}, grid: {{ color: '#ebebeb' }} }},
-        y: {{ ticks: {{ color: '#666', callback: v => '¥' + (v/10000).toFixed(0) + '万' }}, grid: {{ color: '#ebebeb' }} }}
+        x: {{ ticks: {{ color: '#7b818d' }}, grid: {{ color: '#e8e2d8' }} }},
+        y: {{ ticks: {{ color: '#5e646f', callback: v => '¥' + (v/10000).toFixed(0) + '万' }}, grid: {{ color: '#e8e2d8' }} }}
       }}
     }}
   }});
@@ -1227,14 +1520,14 @@ function renderComparison() {{
     type: 'line',
     data: {{
       labels,
-      datasets: [{{ label: '買取比率(%)', data: grossRateData, borderColor: '#1a6b45', backgroundColor: 'rgba(26,107,69,0.08)', tension: 0.3, fill: true }}]
+      datasets: [{{ label: '買取比率(%)', data: grossRateData, borderColor: '#3a8055', backgroundColor: 'rgba(58,128,85,0.1)', tension: 0.3, fill: true }}]
     }},
     options: {{
       responsive: true,
-      plugins: {{ legend: {{ labels: {{ color: '#555' }} }} }},
+      plugins: {{ legend: {{ labels: {{ color: '#5e646f' }} }} }},
       scales: {{
-        x: {{ ticks: {{ color: '#888' }}, grid: {{ color: '#ebebeb' }} }},
-        y: {{ ticks: {{ color: '#666', callback: v => v + '%' }}, grid: {{ color: '#ebebeb' }}, min: 0, max: 100 }}
+        x: {{ ticks: {{ color: '#7b818d' }}, grid: {{ color: '#e8e2d8' }} }},
+        y: {{ ticks: {{ color: '#5e646f', callback: v => v + '%' }}, grid: {{ color: '#e8e2d8' }}, min: 0, max: 100 }}
       }}
     }}
   }});
@@ -1246,16 +1539,16 @@ function renderComparison() {{
     data: {{
       labels,
       datasets: [
-        {{ label: '1点単価', data: avgItemData, borderColor: '#1e3a5f', backgroundColor: 'rgba(30,58,95,0.06)', tension: 0.3 }},
-        {{ label: '日販平均', data: avgDailyData, borderColor: '#2563a8', backgroundColor: 'rgba(37,99,168,0.08)', tension: 0.3 }},
+        {{ label: '1点単価', data: avgItemData, borderColor: '#324b6e', backgroundColor: 'rgba(50,75,110,0.07)', tension: 0.3 }},
+        {{ label: '日販平均', data: avgDailyData, borderColor: '#5876a3', backgroundColor: 'rgba(88,118,163,0.1)', tension: 0.3 }},
       ]
     }},
     options: {{
       responsive: true,
-      plugins: {{ legend: {{ labels: {{ color: '#555' }} }} }},
+      plugins: {{ legend: {{ labels: {{ color: '#5e646f' }} }} }},
       scales: {{
-        x: {{ ticks: {{ color: '#888' }}, grid: {{ color: '#ebebeb' }} }},
-        y: {{ ticks: {{ color: '#666', callback: v => '¥' + v.toLocaleString() }}, grid: {{ color: '#ebebeb' }} }}
+        x: {{ ticks: {{ color: '#7b818d' }}, grid: {{ color: '#e8e2d8' }} }},
+        y: {{ ticks: {{ color: '#5e646f', callback: v => '¥' + v.toLocaleString() }}, grid: {{ color: '#e8e2d8' }} }}
       }}
     }}
   }});
@@ -1317,17 +1610,17 @@ function renderPurchase(m) {{
       labels,
       datasets: [
         {{ label: '買取金額', data: buyAmtData, backgroundColor: 'rgba(201,169,110,0.8)', yAxisID: 'yAmt' }},
-        {{ label: '買取件数', data: buyCountData, type: 'line', borderColor: '#5b4fcf', backgroundColor: 'rgba(91,79,207,0.15)', fill: true, tension: 0.3, yAxisID: 'yCnt', pointRadius: 4 }},
+        {{ label: '買取件数', data: buyCountData, type: 'line', borderColor: '#6e62c2', backgroundColor: 'rgba(110,98,194,0.18)', fill: true, tension: 0.3, yAxisID: 'yCnt', pointRadius: 4 }},
       ]
     }},
     options: {{
       responsive: true,
       interaction: {{ mode: 'index', intersect: false }},
-      plugins: {{ legend: {{ labels: {{ color: '#555' }} }} }},
+      plugins: {{ legend: {{ labels: {{ color: '#5e646f' }} }} }},
       scales: {{
-        x: {{ ticks: {{ color: '#888', font: {{ size: 10 }} }}, grid: {{ color: '#ebebeb' }} }},
-        yAmt: {{ position: 'left', ticks: {{ color: '#888', callback: v => '¥' + v.toLocaleString() }}, grid: {{ color: '#ebebeb' }} }},
-        yCnt: {{ position: 'right', ticks: {{ color: '#5b4fcf', stepSize: 1 }}, grid: {{ drawOnChartArea: false }} }}
+        x: {{ ticks: {{ color: '#7b818d', font: {{ size: 10 }} }}, grid: {{ color: '#e8e2d8' }} }},
+        yAmt: {{ position: 'left', ticks: {{ color: '#7b818d', callback: v => '¥' + v.toLocaleString() }}, grid: {{ color: '#e8e2d8' }} }},
+        yCnt: {{ position: 'right', ticks: {{ color: '#6e62c2', stepSize: 1 }}, grid: {{ drawOnChartArea: false }} }}
       }}
     }}
   }});
@@ -1342,17 +1635,17 @@ function renderPurchase(m) {{
     data: {{
       labels: mLabels,
       datasets: [
-        {{ label: '買取金額', data: mBuyAmt, backgroundColor: 'rgba(30,58,95,0.8)', yAxisID: 'y' }},
-        {{ label: '買取件数', data: mBuyCount, type: 'line', borderColor: '#5b4fcf', backgroundColor: 'transparent', yAxisID: 'y2' }},
+        {{ label: '買取金額', data: mBuyAmt, backgroundColor: 'rgba(50,75,110,0.85)', yAxisID: 'y' }},
+        {{ label: '買取件数', data: mBuyCount, type: 'line', borderColor: '#6e62c2', backgroundColor: 'transparent', yAxisID: 'y2' }},
       ]
     }},
     options: {{
       responsive: true,
-      plugins: {{ legend: {{ labels: {{ color: '#555' }} }} }},
+      plugins: {{ legend: {{ labels: {{ color: '#5e646f' }} }} }},
       scales: {{
-        x: {{ ticks: {{ color: '#888' }}, grid: {{ color: '#ebebeb' }} }},
-        y: {{ ticks: {{ color: '#666', callback: v => '¥' + v.toLocaleString() }}, grid: {{ color: '#ebebeb' }}, position: 'left' }},
-        y2: {{ ticks: {{ color: '#5b4fcf' }}, grid: {{ display: false }}, position: 'right' }}
+        x: {{ ticks: {{ color: '#7b818d' }}, grid: {{ color: '#e8e2d8' }} }},
+        y: {{ ticks: {{ color: '#5e646f', callback: v => '¥' + v.toLocaleString() }}, grid: {{ color: '#e8e2d8' }}, position: 'left' }},
+        y2: {{ ticks: {{ color: '#6e62c2' }}, grid: {{ display: false }}, position: 'right' }}
       }}
     }}
   }});
@@ -1403,10 +1696,10 @@ function renderStaff(m, monthIdx) {{
     data: {{ labels: mLabels, datasets: staffDatasets }},
     options: {{
       responsive: true,
-      plugins: {{ legend: {{ labels: {{ color: '#555' }} }} }},
+      plugins: {{ legend: {{ labels: {{ color: '#5e646f' }} }} }},
       scales: {{
-        x: {{ ticks: {{ color: '#888' }}, grid: {{ color: '#ebebeb' }} }},
-        y: {{ ticks: {{ color: '#888' }}, grid: {{ color: '#ebebeb' }} }}
+        x: {{ ticks: {{ color: '#7b818d' }}, grid: {{ color: '#e8e2d8' }} }},
+        y: {{ ticks: {{ color: '#7b818d' }}, grid: {{ color: '#e8e2d8' }} }}
       }}
     }}
   }});
@@ -1427,10 +1720,10 @@ function renderStaff(m, monthIdx) {{
     data: {{ labels, datasets: dailyDatasets }},
     options: {{
       responsive: true,
-      plugins: {{ legend: {{ labels: {{ color: '#555' }} }} }},
+      plugins: {{ legend: {{ labels: {{ color: '#5e646f' }} }} }},
       scales: {{
-        x: {{ stacked: true, ticks: {{ color: '#888', font: {{ size: 10 }} }}, grid: {{ color: '#ebebeb' }} }},
-        y: {{ stacked: true, ticks: {{ color: '#888' }}, grid: {{ color: '#ebebeb' }} }}
+        x: {{ stacked: true, ticks: {{ color: '#7b818d', font: {{ size: 10 }} }}, grid: {{ color: '#e8e2d8' }} }},
+        y: {{ stacked: true, ticks: {{ color: '#7b818d' }}, grid: {{ color: '#e8e2d8' }} }}
       }}
     }}
   }});
@@ -1449,7 +1742,7 @@ function renderInventory() {{
   // 更新日表示
   const updatedEl = document.getElementById('inventory-updated');
   if (updatedEl && inv.meta && inv.meta.last_updated) {{
-    updatedEl.textContent = `📅 在庫データ更新日: ${{inv.meta.last_updated}}（ベクタープレミアム CSV）`;
+    updatedEl.textContent = `在庫データ更新日 ${{inv.meta.last_updated}}（ベクタープレミアム CSV）`;
   }}
 
   // カード
@@ -1478,7 +1771,7 @@ function renderInventory() {{
     data: {{
       labels: distLabels,
       datasets: [{{ label: '件数', data: distData,
-        backgroundColor: distData.map((_,i) => i===0 ? 'rgba(192,57,43,0.7)' : i===1 ? 'rgba(230,126,34,0.7)' : 'rgba(37,99,168,0.7)') }}]
+        backgroundColor: distData.map((_,i) => i===0 ? 'rgba(180,75,55,0.75)' : i===1 ? 'rgba(196,148,80,0.7)' : 'rgba(88,118,163,0.7)') }}]
     }},
     options: {{
       plugins: {{ legend: {{ display: false }}, datalabels: {{ display: true, anchor: 'end', align: 'top', formatter: v => v+'件', font: {{ size: 11 }} }} }},
@@ -1493,7 +1786,7 @@ function renderInventory() {{
     type: 'bar',
     data: {{
       labels: brands.map(b => b.name.length > 12 ? b.name.substring(0,12)+'…' : b.name),
-      datasets: [{{ label: '在庫金額', data: brands.map(b => b.price), backgroundColor: 'rgba(37,99,168,0.7)' }}]
+      datasets: [{{ label: '在庫金額', data: brands.map(b => b.price), backgroundColor: 'rgba(88,118,163,0.7)' }}]
     }},
     options: {{
       indexAxis: 'y',
@@ -1519,12 +1812,22 @@ function renderInventory() {{
 }}
 
 // ============ TABS ============
-function showTab(name) {{
+function showTab(name, ev) {{
   document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.tab-nav button').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
-  event.target.classList.add('active');
+  const trigger = (ev && ev.target) || (typeof event !== 'undefined' && event && event.target);
+  if (trigger) {{
+    trigger.classList.add('active');
+    if (typeof trigger.scrollIntoView === 'function') {{
+      try {{ trigger.scrollIntoView({{ inline: 'center', block: 'nearest', behavior: 'smooth' }}); }} catch (e) {{}}
+    }}
+  }}
   if (name === 'inventory') renderInventory();
+  // 非アクティブ時に display:none で初期化された Chart.js のリサイズを促す
+  requestAnimationFrame(() => {{
+    Object.values(charts).forEach(c => {{ try {{ c && c.resize && c.resize(); }} catch (e) {{}} }});
+  }});
 }}
 
 // ============ START ============
