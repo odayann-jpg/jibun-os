@@ -1,0 +1,1030 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Give &amp; Take マネジメント — 迷いを晴らし、育める関係へ</title>
+<meta name="description" content="経営者男性のためのコーチング・コンサルティング。仕事も、関係も、納得して選べる未来へ。">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+
+<style>
+  /* ============ Tokens ============ */
+  :root {
+    --paper: #ffffff;
+    --ink: #1a1a1a;
+    --body: #444444;
+    --body-soft: #5a5a5a;
+    --navy: #1a3554;
+    --navy-soft: #4a5e80;
+    --line: #d6dae3;
+    --line-subtle: #eeeeee;
+
+    --f-mincho: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "MS PMincho", serif;
+    --f-gothic: "Hiragino Kaku Gothic ProN", "Yu Gothic Medium", "Yu Gothic", "YuGothic", system-ui, -apple-system, sans-serif;
+    --f-roman: "EB Garamond", Georgia, "Times New Roman", serif;
+
+    --container: 980px;
+    --reading: 580px;
+    --pad-x: 64px;
+    --gap-section: 112px;
+    --gap-block: 32px;
+  }
+
+  @media (max-width: 768px) {
+    :root {
+      --pad-x: 24px;
+      --gap-section: 72px;
+      --gap-block: 24px;
+    }
+  }
+
+  /* ============ Reset ============ */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--f-gothic); line-height: 1.6; }
+  h1, h2, h3, h4, p, ul, ol, blockquote, figure { margin: 0; padding: 0; }
+  ul { list-style: none; }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; height: auto; }
+  hr { border: 0; }
+
+  ::selection { background: var(--navy); color: var(--paper); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0s !important; transition-duration: 0s !important; }
+  }
+
+  /* ============ Layout ============ */
+  .container { max-width: var(--container); margin: 0 auto; padding: 0 var(--pad-x); }
+  .reading { max-width: var(--reading); }
+
+  /* ============ Header ============ */
+  .site-header {
+    padding: 24px 0 22px;
+    border-bottom: 1px solid var(--line-subtle);
+    background: var(--paper);
+  }
+  .site-header__inner {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    line-height: 1;
+  }
+  .brand__mark {
+    font-family: var(--f-roman);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--navy);
+    letter-spacing: 0.04em;
+  }
+  .brand__name {
+    font-family: var(--f-mincho);
+    font-size: 12px;
+    color: var(--ink);
+    letter-spacing: 0.08em;
+    transform: translateY(-1px);
+  }
+  .menu-toggle {
+    background: none;
+    border: 0;
+    padding: 8px;
+    margin: -8px;
+    font-size: 18px;
+    color: var(--ink);
+    cursor: pointer;
+    line-height: 1;
+    font-family: var(--f-gothic);
+  }
+  .menu-toggle:focus-visible { outline: 2px solid var(--navy); outline-offset: 4px; }
+
+  /* ============ Hero ============ */
+  .hero {
+    padding: 96px 0 88px;
+  }
+  .hero__caption {
+    font-family: var(--f-gothic);
+    font-size: 10px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--navy);
+    margin-bottom: 36px;
+    font-weight: 400;
+  }
+  .hero__title {
+    font-family: var(--f-mincho);
+    font-size: 32px;
+    line-height: 1.75;
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: 0.025em;
+    margin: 0;
+  }
+  .hero__title .q { color: var(--navy); }
+  .hero__rule {
+    width: 32px;
+    height: 1px;
+    background: var(--navy);
+    margin: 44px 0;
+  }
+  .hero__sub {
+    font-family: var(--f-mincho);
+    font-size: 19px;
+    line-height: 1.95;
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: 0.015em;
+  }
+
+  @media (max-width: 768px) {
+    .hero { padding: 64px 0 56px; }
+    .hero__title { font-size: 24px; line-height: 1.8; }
+    .hero__sub { font-size: 17px; }
+    .hero__rule { margin: 36px 0; }
+  }
+
+  /* ============ Section common ============ */
+  .section {
+    padding: var(--gap-section) 0;
+  }
+  .section + .section {
+    padding-top: 0;
+  }
+  .section__head {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 36px;
+  }
+  .section__num {
+    font-family: var(--f-roman);
+    font-size: 30px;
+    line-height: 1;
+    color: var(--navy);
+    font-weight: 400;
+  }
+  .section__eyebrow {
+    font-family: var(--f-roman);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--navy-soft);
+    letter-spacing: 0.04em;
+    text-transform: none;
+  }
+  .section__eyebrow--upper {
+    font-style: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: 11px;
+    color: var(--navy);
+  }
+  .section__title {
+    font-family: var(--f-mincho);
+    font-size: 26px;
+    line-height: 1.7;
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+    margin: 0 0 28px;
+    max-width: 700px;
+  }
+  .section__title--lg {
+    font-size: 30px;
+    line-height: 1.65;
+  }
+  .section__body {
+    font-family: var(--f-gothic);
+    font-size: 14px;
+    line-height: 2.05;
+    color: var(--body);
+    font-weight: 300;
+    max-width: var(--reading);
+  }
+  .section__body p + p { margin-top: 14px; }
+
+  @media (max-width: 768px) {
+    .section__title { font-size: 22px; line-height: 1.7; }
+    .section__title--lg { font-size: 24px; }
+    .section__num { font-size: 26px; }
+    .section__body { font-size: 14px; }
+  }
+
+  /* ============ Pull quote ============ */
+  .pull {
+    font-family: var(--f-mincho);
+    font-size: 17px;
+    line-height: 1.9;
+    color: var(--ink);
+    padding: 6px 0 6px 20px;
+    border-left: 2px solid var(--navy);
+    margin: 28px 0;
+    max-width: var(--reading);
+  }
+
+  /* ============ List patterns ============ */
+
+  /* Pattern A: h3 + body (used in §03, §04, §05, §08) */
+  .list-prose { margin: 12px 0 0; max-width: var(--reading); }
+  .list-prose__item { padding: 22px 0; border-bottom: 1px solid var(--line-subtle); }
+  .list-prose__item:first-child { border-top: 1px solid var(--line-subtle); }
+  .list-prose__title {
+    font-family: var(--f-mincho);
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--ink);
+    font-weight: 400;
+    margin-bottom: 8px;
+    letter-spacing: 0.015em;
+  }
+  .list-prose__body {
+    font-family: var(--f-gothic);
+    font-size: 13px;
+    line-height: 1.95;
+    color: var(--body);
+    font-weight: 300;
+  }
+
+  /* Pattern B: check list (used in §06) */
+  .check {
+    margin: 0;
+    max-width: var(--reading);
+  }
+  .check__item {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line-subtle);
+    align-items: baseline;
+  }
+  .check__item:first-child { border-top: 1px solid var(--line-subtle); }
+  .check__mark {
+    font-family: var(--f-gothic);
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1;
+    text-align: center;
+    font-weight: 500;
+  }
+  .check__text {
+    font-family: var(--f-mincho);
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--ink);
+    letter-spacing: 0.01em;
+  }
+
+  /* Pattern C: mistake list (used in §07) */
+  .mistake { margin: 0; max-width: var(--reading); }
+  .mistake__item { padding: 22px 0; border-bottom: 1px solid var(--line-subtle); }
+  .mistake__item:first-child { border-top: 1px solid var(--line-subtle); }
+  .mistake__line {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 14px;
+    margin-bottom: 8px;
+    align-items: baseline;
+  }
+  .mistake__mark {
+    font-family: var(--f-gothic);
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1;
+    text-align: center;
+    font-weight: 400;
+  }
+  .mistake__claim {
+    font-family: var(--f-mincho);
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--ink);
+    letter-spacing: 0.015em;
+  }
+  .mistake__result {
+    font-family: var(--f-gothic);
+    font-size: 12.5px;
+    line-height: 1.85;
+    color: var(--body-soft);
+    padding-left: 38px;
+    font-weight: 300;
+  }
+  .mistake__result::before {
+    content: "→ ";
+    color: var(--navy-soft);
+    margin-right: 4px;
+  }
+
+  /* Pattern D: benefits (used in §10) */
+  .benefits {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 36px;
+    margin: 0;
+    max-width: 100%;
+  }
+  @media (max-width: 768px) {
+    .benefits { grid-template-columns: 1fr; gap: 28px; }
+  }
+  .benefits__col { padding-top: 20px; border-top: 1px solid var(--navy); }
+  .benefits__title {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .benefits__symbol {
+    font-family: var(--f-gothic);
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1;
+  }
+  .benefits__label {
+    font-family: var(--f-mincho);
+    font-size: 16px;
+    color: var(--ink);
+    line-height: 1.4;
+    letter-spacing: 0.015em;
+  }
+  .benefits__list {
+    font-family: var(--f-gothic);
+    font-size: 13px;
+    line-height: 1.95;
+    color: var(--body);
+    font-weight: 300;
+  }
+  .benefits__list li {
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 10px;
+  }
+  .benefits__list li::before {
+    content: "・";
+    position: absolute;
+    left: 0;
+    color: var(--navy-soft);
+  }
+
+  /* ============ Sub-section heading (used inside §08 for the sub-list) ============ */
+  .sub-heading {
+    font-family: var(--f-mincho);
+    font-size: 15px;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+    margin: 36px 0 14px;
+    font-weight: 400;
+  }
+
+  /* ============ Profile (§12) ============ */
+  .profile {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 56px;
+    align-items: start;
+    max-width: 880px;
+  }
+  @media (max-width: 768px) {
+    .profile { grid-template-columns: 1fr; gap: 32px; max-width: var(--reading); }
+  }
+
+  .profile__photo {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e8ecf2 0%, #d6dae3 100%);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  @media (max-width: 768px) {
+    .profile__photo { margin: 0 auto; }
+  }
+  .profile__photo img { width: 100%; height: 100%; object-fit: cover; }
+  .profile__photo svg { width: 60%; height: 60%; opacity: 0.5; }
+
+  .profile__name {
+    font-family: var(--f-mincho);
+    font-size: 22px;
+    line-height: 1.5;
+    color: var(--ink);
+    margin-bottom: 4px;
+    letter-spacing: 0.015em;
+  }
+  .profile__name-en {
+    font-family: var(--f-roman);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--navy-soft);
+    letter-spacing: 0.04em;
+    margin-bottom: 14px;
+  }
+  .profile__title {
+    font-family: var(--f-gothic);
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--body-soft);
+    margin-bottom: 28px;
+    letter-spacing: 0.04em;
+    font-weight: 400;
+  }
+  .profile__lede {
+    font-family: var(--f-mincho);
+    font-size: 18px;
+    line-height: 1.85;
+    color: var(--ink);
+    margin-bottom: 20px;
+    letter-spacing: 0.015em;
+    font-weight: 400;
+  }
+  .profile__bio {
+    font-family: var(--f-gothic);
+    font-size: 13px;
+    line-height: 2;
+    color: var(--body);
+    font-weight: 300;
+    margin-bottom: 32px;
+  }
+  .profile__bio p + p { margin-top: 14px; }
+
+  .profile__credentials {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 12px 24px;
+    border-top: 1px solid var(--line);
+    padding-top: 22px;
+    font-family: var(--f-gothic);
+    font-size: 12px;
+    line-height: 1.85;
+    font-weight: 300;
+  }
+  .profile__credentials dt {
+    font-family: var(--f-roman);
+    font-style: italic;
+    color: var(--navy-soft);
+    font-size: 12px;
+    letter-spacing: 0.02em;
+  }
+  .profile__credentials dd {
+    color: var(--body);
+    margin: 0;
+  }
+
+  /* ============ CTA (§13) ============ */
+  .closing {
+    text-align: left;
+    max-width: var(--reading);
+  }
+  .closing__cta {
+    display: inline-block;
+    margin-top: 36px;
+    padding: 16px 32px;
+    border: 1px solid var(--ink);
+    font-family: var(--f-gothic);
+    font-size: 13px;
+    color: var(--ink);
+    letter-spacing: 0.06em;
+    background: var(--paper);
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .closing__cta:hover { background: var(--ink); color: var(--paper); }
+  .closing__cta:focus-visible { outline: 2px solid var(--navy); outline-offset: 4px; }
+  .closing__cta-arrow { margin-left: 12px; }
+
+  /* ============ Footer ============ */
+  .site-footer {
+    padding: 48px 0 64px;
+    border-top: 1px solid var(--line-subtle);
+    margin-top: var(--gap-section);
+  }
+  .site-footer__inner {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .site-footer__brand {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .site-footer__brand-mark {
+    font-family: var(--f-roman);
+    font-size: 16px;
+    color: var(--navy);
+    letter-spacing: 0.04em;
+  }
+  .site-footer__tag {
+    font-family: var(--f-mincho);
+    font-size: 12px;
+    color: var(--body-soft);
+    letter-spacing: 0.04em;
+  }
+  .site-footer__copy {
+    font-family: var(--f-gothic);
+    font-size: 11px;
+    color: #999;
+    letter-spacing: 0.04em;
+    font-weight: 300;
+  }
+
+  /* ============ Section-specific tweaks ============ */
+  .relationship-passage {
+    font-family: var(--f-gothic);
+    font-size: 14px;
+    line-height: 2.1;
+    color: var(--body);
+    font-weight: 300;
+    max-width: var(--reading);
+  }
+  .relationship-passage p + p { margin-top: 14px; }
+
+  .quote-stack {
+    font-family: var(--f-mincho);
+    font-size: 16px;
+    line-height: 2.1;
+    color: var(--ink);
+    padding: 6px 0 6px 20px;
+    border-left: 2px solid var(--navy);
+    margin: 28px 0;
+    max-width: var(--reading);
+  }
+  .quote-stack > span { display: block; }
+  .quote-stack .q { display: inline; color: var(--navy); }
+
+  .self-questions {
+    font-family: var(--f-mincho);
+    font-size: 16px;
+    line-height: 1.9;
+    color: var(--ink);
+    margin: 28px 0;
+    max-width: var(--reading);
+  }
+  .self-questions p { margin: 0; }
+  .self-questions p + p { margin-top: 8px; }
+  .self-questions .q { color: var(--navy); }
+
+  .vision-title {
+    font-family: var(--f-mincho);
+    font-size: 32px;
+    line-height: 1.75;
+    color: var(--ink);
+    letter-spacing: 0.025em;
+    margin: 0 0 32px;
+    font-weight: 400;
+  }
+  @media (max-width: 768px) {
+    .vision-title { font-size: 26px; line-height: 1.75; }
+  }
+
+  .closing-title {
+    font-family: var(--f-mincho);
+    font-size: 30px;
+    line-height: 1.7;
+    color: var(--ink);
+    letter-spacing: 0.025em;
+    margin: 0 0 28px;
+    font-weight: 400;
+  }
+  @media (max-width: 768px) {
+    .closing-title { font-size: 24px; line-height: 1.75; }
+  }
+
+  /* ============ A11y ============ */
+  .visually-hidden {
+    position: absolute !important;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0);
+    white-space: nowrap; border: 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- =========== 00. Header =========== -->
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a href="#" class="brand" aria-label="Give & Take マネジメント">
+      <span class="brand__mark">G&amp;T</span>
+      <span class="brand__name">Give &amp; Take マネジメント</span>
+    </a>
+    <button class="menu-toggle" aria-label="メニューを開く" type="button">☰</button>
+  </div>
+</header>
+
+<main>
+
+<!-- =========== 01. Hero =========== -->
+<section class="hero" id="hero">
+  <div class="container">
+    <div class="hero__caption">For executives in their working prime</div>
+    <h1 class="hero__title">
+      <span class="q">『</span>今は仕事に集中したい<span class="q">』</span><br>
+      と言いながら、<br>
+      心のどこかで何かが<br>
+      引っかかる、経営者へ。
+    </h1>
+    <hr class="hero__rule">
+    <p class="hero__sub">迷いを晴らし、<br>仕事も関係も、育てられる状態へ。</p>
+  </div>
+</section>
+
+<!-- =========== 02. Relationship Strategy =========== -->
+<section class="section" id="relationship-strategy">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__num">I.</span>
+      <span class="section__eyebrow">Relationship Strategy</span>
+    </div>
+    <h2 class="section__title section__title--lg">仕事も、人生も、<br>納得して選べる未来へ。</h2>
+
+    <div class="relationship-passage">
+      <p><span style="color:var(--navy)">『</span>今は仕事に集中したい<span style="color:var(--navy)">』</span><br>そう言い続けて、もう何年だろう。</p>
+      <p>事業は伸びている。でも、友人の結婚式の帰り道、親から「そろそろ」と言われた電話のあと、深夜、誰もいないオフィスで――心のどこかで、何かが引っかかる。</p>
+    </div>
+
+    <div class="quote-stack">
+      <span><span class="q">『</span>もっと稼いでから<span class="q">』</span></span>
+      <span><span class="q">『</span>もっと整ってから<span class="q">』</span></span>
+      <span><span class="q">『</span>今は事業に集中したい<span class="q">』</span></span>
+    </div>
+
+    <div class="relationship-passage">
+      <p>合理的に考えるほど、結婚のメリットがよくわからなくなる。<br>でも一方で、周りは自然に結婚していく。</p>
+      <p>普通はするものなのか。<br>しない自分は、何かを先延ばしにしているだけなのか。</p>
+      <p>結婚をしたくないわけではない。<br>パートナーがいらないわけでもない。</p>
+      <p>ただ、踏み切れない。<br>何かが、引っかかる。</p>
+    </div>
+
+    <div class="self-questions">
+      <p><span class="q">『</span>自分は、ちゃんと相手を幸せにできるのだろうか<span class="q">』</span></p>
+      <p><span class="q">『</span>今のように、自由に動ける時間は、これからも続くのだろうか<span class="q">』</span></p>
+    </div>
+
+    <div class="relationship-passage">
+      <p>必要なのは、いきなりふたりで結論を出すことではありません。まず、自分の中にあるモヤモヤと、その奥にある壁に気づくことです。</p>
+      <p>結婚のメリットがすぐに見えないのは、相手を大切に思っていないからではありません。「今は仕事に集中したい」という気持ちも、「パートナーとの未来を曖昧にしたくない」という気持ちも、どちらも本音。ただ、その本音を扱う土台がないまま自力でどうにかしようとすると、かえって関係がこじれやすくなります。</p>
+    </div>
+  </div>
+</section>
+
+<!-- =========== 03. Why this is not a brake =========== -->
+<section class="section" id="not-a-brake">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__num">II.</span>
+      <span class="section__eyebrow">Not a brake on your work</span>
+    </div>
+    <h2 class="section__title">結婚や未来の話は、<br>仕事を止めるためのものではありません。</h2>
+
+    <div class="list-prose">
+      <div class="list-prose__item">
+        <div class="list-prose__title">結婚を考えることが、仕事のブレーキではなくなる</div>
+        <p class="list-prose__body">自分の中の不安が整理されることで、未来の話を必要以上に重く感じにくくなります。</p>
+      </div>
+      <div class="list-prose__item">
+        <div class="list-prose__title">曖昧にしていた未来に、少しずつ向き合える</div>
+        <p class="list-prose__body">結婚するかどうかの結論を急ぐ前に、自分が何に迷っているのかを見つめられるようになります。</p>
+      </div>
+      <div class="list-prose__item">
+        <div class="list-prose__title">勢いやタイミングだけではなく、納得して選べる</div>
+        <p class="list-prose__body">自分の考えが見えてくることで、パートナーとの未来を一緒に考えられるようになります。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========== 04. After =========== -->
+<section class="section" id="after">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__num">III.</span>
+      <span class="section__eyebrow">After — なれる状態</span>
+    </div>
+    <h2 class="section__title">仕事に集中しても、相手を置き去りにしない。<br>迷いが晴れ、関係を育める状態へ。</h2>
+
+    <div class="section__body" style="margin-bottom: 24px;">
+      <p>「結婚したら仕事が制限されるのでは」という不安があるままだと、未来の話は重くなります。けれど、自分の中のモヤモヤが少しずつ晴れてくると、パートナーとの関係も焦らず育てやすくなります。</p>
+    </div>
+
+    <div class="list-prose">
+      <div class="list-prose__item">
+        <div class="list-prose__title">結婚後の働き方に見通しが持てる</div>
+        <p class="list-prose__body">仕事の時間、動き方、家庭との向き合い方を曖昧な不安のままにしない。</p>
+      </div>
+      <div class="list-prose__item">
+        <div class="list-prose__title">パートナーとの未来を避けずに考えられる</div>
+        <p class="list-prose__body">いきなり結論を出すのではなく、少しずつ同じ方向を見られる関係を育てる。</p>
+      </div>
+      <div class="list-prose__item">
+        <div class="list-prose__title">仕事も家庭も、自分で納得して選べる</div>
+        <p class="list-prose__body">勢いや周囲の空気ではなく、自分たちにとって無理のない進み方を選ぶ。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========== 05. The real walls =========== -->
+<section class="section" id="walls">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__num">IV.</span>
+      <span class="section__eyebrow">The real walls</span>
+    </div>
+    <h2 class="section__title">うまくいかない理由は、<br>気持ちが足りないからではありません。</h2>
+
+    <div class="section__body" style="margin-bottom: 24px;">
+      <p>多くの場合、壁になっているのは「未来の設計」「コミュニケーションの土台」「パートナーとの関係性」です。ここに気づかないまま、正論で伝えたり、我慢したり、先延ばしにしたりすると、よかれと思った行動が逆効果になることがあります。</p>
+    </div>
+
+    <div class="list-prose">
+      <div class="list-prose__item">
+        <div class="list-prose__title">未来の設計がない</div>
+        <p class="list-prose__body">仕事、時間、暮らし方、家族のことをどう扱うかが曖昧なままだと、話すほど不安が増えやすくなります。</p>
+      </div>
+      <div class="list-prose__item">
+        <div class="list-prose__title">コミュニケーションの土台がない</div>
+        <p class="list-prose__body">相手になかなか本音を伝えられない。遠慮したり、気を遣ったりしてしまう。たとえ伝えたとしても、正論・説明・説得になりやすくなります。</p>
+      </div>
+      <div class="list-prose__item">
+        <div class="list-prose__title">パートナーとの関係性が育っていない</div>
+        <p class="list-prose__body">大切な話ほど後回しになり、気づいた時にはお互いに何を考えているのかわからなくなってしまいます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========== 06. Check List =========== -->
+<section class="section" id="check-list">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__num">V.</span>
+      <span class="section__eyebrow">Check List</span>
+    </div>
+    <h2 class="section__title">こんなことを感じていませんか？</h2>
+
+    <ul class="check">
+      <li class="check__item"><span class="check__mark">✓</span><span class="check__text">結婚はしたいが、踏み切れない</span></li>
+      <li class="check__item"><span class="check__mark">✓</span><span class="check__text">結婚のメリットを考えるほど、正直よくわからなくなる</span></li>
+      <li class="check__item"><span class="check__mark">✓</span><span class="check__text">周りが結婚していく中で、自分だけ止まっている感覚がある</span></li>
+      <li class="check__item"><span class="check__mark">✓</span><span class="check__text">「もっと稼いでから」と言い続けて、何年も経っている</span></li>
+      <li class="check__item"><span class="check__mark">✓</span><span class="check__text">パートナーに時間を使うと、仕事に集中できなくなりそう</span></li>
+      <li class="check__item"><span class="check__mark">✓</span><span class="check__text">子供ができたら、今の働き方は維持できるのか不安</span></li>
+      <li class="check__item"><span class="check__mark">✓</span><span class="check__text">自分の人生がどこに向かうのか、言葉にできていない</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- =========== 07. Mistake =========== -->
+<section class="section" id="mistake">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__num">VI.</span>
+      <span class="section__eyebrow">Mistake</span>
+    </div>
+    <h2 class="section__title">自力で越えようとすると</h2>
+
+    <ul class="mistake">
+      <li class="mistake__item">
+        <div class="mistake__line">
+          <span class="mistake__mark">×</span>
+          <span class="mistake__claim">正論で話せば、わかってもらえるはず</span>
+        </div>
+        <div class="mistake__result">土台がないまま話すと、責められたように受け取られやすい</div>
+      </li>
+      <li class="mistake__item">
+        <div class="mistake__line">
+          <span class="mistake__mark">×</span>
+          <span class="mistake__claim">自分の中で整理できたら、そのうち話せるはず</span>
+        </div>
+        <div class="mistake__result">整理の仕方を間違えると、結局また先延ばしになりやすい</div>
+      </li>
+      <li class="mistake__item">
+        <div class="mistake__line">
+          <span class="mistake__mark">×</span>
+          <span class="mistake__claim">相手に合わせれば、関係は悪くならないはず</span>
+        </div>
+        <div class="mistake__result">我慢で成り立つ関係は、あとから不満やすれ違いになりやすい</div>
+      </li>
+      <li class="mistake__item">
+        <div class="mistake__line">
+          <span class="mistake__mark">×</span>
+          <span class="mistake__claim">忙しさが落ち着いたら、自然と向き合えるはず</span>
+        </div>
+        <div class="mistake__result">向き合う土台がないままだと、状況が変わっても同じ迷いが残りやすい</div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- =========== 08. Why Change =========== -->
+<section class="section" id="why-change">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__num">VII.</span>
+      <span class="section__eyebrow">Why Change — 変われる理由</span>
+    </div>
+    <h2 class="section__title">壁を越える順番がわかると、<br>モヤモヤは少しずつ言葉になっていく。</h2>
+
+    <div class="section__body" style="margin-bottom: 24px;">
+      <p>うまくいっている人は、自然にできているように見えても、何かしらの形でこの壁を越えています。もちろん、感覚的にできる人もいます。でも多くの場合は、壁に気づき、ちゃんとした順番で扱わないと、同じところでつまずきます。</p>
+      <p>経営であれば、他の経営者に相談したり、先人や実力者のやり方を学んだり、成果を出している人の事例を見たりしながら、考え方や手法を熱心に学ぶはずです。けれど家庭やパートナーとの関係になると、途端に自己流になり、余裕がなくなりやすい。だからこそ、関係にも扱い方があります。</p>
+    </div>
+
+    <h3 class="sub-heading">仕事とパートナーとの未来を整えるイメージ</h3>
+
+    <div class="list-prose">
+      <div class="list-prose__item">
+        <div class="list-prose__title">何に引っかかっているのかが見えてくる</div>
+        <p class="list-prose__body">結婚したくないのか、仕事を失いたくないのか、自由がなくなるのが怖いのか。混ざっていた不安を分けて扱えるようになります。</p>
+      </div>
+      <div class="list-prose__item">
+        <div class="list-prose__title">相手に伝える前に、自分の言葉が整っていく</div>
+        <p class="list-prose__body">まだ言葉にできていない迷いや怖さを整理することで、感情のままぶつけずに済む状態を作ります。</p>
+      </div>
+      <div class="list-prose__item">
+        <div class="list-prose__title">遠慮でも説得でもない伝え方が見えてくる</div>
+        <p class="list-prose__body">我慢して黙るのでも、正論で押すのでもなく、相手が受け取りやすい形で本音を扱えるようになります。</p>
+      </div>
+      <div class="list-prose__item">
+        <div class="list-prose__title">未来の話を扱える前提が整っていく</div>
+        <p class="list-prose__body">仕事、時間、暮らし方、家族のことを、いきなり結論にせず、安心して考えられる状態にしていきます。</p>
+      </div>
+      <div class="list-prose__item">
+        <div class="list-prose__title">勢いやタイミングだけに流されずに選べる</div>
+        <p class="list-prose__body">不安や焦りではなく、自分たちにとって無理のない進み方を選べるようになります。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========== 09. Method =========== -->
+<section class="section" id="method">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__num">VIII.</span>
+      <span class="section__eyebrow">Method — では、何をするのか</span>
+    </div>
+    <h2 class="section__title">Give &amp; Take マネジメントという手法を使います。</h2>
+
+    <div class="section__body">
+      <p>仕事を優先したい気持ち、パートナーに求めたいこと、自分が与えられること。そのバランスを言葉にしながら、未来の設計、コミュニケーションの土台、パートナーとの関係性を整えていく。</p>
+      <p>まず自分の中のモヤモヤを晴らし、その先でパートナーと一緒に育める関係を作っていくコンサルです。</p>
+    </div>
+  </div>
+</section>
+
+<!-- =========== 10. Benefits =========== -->
+<section class="section" id="benefits">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__num">IX.</span>
+      <span class="section__eyebrow">Benefits — 壁を越えた先の変化</span>
+    </div>
+    <h2 class="section__title">壁を越えた先の変化</h2>
+
+    <div class="benefits">
+      <div class="benefits__col">
+        <div class="benefits__title">
+          <span class="benefits__symbol">◆</span>
+          <span class="benefits__label">男性側のメリット</span>
+        </div>
+        <ul class="benefits__list">
+          <li>仕事と家庭の両立に対する不安が整理される</li>
+          <li>結婚後も仕事に集中できる見通しが持てる</li>
+          <li>自分が何を大切にしたいのか言葉にできる</li>
+          <li>パートナーとのすれ違いを早めに減らせる</li>
+        </ul>
+      </div>
+      <div class="benefits__col">
+        <div class="benefits__title">
+          <span class="benefits__symbol">◇</span>
+          <span class="benefits__label">パートナー側のメリット</span>
+        </div>
+        <ul class="benefits__list">
+          <li>大切にされている実感を持てる</li>
+          <li>少しずつ未来を共有できる安心感がある</li>
+          <li>我慢ではなく、納得して支え合える</li>
+        </ul>
+      </div>
+      <div class="benefits__col">
+        <div class="benefits__title">
+          <span class="benefits__symbol">■</span>
+          <span class="benefits__label">ふたりのメリット</span>
+        </div>
+        <ul class="benefits__list">
+          <li>大きなすれ違いになる前に、価値観の違いに気づける</li>
+          <li>忙しい日々の中でも、安心して戻れる場所ができる</li>
+          <li>仕事の成功だけでなく、ふたりの人生も少しずつ育てられる</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========== 11. Vision =========== -->
+<section class="section" id="vision">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__num">X.</span>
+      <span class="section__eyebrow">Vision — 理想の未来</span>
+    </div>
+    <h2 class="vision-title">迷いが減ると、<br>仕事にも家庭にも<br>力を注げる。</h2>
+
+    <div class="section__body">
+      <p>パートナーに遠慮しながら仕事をするのではなく、仕事を理由に関係を後回しにするのでもない。まず自分の中の前提が整うから、その先で一緒に関係を育てていく余白が生まれます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- =========== 12. Profile =========== -->
+<section class="section" id="profile">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__num">XI.</span>
+      <span class="section__eyebrow">Profile — 代表プロフィール</span>
+    </div>
+
+    <div class="profile">
+      <div class="profile__photo" aria-label="立花 由佳 プロフィール写真">
+        <!-- 写真到着時、この div の中身を <img src="images/yuka-tachibana.png" alt="立花 由佳"> に差し替え -->
+        <svg viewBox="0 0 200 200" aria-hidden="true">
+          <circle cx="100" cy="80" r="36" fill="#b8c0cc"/>
+          <path d="M40,180 Q100,120 160,180 Z" fill="#b8c0cc"/>
+        </svg>
+      </div>
+
+      <div class="profile__text">
+        <div class="profile__name">立花 由佳</div>
+        <div class="profile__name-en">Yuka Tachibana</div>
+        <div class="profile__title">一般社団法人 日本Give &amp; Takeマネジメント協会 代表理事</div>
+
+        <p class="profile__lede">経営者が、仕事と人生の両方に力を注げる関係性を整える。</p>
+
+        <div class="profile__bio">
+          <p>元フリーアナウンサーとして培った言葉の扱い方、第一印象・コミュニケーションの専門知識をもとに、経営者やリーダー層の対人課題、信頼構築、関係性づくりを支援。表面的な会話術ではなく、本音を扱う土台、相手に届く伝え方、長期的に関係を育てるための前提づくりを重視している。</p>
+          <p>経営者にとって、仕事の意思決定には戦略や学びがある一方で、パートナーや家庭との関係は自己流になりやすい領域。だからこそ、未来の設計、コミュニケーションの土台、パートナーとの関係性を整えることが、事業と人生の両方を前に進める力になると考えている。</p>
+        </div>
+
+        <dl class="profile__credentials">
+          <dt>登壇実績</dt>
+          <dd>講演・研修・セミナー登壇 500回以上</dd>
+          <dt>専門領域</dt>
+          <dd>第一印象 / 話し方 / 信頼構築 / 関係性設計 / コミュニケーション</dd>
+          <dt>経歴</dt>
+          <dd>東京都出身 / 聖心女子大学卒業 / 元フリーアナウンサー</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========== 13. Closing =========== -->
+<section class="section" id="closing">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__num">XII.</span>
+      <span class="section__eyebrow">Closing — 余韻のメッセージ</span>
+    </div>
+
+    <div class="closing">
+      <h2 class="closing-title">仕事も、結婚も、<br>ひとりで抱え込まなくていい。</h2>
+      <div class="section__body">
+        <p>自分の中の迷いが晴れていくと、パートナーとの未来も少しずつ育てていけます。</p>
+      </div>
+      <a class="closing__cta" href="mailto:?subject=Give%20%26%20Take%20マネジメント%20お問い合わせ">
+        話を聞きにきてください
+        <span class="closing__cta-arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- =========== 14. Footer =========== -->
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <div class="site-footer__brand">
+      <span class="site-footer__brand-mark">Give &amp; Take</span>
+      <span class="site-footer__tag">迷いを晴らし、育める関係へ。</span>
+    </div>
+    <div class="site-footer__copy">© 2026 一般社団法人 日本Give &amp; Takeマネジメント協会</div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -24,6 +24,18 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["serve", "/Users/hirotaseiji/Desktop/自分OS/projects/lsic", "-p", "8200"],
       "port": 8200
+    },
+    {
+      "name": "Stylist Closet Dashboard",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "/Users/hirotaseiji/Desktop/自分OS/projects/stylist-closet", "-p", "8300"],
+      "port": 8300
+    },
+    {
+      "name": "Give & Take Management",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "/Users/hirotaseiji/Desktop/自分OS/projects/give-take-management", "-p", "8400"],
+      "port": 8400
     }
   ]
 }
