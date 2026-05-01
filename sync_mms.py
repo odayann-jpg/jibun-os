@@ -40,21 +40,106 @@ STATUS_LABELS = {
     '完了': '✅ 完了',
 }
 
+# ─────────────────────────────────────────────
+# タスクファクトリ + バリデーション（書き込みの単一窓口）
+# ─────────────────────────────────────────────
+
+REQUIRED_TASK_FIELDS = (
+    'id', 'spaceId', 'category', 'title', 'detail', 'deadline',
+    'status', 'tags', 'metaTags', 'subtasks', 'createdAt',
+)
+
+
+def make_task(*, title, space_id='a', category='未分類', deadline='',
+              detail='', status='未', tags=None, meta_tags=None,
+              subtasks=None, gcal_id=None, task_id=None, created_at=None):
+    """MMS タスクを生成する唯一の窓口。
+
+    必須フィールドを全て埋めた dict を返す。`tags`/`metaTags`/`subtasks` が None のとき
+    は `[]` を入れる（MMS 側の描画コードが forEach を呼ぶため、欠落すると例外で全カテゴリが消える）。
+    """
+    task = {
+        'id': task_id or str(uuid.uuid4())[:8],
+        'spaceId': space_id,
+        'category': category,
+        'title': title,
+        'detail': detail or '',
+        'deadline': deadline or '',
+        'status': status,
+        'tags': list(tags) if tags is not None else [],
+        'metaTags': list(meta_tags) if meta_tags is not None else [],
+        'subtasks': list(subtasks) if subtasks is not None else [],
+        'createdAt': created_at or datetime.now().isoformat(),
+    }
+    if gcal_id:
+        task['gcalId'] = gcal_id
+    return task
+
+
+def validate_task(task):
+    """タスクが必須フィールドを揃えているか検証。揃ってなければ ValueError。"""
+    if not isinstance(task, dict):
+        raise ValueError(f'タスクが dict ではありません: {type(task).__name__}')
+    missing = [k for k in REQUIRED_TASK_FIELDS if k not in task]
+    if missing:
+        raise ValueError(f'必須フィールド欠落: {missing} in title={task.get("title")!r}')
+    if not isinstance(task['tags'], list):
+        raise ValueError(f'tags が list ではありません: {task.get("title")!r}')
+    if not isinstance(task['metaTags'], list):
+        raise ValueError(f'metaTags が list ではありません: {task.get("title")!r}')
+    if not isinstance(task['subtasks'], list):
+        raise ValueError(f'subtasks が list ではありません: {task.get("title")!r}')
+    if not isinstance(task['title'], str) or not task['title']:
+        raise ValueError(f'title が空: {task!r}')
+
+
+def normalize_tasks(data):
+    """既存タスクの欠損フィールドを補完（後方互換）。data を破壊的に変更し、同じものを返す。"""
+    if not isinstance(data, dict):
+        return data
+    for t in data.get('tasks', []):
+        if not isinstance(t.get('tags'), list): t['tags'] = []
+        if not isinstance(t.get('metaTags'), list): t['metaTags'] = []
+        if not isinstance(t.get('subtasks'), list): t['subtasks'] = []
+        if not isinstance(t.get('status'), str) or not t.get('status'): t['status'] = '未'
+        if not isinstance(t.get('title'), str): t['title'] = '(無題)'
+        if not isinstance(t.get('category'), str) or not t.get('category'): t['category'] = '未分類'
+        if not isinstance(t.get('detail'), str): t['detail'] = ''
+        if not isinstance(t.get('deadline'), str): t['deadline'] = ''
+        if not isinstance(t.get('id'), str) or not t.get('id'): t['id'] = str(uuid.uuid4())[:8]
+        if not isinstance(t.get('createdAt'), str) or not t.get('createdAt'):
+            t['createdAt'] = datetime.now().isoformat()
+    return data
+
 
 # ─────────────────────────────────────────────
 # Firebase I/O
 # ─────────────────────────────────────────────
 
 def fetch_firebase():
-    """Firebaseから全データを取得"""
+    """Firebaseから全データを取得（取得時に欠損フィールド補完）"""
     resp = requests.get(f'{FB_URL}?key={FB_KEY}', timeout=10)
     resp.raise_for_status()
     raw = resp.json()
-    return json.loads(raw['fields']['payload']['stringValue'])
+    data = json.loads(raw['fields']['payload']['stringValue'])
+    return normalize_tasks(data)
 
 
 def save_firebase(data):
-    """全データをFirebaseに書き戻す"""
+    """全データをFirebaseに書き戻す（書き込み前にバリデーション）"""
+    # 書き込み直前に必ず正規化＋検証。壊れたデータが Firebase に入ること自体を防ぐ。
+    normalize_tasks(data)
+    errors = []
+    for t in data.get('tasks', []):
+        try:
+            validate_task(t)
+        except ValueError as e:
+            errors.append(str(e))
+    if errors:
+        msg = '書き込み中止: 不正なタスクが含まれています\n  ' + '\n  '.join(errors[:10])
+        if len(errors) > 10:
+            msg += f'\n  ...他 {len(errors)-10} 件'
+        raise ValueError(msg)
     body = {
         'fields': {
             'payload': {'stringValue': json.dumps(data, ensure_ascii=False)}
@@ -261,17 +346,12 @@ def add_task(args):
         print(f'警告: スペース "{opts.space}" が見つかりません。未分類として追加します。')
         print(f'利用可能なスペース: {", ".join(spaces.keys())}')
 
-    new_task = {
-        'id': str(uuid.uuid4())[:8],
-        'title': opts.title,
-        'spaceId': space_id,
-        'deadline': opts.deadline,
-        'status': '未',
-        'category': opts.category,
-        'tags': [],
-        'subtasks': [],
-        'createdAt': datetime.now().isoformat(),
-    }
+    new_task = make_task(
+        title=opts.title,
+        space_id=space_id,
+        deadline=opts.deadline,
+        category=opts.category,
+    )
 
     data.setdefault('tasks', []).append(new_task)
     save_firebase(data)
@@ -358,6 +438,8 @@ def _infer_category(title, default_category):
     t = title or ''
     if 'コーディネート' in t:
         return 'コーディネート'
+    if '同行' in t:
+        return '同行'
     return default_category
 
 
@@ -518,32 +600,26 @@ def _plan_gcal_import_tasks(
         if not gid or gid in existing_gcal:
             continue
         title = (ev.get('summary') or '(無題)').strip()
-        if coordinate_only and 'コーディネート' not in title:
+        # coordinate_only=True のときは「コーディネート」または「同行」のみ取り込む
+        if coordinate_only and ('コーディネート' not in title and '同行' not in title):
             continue
         deadline, detail = _event_deadline_and_detail(ev)
-        category = 'コーディネート' if coordinate_only else _infer_category(
-            title, default_category
-        )
-        meta = ['サービス提供'] if category == 'コーディネート' else []
+        # タイトルから自動判定（コーディネート/同行/その他）
+        category = _infer_category(title, default_category)
         tid = _new_task_id(existing_ids)
         existing_ids.add(tid)
         existing_gcal.add(gid)
-        new_tasks.append(
-            {
-                'id': tid,
-                'gcalId': gid,
-                'spaceId': space_id,
-                'category': category,
-                'title': title,
-                'detail': detail,
-                'deadline': deadline,
-                'status': '未',
-                'tags': [],
-                'metaTags': [],
-                'subtasks': [],
-                'createdAt': datetime.now().isoformat(),
-            }
-        )
+        # ファクトリ経由で全フィールドを保証（tags=['__gcal__'] を付ける）
+        new_tasks.append(make_task(
+            task_id=tid,
+            gcal_id=gid,
+            space_id=space_id,
+            category=category,
+            title=title,
+            detail=detail,
+            deadline=deadline,
+            tags=['__gcal__'],
+        ))
     return new_tasks
 
 
@@ -605,8 +681,8 @@ def gcal_import(argv):
 
 
 def sync_coordinate(argv):
-    """西岡スペースに「コーディネート」カテゴリを確保し、
-    Googleカレンダーからタイトルに「コーディネート」を含む予定だけMMSへ同期する。
+    """西岡スペースに「コーディネート」「同行」カテゴリを確保し、
+    Googleカレンダーからタイトルに「コーディネート」または「同行」を含む予定をMMSへ同期する。
     """
     import argparse
 
@@ -625,9 +701,10 @@ def sync_coordinate(argv):
     items = _fetch_calendar_events(service, cal_id, opts.days)
     coord_only = not opts.all_events
     if coord_only:
-        n_title = sum(1 for ev in items if 'コーディネート' in (ev.get('summary') or ''))
+        n_coord = sum(1 for ev in items if 'コーディネート' in (ev.get('summary') or ''))
+        n_dou = sum(1 for ev in items if '同行' in (ev.get('summary') or ''))
         print(
-            f'Googleカレンダー: {len(items)} 件中、タイトルに「コーディネート」: {n_title} 件'
+            f'Googleカレンダー: {len(items)} 件中、コーディネート: {n_coord} 件 / 同行: {n_dou} 件'
         )
     else:
         print(f'Googleカレンダー: {len(items)} 件（{opts.days}日以内）')
@@ -640,13 +717,17 @@ def sync_coordinate(argv):
         print(f'エラー: スペース「{opts.space}」が見つかりません。')
         sys.exit(1)
 
+    cat_changed = False
     try:
-        cat_changed = ensure_category_in_data(data, opts.space, 'コーディネート')
+        if ensure_category_in_data(data, opts.space, 'コーディネート'):
+            cat_changed = True
+            print(f'カテゴリ「コーディネート」を「{opts.space}」に追加します。')
+        if ensure_category_in_data(data, opts.space, '同行'):
+            cat_changed = True
+            print(f'カテゴリ「同行」を「{opts.space}」に追加します。')
     except ValueError as e:
         print(e)
         sys.exit(1)
-    if cat_changed:
-        print(f'カテゴリ「コーディネート」を「{opts.space}」に追加します。')
 
     new_tasks = _plan_gcal_import_tasks(
         data,
