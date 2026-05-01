@@ -48,6 +48,12 @@
       "runtimeExecutable": "php",
       "runtimeArgs": ["-S", "localhost:8501", "-t", "/Users/hirotaseiji/Desktop/自分OS/projects/gentle-space"],
       "port": 8501
+    },
+    {
+      "name": "FSJ Modern",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "/Users/hirotaseiji/Desktop/自分OS/projects/_workspace/fashion-stylist-modern", "-p", "8600"],
+      "port": 8600
     }
   ]
 }
