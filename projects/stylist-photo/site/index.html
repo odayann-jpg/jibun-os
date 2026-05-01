@@ -36,7 +36,7 @@
       <nav class="nav">
         <a href="#about">サービス</a>
         <a href="#plans">プラン</a>
-        <a href="#gallery">ギャラリー</a>
+        <a href="#gallery">撮影イメージ</a>
         <a href="#flow">ご利用の流れ</a>
         <a href="#faq">よくあるご質問</a>
       </nav>
@@ -74,7 +74,7 @@
         </p>
         <div class="hero-buttons">
           <a href="#plans" class="btn btn-primary">プランを見る</a>
-          <a href="#gallery" class="btn btn-outline">ギャラリーを見る</a>
+          <a href="#gallery" class="btn btn-outline">撮影イメージを見る</a>
         </div>
       </div>
 
@@ -269,34 +269,26 @@
   </section>
 
   <!-- ==========================================
-       Gallery
+       Image (撮影イメージ)
        ========================================== -->
   <section class="gallery" id="gallery">
     <div class="container">
-      <span class="section-eyebrow">GALLERY</span>
-      <h2 class="section-title">フォトギャラリー</h2>
-
-      <div class="gallery-tabs">
-        <button class="gallery-tab is-active" data-filter="all">すべて</button>
-        <button class="gallery-tab" data-filter="studio">スタジオ</button>
-        <button class="gallery-tab" data-filter="location">ロケーション</button>
-        <button class="gallery-tab" data-filter="coordinate">コーディネート</button>
-      </div>
+      <span class="section-eyebrow">IMAGE</span>
+      <h2 class="section-title">撮影イメージ</h2>
+      <p class="section-lead">
+        スタイリングや光の入れ方、雰囲気の方向性をご紹介します。<br>
+        当日のヒアリングを踏まえ、その子らしい一枚に仕立てます。
+      </p>
+      <p class="section-note">※掲載写真はすべてイメージです（実際の撮影例ではありません）。</p>
     </div>
 
     <div class="gallery-grid">
-      <div class="gallery-item"><img src="assets/images/AdobeStock_1805017711.jpeg" alt=""></div>
-      <div class="gallery-item"><img src="assets/images/stylist-photo-about-cat.png" alt=""></div>
-      <div class="gallery-item"><img src="assets/images/AdobeStock_202747104.jpeg" alt=""></div>
-      <div class="gallery-item"><img src="assets/images/AdobeStock_346780571.jpeg" alt=""></div>
-      <div class="gallery-item"><img src="assets/images/stylist-photo-gallery-1.png" alt=""></div>
-      <div class="gallery-item"><img src="assets/images/stylist-photo-gallery-2.png" alt=""></div>
-      <div class="gallery-item"><img src="assets/images/stylist-photo-plan-30.png" alt=""></div>
-      <div class="gallery-item"><img src="assets/images/stylist-photo-gallery-3.png" alt=""></div>
-    </div>
-
-    <div class="gallery-more">
-      <a href="#" class="btn btn-outline">もっと見る</a>
+      <div class="gallery-item"><img src="assets/images/AdobeStock_1805017711.jpeg" alt="撮影イメージ"></div>
+      <div class="gallery-item"><img src="assets/images/AdobeStock_202747104.jpeg" alt="撮影イメージ"></div>
+      <div class="gallery-item"><img src="assets/images/AdobeStock_346780571.jpeg" alt="撮影イメージ"></div>
+      <div class="gallery-item"><img src="assets/images/stylist-photo-gallery-1.png" alt="撮影イメージ"></div>
+      <div class="gallery-item"><img src="assets/images/stylist-photo-gallery-2.png" alt="撮影イメージ"></div>
+      <div class="gallery-item"><img src="assets/images/stylist-photo-gallery-3.png" alt="撮影イメージ"></div>
     </div>
   </section>
 
@@ -526,12 +518,11 @@
       </div>
 
       <div class="footer-col">
-        <h4>ギャラリー</h4>
+        <h4>コンテンツ</h4>
         <ul>
-          <li><a href="#gallery">フォトギャラリー</a></li>
-          <li><a href="#gallery">スタジオ</a></li>
-          <li><a href="#gallery">ロケーション</a></li>
-          <li><a href="#gallery">コーディネート</a></li>
+          <li><a href="#gallery">撮影イメージ</a></li>
+          <li><a href="#about">スタイリング</a></li>
+          <li><a href="#flow">ご利用の流れ</a></li>
         </ul>
       </div>
 
@@ -553,16 +544,6 @@
       <div>© スタイリストフォト All Rights Reserved.</div>
     </div>
   </footer>
-
-  <script>
-    // ギャラリーフィルタタブ（UIのみ・実装は今後）
-    document.querySelectorAll('.gallery-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.gallery-tab').forEach(t => t.classList.remove('is-active'));
-        tab.classList.add('is-active');
-      });
-    });
-  </script>
 
 </body>
 </html>
