@@ -593,16 +593,15 @@ a { transition: color .25s var(--fs-ease); }
   color: var(--fs-ink-soft);
 }
 
-/* ============ Column ============ */
+/* ============ Column (brand layout: photo-left / text-right, single column) ============ */
 .p-topColumn { background: var(--fs-paper); }
 
 .p-topColumnList,
 .p-topColumnListWrap > .p-topColumnList {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: clamp(24px, 3vw, 36px);
+  display: block;
   list-style: none !important;
   padding: 0;
+  margin: 0;
 }
 
 .p-topColumnList__item,
@@ -611,27 +610,46 @@ a { transition: color .25s var(--fs-ease); }
   border: 1px solid var(--fs-line);
   border-radius: 2px;
   overflow: hidden;
+  margin-bottom: clamp(24px, 3vw, 36px);
   transition: transform .35s var(--fs-ease), box-shadow .35s var(--fs-ease), border-color .35s var(--fs-ease);
 }
+.p-topColumnList__item:last-child { margin-bottom: 0; }
 .p-topColumnList__item:hover {
-  transform: translateY(-4px);
+  transform: translateY(-2px);
   border-color: var(--fs-line-strong);
   box-shadow: var(--fs-shadow-md);
 }
 
-.p-topColumnList__item a { display: block; text-decoration: none; }
+.p-topColumnList__item a { display: block; height: 100%; text-decoration: none; }
 
-.p-topColumnListPhoto,
+/* Inner: photo (left) + text (right), full-bleed in the card */
+.p-topColumnList__itemInner {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: stretch;
+  gap: 0;
+}
+
+/* Photo column */
 .p-topColumnListPhotoWrap {
+  flex: 0 0 360px;
+  max-width: 360px;
+  margin: 0;
   position: relative;
   overflow: hidden;
   background: var(--fs-soft);
 }
+.p-topColumnListPhoto {
+  position: relative;
+  margin: 0;
+  height: 100%;
+  min-height: 240px;
+}
 .p-topColumnListPhoto img,
 .p-topColumnListPhotoWrap img {
   width: 100%;
-  height: auto;
-  aspect-ratio: 4 / 3;
+  height: 100%;
+  aspect-ratio: 3 / 2;
   object-fit: cover;
   display: block;
   transition: transform .8s var(--fs-ease);
@@ -641,71 +659,106 @@ a { transition: color .25s var(--fs-ease); }
 
 .p-topColumnListPhoto__caption {
   position: absolute;
-  top: 14px; left: 14px;
+  top: 0; left: 0;
   display: inline-block;
-  padding: 5px 12px;
-  background: var(--fs-navy);
-  color: var(--fs-cream);
+  padding: 6px 14px;
+  background: var(--fs-gold);
+  color: #fff;
   font-family: var(--fs-sans);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: .14em;
-  border-radius: 2px;
+  border-radius: 0;
 }
 
-.p-topColumnListTxtArea { padding: 22px 22px 26px; }
+/* Text column */
+.p-topColumnListTxtArea {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+  padding: clamp(24px, 3vw, 36px) clamp(24px, 3vw, 40px);
+}
+.p-topColumnListTxtAreaInner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.p-topColumnListTxtDetails { flex: 1 1 auto; }
 
+/* Date with hairline underline (brand-style) */
+.p-topColumnListDay {
+  position: relative;
+  margin-bottom: 14px;
+}
+.p-topColumnListDay::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  height: 1px;
+  background: var(--fs-line);
+}
+.p-topColumnListDay__inner {
+  position: relative;
+  display: inline-block;
+  background: var(--fs-paper);
+  padding-right: 14px;
+  font-family: var(--fs-en) !important;
+  font-style: italic;
+  font-size: 13px;
+  letter-spacing: .14em;
+  color: var(--fs-gold);
+}
+
+/* Heading: tighter to brand spacing (line-height 1.6, letter-spacing .08em) */
 .p-topColumnListHeading {
   font-family: var(--fs-serif) !important;
   font-weight: 500;
-  font-size: clamp(15px, 1.4vw, 18px) !important;
-  line-height: 1.7;
-  letter-spacing: .03em;
+  font-size: clamp(17px, 1.55vw, 22px) !important;
+  line-height: 1.6;
+  letter-spacing: .08em;
   color: var(--fs-navy);
-  margin: 12px 0 10px !important;
-}
-
-.p-topColumnListDay,
-.p-topColumnListDay__inner {
-  font-family: var(--fs-en) !important;
-  font-style: italic;
-  font-size: 12.5px;
-  letter-spacing: .14em;
-  color: var(--fs-gold);
+  margin: 0 0 14px !important;
 }
 
 .p-topColumnListTxt,
 .p-topColumnListTxtDetails p {
   font-family: var(--fs-sans) !important;
-  font-size: 13.5px !important;
-  line-height: 1.95 !important;
+  font-size: 14px !important;
+  line-height: 1.85 !important;
+  letter-spacing: .06em;
   color: var(--fs-muted) !important;
+  margin: 0;
 }
 
+/* "続きを読む" — bottom-right, framed-arrow style */
 .p-topColumnListBtnWrap {
-  margin-top: 14px;
-  border-top: 1px solid var(--fs-line);
-  padding-top: 14px;
+  margin-top: clamp(20px, 2.4vw, 28px);
+  border-top: 0;
+  padding-top: 0;
+  display: flex;
+  justify-content: flex-end;
 }
+.p-topColumnListBtn { display: inline-block; }
 .p-topColumnListBtn span {
+  display: inline-block;
   font-family: var(--fs-sans);
-  font-size: 12.5px;
-  letter-spacing: .18em;
+  font-size: 12px;
+  letter-spacing: .22em;
   color: var(--fs-navy);
   position: relative;
-  padding-right: 22px;
+  padding-right: 30px;
 }
 .p-topColumnListBtn span::after {
   content: "";
   position: absolute;
   right: 0;
   top: 50%;
-  width: 14px; height: 1px;
+  width: 18px; height: 1px;
   background: var(--fs-gold);
   transform: translateY(-50%);
   transition: width .3s var(--fs-ease);
 }
-.p-topColumnList__item:hover .p-topColumnListBtn span::after { width: 22px; }
+.p-topColumnList__item:hover .p-topColumnListBtn span::after { width: 28px; }
 
 /* ============ Button (CTA) ============ */
 .p-topAboutBtn a,
@@ -899,11 +952,25 @@ a.c-btn::after, .c-btn::after, button.c-btn::after {
   .p-topMessageHead__ja { font-size: 22px !important; }
   .p-topMessageSubTitle { font-size: 19px !important; }
 
-  .p-topColumnListTxtArea { padding: 18px 18px 22px; }
+  /* Column: stack to single column on mobile */
+  .p-topColumnList__itemInner {
+    flex-direction: column !important;
+  }
+  .p-topColumnListPhotoWrap {
+    flex: 0 0 auto;
+    max-width: 100%;
+    width: 100%;
+  }
+  .p-topColumnListPhoto { min-height: 0; }
+  .p-topColumnListPhoto img,
+  .p-topColumnListPhotoWrap img {
+    height: auto;
+    aspect-ratio: 16 / 10;
+  }
+  .p-topColumnListTxtArea { padding: 22px 22px 26px; }
+  .p-topColumnListHeading { font-size: 17px !important; }
 
-  .p-topVoiceList,
-  .p-topColumnList,
-  .p-topColumnListWrap > .p-topColumnList {
+  .p-topVoiceList {
     grid-template-columns: 1fr;
   }
 }
