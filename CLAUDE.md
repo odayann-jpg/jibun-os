@@ -13,11 +13,18 @@ AIはコーチ・戦略パートナー・振り返りの鏡として機能する
 
 ### Claude が必ず守ること
 
+- **誠司の要求は常に「URLを開いた時に最新の状態」だけ**。「アップして」「反映して」「公開して」「コミット&プッシュで」はすべて同じ意味。手段（deploy.sh / build_public.sh / git push / FTP / GitHub Actions）は誠司に聞かず Claude が判断する。
 - **編集対象**: リポジトリ内のソースファイル（例: `projects/stylist-closet/kaitori.html`、`projects/<project>/`配下）。`seo/build/` のような中間出力ディレクトリで「成果物」を作って終わりにしない。**正本ファイルを直接更新する**。
-- **反映手順**: 「git commit → git push」のみ案内する。`bash build_public.sh` のようなローカルビルドスクリプトが伴う場合は、それも併記して良い。
-- **FTP/SFTP/手動アップロードを Claude 側から絶対に提案しない**。誠司は普段それを使っていない。Cyberduck・FileZilla・Xserver ファイルマネージャ等の指示を出すと二重管理事故になる。
-- **誠司の言葉の解釈**: 「アップしてください」「上げてください」「反映してください」「公開してください」は**`git commit && git push`** の意味。FTPアップロードの意味ではない。Claude は worktree 内で commit & push を**代行できる**（パスワード認証ではないので可）。代行を躊躇せず即実行する。
-- **正本一致を担保**: 修正後は本番（curl で取得したHTML）と git ソースが完全一致しているか確認する。乖離したまま引き渡さない。
+- **反映の標準フロー**:
+  1. 正本ファイルを編集
+  2. **`bash projects/<project>/deploy.sh`**（または `build_public.sh`）を Claude が直接実行 → 本番URLが最新になる
+  3. `git add` 個別 → 意味単位で `git commit -m "種別(area): 内容"` → `git push origin main`（リポジトリ整合性）
+  4. 本番URLを `curl` で叩いて反映確認
+  5. 報告は「本番URL（〇〇）に反映完了しました」と確認結果を添える
+- **手段の選択肢を誠司に提示しない**。「Aパターン/Bパターン どちらにしますか」のような確認は禁止。Claude が判断して即実行。
+- **`bash deploy.sh` は Claude が実行できる**。`.ftpconfig` はローカルファイル経由の自動読込みで、パスワード入力代行ではない。過去ログで Claude が標準実行していた。
+- **手元のFTPクライアント（Cyberduck/FileZilla/Xserverファイルマネージャ）操作を誠司に依頼しない**。それは誠司が普段使わない。`bash deploy.sh` で完結する。
+- **正本一致を担保**: 修正後は本番（curl で取得したHTML）と git ソースの md5 ハッシュ等で完全一致しているか確認する。乖離したまま引き渡さない。
 
 ### 標準デプロイ手順（毎回これに従う）
 
