@@ -19,6 +19,31 @@ AIはコーチ・戦略パートナー・振り返りの鏡として機能する
 - **誠司の言葉の解釈**: 「アップしてください」「上げてください」「反映してください」「公開してください」は**`git commit && git push`** の意味。FTPアップロードの意味ではない。Claude は worktree 内で commit & push を**代行できる**（パスワード認証ではないので可）。代行を躊躇せず即実行する。
 - **正本一致を担保**: 修正後は本番（curl で取得したHTML）と git ソースが完全一致しているか確認する。乖離したまま引き渡さない。
 
+### 標準デプロイ手順（毎回これに従う）
+
+**作業場所**: main worktree（リポジトリルート `/Users/hirotaseiji/Desktop/自分OS`）。Claude Code の自動 worktree (`.claude/worktrees/...`) で編集する場合も、絶対パスで main 側のファイルを更新する形にする。
+
+**手順**:
+1. 正本ファイルを編集（例: `projects/stylist-closet/kaitori.html`）
+2. ビルドスクリプトがある場合は実行（例: `bash projects/stylist-closet/build_public.sh`）。ない場合は `cp` で `public/` にコピーするなど、公開ディレクトリと正本を同期する
+3. `git add` で**個別ファイル指定**（`git add -A` は使わない。worktree 管理情報や sensitive を巻き込むリスク）
+4. **意味単位で分割 commit**（過去の流れに合わせる）
+5. `git push origin main`
+
+**コミットメッセージ規則**:
+| 種別 | 用途 | 例 |
+|---|---|---|
+| `feat(area):` | 新機能・新規追加 | `feat(stylist-closet): SEO修正一式` |
+| `fix(area):` | バグ修正 | `fix(mms): タスク非表示の根本対処` |
+| `content(area):` | 文言・コンテンツ修正 | `content(give-take-management): Why Change を編集` |
+| `deploy(area):` | デプロイ系 | `deploy(give-take-management): Xserver FTP デプロイスクリプト` |
+| `docs(area):` または `docs:` | ドキュメント | `docs: デプロイ運用ルールを追記` |
+| `note(area):` | メモ・記録 | `note(secretary): 2026-05-04 inbox` |
+
+`area` はプロジェクトディレクトリ名（`stylist-closet` / `give-take-management` / `gentle-space` / `mms` 等）。共通変更なら省略可。
+
+**自動バックアップ**: macOS launchd で `scripts/backup-to-github.sh` が日次起動し、未コミット変更を `自動バックアップ: YYYY-MM-DD HH:MM` で push する。手動 push を忘れても1日以内に拾われるが、明示的な変更は意味単位で先に commit すること（`自動バックアップ` に埋もれさせない）。
+
 ### 過去の事故（2026-05-04）
 
 スタクロSEO修正で「アップしてください」を Claude が「FTPで上げて」と誤解釈。誠司は普段使わないFTPで本番へ手動上書きし、git ソース（`projects/stylist-closet/kaitori.html`）が修正前のまま残った。次回 push で本番が巻き戻る危険状態。**この種の解釈ズレを二度と起こさない。**
