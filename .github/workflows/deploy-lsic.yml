@@ -1,0 +1,52 @@
+# LSIC → Xserver(fashion-stylist.co.jp/lsic/) 自動デプロイ
+#
+# 必要な GitHub Secrets:
+#   FSJ_FTP_HOST       … FTPホスト
+#   FSJ_FTP_USERNAME   … FTPユーザー名
+#   FSJ_FTP_PASSWORD   … FTPパスワード
+#   FSJ_LSIC_FTP_REMOTE … リモートパス（例: /fashion-stylist.co.jp/public_html/lsic/）
+
+name: deploy-lsic
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'projects/lsic/**'
+      - '!projects/lsic/.ftpconfig*'
+      - '!projects/lsic/deploy.sh'
+      - '.github/workflows/deploy-lsic.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-lsic
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: リポジトリをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: FTP で Xserver へデプロイ
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FSJ_FTP_HOST }}
+          username: ${{ secrets.FSJ_FTP_USERNAME }}
+          password: ${{ secrets.FSJ_FTP_PASSWORD }}
+          local-dir: ./projects/lsic/
+          server-dir: ${{ secrets.FSJ_LSIC_FTP_REMOTE }}
+          log-level: standard
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/.DS_Store
+            .DS_Store
+            .ftpconfig
+            .ftpconfig.*
+            deploy.sh
+            *.md
+            *.bak
+            *.example.*

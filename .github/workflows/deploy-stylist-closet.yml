@@ -1,0 +1,59 @@
+# スタイリストクローゼット 吉祥寺 → Xserver(fashion-stylist.co.jp/closet/) 自動デプロイ
+# main へ push されると、projects/stylist-closet/ 配下の変更を検出して FTP 反映する。
+#
+# 必要な GitHub Secrets（Settings → Secrets and variables → Actions）:
+#   FSJ_FTP_HOST       … FTPホスト（例: sv****.xserver.jp または fashion-stylist.co.jp）
+#   FSJ_FTP_USERNAME   … FTPユーザー名（サーバーID）
+#   FSJ_FTP_PASSWORD   … FTPパスワード
+#   FSJ_CLOSET_FTP_REMOTE … リモートパス（例: /fashion-stylist.co.jp/public_html/closet/）
+
+name: deploy-stylist-closet
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'projects/stylist-closet/kaitori.html'
+      - 'projects/stylist-closet/public/**'
+      - 'projects/stylist-closet/images/**'
+      - '.github/workflows/deploy-stylist-closet.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-stylist-closet
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: リポジトリをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: kaitori.html → public/index.html を同期（ローカルの build_public.sh と等価）
+        run: |
+          cd projects/stylist-closet
+          mkdir -p public/images
+          cp kaitori.html public/index.html
+          if compgen -G "images/*" > /dev/null; then
+            cp -r images/* public/images/
+          fi
+
+      - name: FTP で Xserver へデプロイ
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FSJ_FTP_HOST }}
+          username: ${{ secrets.FSJ_FTP_USERNAME }}
+          password: ${{ secrets.FSJ_FTP_PASSWORD }}
+          local-dir: ./projects/stylist-closet/public/
+          server-dir: ${{ secrets.FSJ_CLOSET_FTP_REMOTE }}
+          log-level: standard
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/.DS_Store
+            .DS_Store
+            *.md
+            *.bak
+            *.example.*

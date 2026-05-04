@@ -1,0 +1,52 @@
+# Give & Take マネジメント協会 LP → Xserver(giveandtake-japan.org) 自動デプロイ
+#
+# 必要な GitHub Secrets:
+#   GTM_FTP_HOST       … FTPホスト（例: giveandtake-japan.xsrv.jp）
+#   GTM_FTP_USERNAME   … FTPユーザー名（例: giveand）
+#   GTM_FTP_PASSWORD   … FTPパスワード
+#   GTM_FTP_REMOTE     … リモートパス（例: /giveandtake-japan.org/public_html/）
+
+name: deploy-give-take-management
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'projects/give-take-management/**'
+      - '!projects/give-take-management/.ftpconfig*'
+      - '!projects/give-take-management/deploy.sh'
+      - '.github/workflows/deploy-give-take-management.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-give-take-management
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: リポジトリをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: FTP で Xserver へデプロイ
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.GTM_FTP_HOST }}
+          username: ${{ secrets.GTM_FTP_USERNAME }}
+          password: ${{ secrets.GTM_FTP_PASSWORD }}
+          local-dir: ./projects/give-take-management/
+          server-dir: ${{ secrets.GTM_FTP_REMOTE }}
+          log-level: standard
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/.DS_Store
+            .DS_Store
+            .ftpconfig
+            .ftpconfig.*
+            deploy.sh
+            *.md
+            *.bak
+            *.example.*
