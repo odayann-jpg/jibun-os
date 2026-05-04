@@ -398,10 +398,10 @@
     }
     .flow-tab {
       flex: 1;
-      padding: 0.75rem 1rem;
+      padding: 0.875rem 1rem;
       background: transparent;
       font-family: var(--font);
-      font-size: 0.875rem;
+      font-size: 0.9375rem;
       font-weight: 400;
       color: var(--muted);
       cursor: pointer;
@@ -420,7 +420,8 @@
       border-radius: var(--r);
     }
     .step {
-      background: var(--surface);
+      background: #fff;
+      border: 1px solid var(--rule);
       padding: 1.75rem 1.5rem;
       border-radius: var(--r);
     }
@@ -432,27 +433,23 @@
       margin-bottom: 0.875rem;
     }
     .step__title {
-      font-size: 0.9375rem;
+      font-size: 1rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
       line-height: 1.4;
     }
     .step__body {
-      font-size: 0.8125rem;
+      font-size: 0.9375rem;
       line-height: 1.8;
       color: var(--muted);
     }
 
     /* === FLOW EXTRAS === */
     .flow-lead {
-      font-size: 1rem;
+      font-size: 1.125rem;
       line-height: 1.8;
-      color: var(--muted);
-      border-left: 3px solid var(--accent);
-      padding: 0.75rem 1.25rem;
+      color: var(--ink);
       margin-bottom: var(--sp-md);
-      background: var(--surface);
-      border-radius: 0 var(--r) var(--r) 0;
     }
     .step__you,
     .step__shop {
@@ -475,8 +472,8 @@
       gap: 0.375rem;
     }
     .step__tips li {
-      font-size: 0.8125rem;
-      line-height: 1.65;
+      font-size: 0.9375rem;
+      line-height: 1.7;
       color: var(--muted);
     }
     .step__tips strong { color: var(--ink); font-weight: 500; }
