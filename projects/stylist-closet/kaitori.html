@@ -698,36 +698,36 @@
     .faq-item { border-bottom: 1px solid rgba(0,0,0,0.07); }
     .faq-item:last-child { border-bottom: none; }
     .faq-q {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
+      display: grid;
+      grid-template-columns: 1.5rem 1fr 20px;
+      align-items: start;
+      gap: 0.75rem 1rem;
       width: 100%;
       padding: 1.25rem 1.5rem;
       background: #fff;
       border: none;
       font-family: var(--font);
-      font-size: 0.9375rem;
+      font-size: 1rem;
       font-weight: 500;
       color: var(--ink);
       text-align: left;
       cursor: pointer;
       transition: background 0.18s;
-      line-height: 1.5;
+      line-height: 1.7;
     }
     .faq-q:hover { background: var(--surface); }
     .faq-q::before {
       content: 'Q';
-      font-size: 0.875rem;
+      font-size: 0.9375rem;
       font-weight: 700;
       color: var(--accent);
-      flex-shrink: 0;
+      line-height: 1.7;
     }
     .faq-toggle {
       width: 20px;
       height: 20px;
       position: relative;
-      flex-shrink: 0;
+      align-self: center;
     }
     .faq-toggle::before,
     .faq-toggle::after {
@@ -742,17 +742,22 @@
     .faq-item.open .faq-toggle::after { opacity: 0; transform: translate(-50%,-50%) rotate(90deg); }
     .faq-a {
       display: none;
-      padding: 0 1.5rem 1.25rem;
+      padding: 0 1.5rem 1.25rem calc(1.5rem + 1.5rem + 1rem); /* Qアイコン分の左インデントで質問文と縦揃え */
       background: #fff;
     }
     .faq-item.open .faq-a { display: block; }
     .faq-a p {
-      font-size: 0.875rem;
+      position: relative;
+      padding-left: 1.75rem;
+      font-size: 0.9375rem;
       line-height: 1.9;
       color: var(--muted);
     }
     .faq-a p::before {
-      content: 'A. ';
+      content: 'A.';
+      position: absolute;
+      left: 0;
+      top: 0;
       font-weight: 700;
       color: var(--ink);
     }
