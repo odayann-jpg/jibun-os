@@ -9,7 +9,8 @@ mkdir -p public/images
 cp kaitori.html public/index.html
 
 if ls images/* 1> /dev/null 2>&1; then
-  cp images/* public/images/
+  # 直下ファイルのみコピー（hero-drafts のような作業用サブディレクトリは除外）
+  find images -maxdepth 1 -type f -exec cp {} public/images/ \;
 fi
 
 echo "✓ public/ を更新しました。"
