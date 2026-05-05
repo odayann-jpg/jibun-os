@@ -31,6 +31,11 @@ node_modules/
 *.tmp
 projects/gentle-space/
 
+# Obsidian 個人ワークスペース（git 共有しない）
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+
 # Superpowers brainstorming companion
 .superpowers/
 

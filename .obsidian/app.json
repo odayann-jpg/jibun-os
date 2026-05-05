@@ -1,0 +1,21 @@
+{
+  "alwaysUpdateLinks": true,
+  "newFileLocation": "folder",
+  "newFileFolderPath": ".company/secretary/inbox",
+  "attachmentFolderPath": "attachments",
+  "useMarkdownLinks": false,
+  "showLineNumber": false,
+  "spellcheck": false,
+  "showInlineTitle": true,
+  "promptDelete": true,
+  "userIgnoreFilters": [
+    "node_modules/",
+    "scripts/venv/",
+    "scripts/env/",
+    "projects/*/public/",
+    "projects/*/dist/",
+    "projects/*/build/",
+    "projects/*/node_modules/",
+    "tasks/.gcal-oauth/"
+  ]
+}
