@@ -1,5 +1,5 @@
 {
   "format": "YYYY-MM-DD",
-  "folder": ".company/secretary/inbox",
+  "folder": "company/secretary/inbox",
   "template": "_templates/daily-note"
 }
