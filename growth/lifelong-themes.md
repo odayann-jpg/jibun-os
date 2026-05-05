@@ -53,5 +53,5 @@
 ### 関連リンク
 
 - 意思決定の記録: [decision-log.md](decision-log.md)（2026-04-27）
-- 対話の流れ: [../.company/secretary/notes/2026-04-27-learnings.md](../.company/secretary/notes/2026-04-27-learnings.md)
+- 対話の流れ: [../company/secretary/notes/2026-04-27-learnings.md](../company/secretary/notes/2026-04-27-learnings.md)
 - スキルマップ: [skill-map.md](skill-map.md)

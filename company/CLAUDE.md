@@ -11,7 +11,7 @@
 ## 組織構成
 
 ```
-.company/
+company/
 ├── CLAUDE.md
 ├── secretary/
 │   ├── CLAUDE.md

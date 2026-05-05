@@ -36,9 +36,6 @@ projects/gentle-space/
 .obsidian/workspace-mobile.json
 .obsidian/cache
 
-# Obsidian Vault が .company を見るための symlink（OS依存なので git 管理しない）
-/company
-
 # Superpowers brainstorming companion
 .superpowers/
 

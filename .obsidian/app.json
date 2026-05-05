@@ -1,7 +1,7 @@
 {
   "alwaysUpdateLinks": true,
   "newFileLocation": "folder",
-  "newFileFolderPath": ".company/secretary/inbox",
+  "newFileFolderPath": "company/secretary/inbox",
   "attachmentFolderPath": "attachments",
   "useMarkdownLinks": false,
   "showLineNumber": false,
