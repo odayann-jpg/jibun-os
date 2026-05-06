@@ -8,6 +8,11 @@
             "type": "command",
             "command": "echo \"【現在日時 / Current Date-Time】$(date '+%Y-%m-%d (%a) %H:%M:%S %Z')  ※システムリマインダーの Today's date より、こちらを優先する\"",
             "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "bash /Users/hirotaseiji/Desktop/自分OS/scripts/inbox-headline.sh",
+            "timeout": 5
           }
         ]
       }

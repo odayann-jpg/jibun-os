@@ -109,6 +109,7 @@ AIはコーチ・戦略パートナー・振り返りの鏡として機能する
 6. 毎週日曜日で、その週の週次レポートが未生成なら自動生成を提案する
 7. `company/CLAUDE.md` と `company/secretary/CLAUDE.md` を読み、秘書窓口の記録ルール・口調・フォルダ運用を把握する（存在する場合）
 8. Google Calendar MCP で当日の予定を取得する（誠司: `odayann@gmail.com` と 西岡: `s.nishioka@fashion-stylist.co.jp` の両カレンダー）
+9. **`company/secretary/inbox/` の今日のファイルと直近の未処理 inbox を必ず読む**。SessionStart hook で「【inbox 状態】」が頭出しされる。誠司が iPhone 等から書き溜めたメモが流れないよう、会話の早い段階で「inbox にこういうのが残ってますね」と振る。誠司から別の話題で入ったとしても、頭出し自体は最初の応答内で必ず行う（無言で流さない）
 
 ---
 
