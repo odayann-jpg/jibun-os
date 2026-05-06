@@ -12,10 +12,13 @@
     "node_modules/",
     "scripts/venv/",
     "scripts/env/",
-    "projects/*/public/",
-    "projects/*/dist/",
-    "projects/*/build/",
-    "projects/*/node_modules/",
+    "projects/",
+    "generated-images/",
+    "attachments/",
+    "_backups/",
+    "_workspace/",
+    "docs/",
+    "seo/",
     "tasks/.gcal-oauth/"
   ]
 }
